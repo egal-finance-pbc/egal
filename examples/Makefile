@@ -13,6 +13,12 @@ account: build
 	egal/examples:latest \
 	python3 account.py
 
+payment: build
+	docker run -it --rm \
+	--volume $(CURDIR):/opt/egal/examples \
+	egal/examples:latest \
+	python3 payment.py
+
 freeze: build
 	docker run -it --rm egal/examples:latest \
 	python3 -m pip freeze
