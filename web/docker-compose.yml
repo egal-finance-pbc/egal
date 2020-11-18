@@ -1,0 +1,17 @@
+---
+version: "3.8"
+services:
+  web:
+    build: .
+    volumes:
+      - .:/opt/conellas/web
+    labels:
+      - traefik.http.routers.web.rule=PathPrefix(`/`)
+      - traefik.http.services.web.loadbalancer.server.port=8000
+  proxy:
+    image: traefik:2.3
+    command: --providers.docker
+    ports:
+      - 5000:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
