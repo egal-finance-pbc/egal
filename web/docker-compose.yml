@@ -8,6 +8,12 @@ services:
     labels:
       - traefik.http.routers.web.rule=PathPrefix(`/`)
       - traefik.http.services.web.loadbalancer.server.port=8000
+  static:
+    image: nginx:1.19
+    volumes:
+      - ./static:/usr/share/nginx/html/static:ro
+    labels:
+      - traefik.http.routers.static.rule=PathPrefix(`/static/`)
   proxy:
     image: traefik:2.3
     command: --providers.docker
