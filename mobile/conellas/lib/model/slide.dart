@@ -25,7 +25,7 @@ final slideList = [
     title: 'FIRMA VOCAL',
   ),
   Slide(
-    imageUrl: 'assets/images/psos-signo.png',
+    imageUrl: 'assets/images/pesos-signo.png',
     title: 'DESPOSITAR PESOS',
   ),
 ];
