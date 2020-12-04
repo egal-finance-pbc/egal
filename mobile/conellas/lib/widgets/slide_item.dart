@@ -12,8 +12,8 @@ class SlideItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: 200,
-          height: 200,
+          width: 180,
+          height: 180,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
@@ -23,17 +23,18 @@ class SlideItem extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 40,
+          height: 30,
         ),
         Text(
           slideList[index].title,
           style: TextStyle(
-            fontSize: 22,
-            color: Theme.of(context).primaryColor,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF7F3F98),
           ),
         ),
         SizedBox(
-          height: 10,
+          height: 1,
         ),
       ],
     );

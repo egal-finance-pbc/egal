@@ -49,7 +49,7 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
                       alignment: AlignmentDirectional.topStart,
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(bottom: 35),
+                          margin: const EdgeInsets.only(bottom: 50),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -68,41 +68,49 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  FlatButton(
+                  RaisedButton(
                     child: Text(
                       'REGISTRO',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 13,
                       ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    color: Color.fromARGB(127, 63, 152, 0),
-                    textColor: Color.fromARGB(216, 149, 85, 0),
+                     shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.5),),
+                      onPressed: () {},
+                      color: Color(0xFF7F3F98),
+                      textColor: Color(0xFFD89555),
                   ),
-                  FlatButton(
+                  RaisedButton(
                     child: Text(
                       'INGRESO',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 13,
                       ),
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    color: Color.fromARGB(127, 63, 152, 0),
-                    textColor: Color.fromARGB(216, 149, 85, 0),
+                      borderRadius: BorderRadius.circular(4.5),),
+                      onPressed: () {},
+                      color: Color(0xFF7F3F98),
+                      textColor: Color(0xFFD89555),
                   ),
+                   SizedBox(
+                height: 15,
+              ),
                 ],
               )
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 48,
+          color: Color(0xFFF4A522)
         ),
       ),
     );

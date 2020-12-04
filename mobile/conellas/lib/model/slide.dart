@@ -13,19 +13,19 @@ class Slide {
 
 final slideList = [
   Slide(
-    imageUrl: 'assets/images/usuario.png',
-    title: 'FOTOGRAFIA',
+    imageUrl: 'assets/images/user.png',
+    title: 'PHOTOGRAPHY',
   ),
   Slide(
-    imageUrl: 'assets/images/huella.png',
-    title: 'HUELLA DIGITAL',
+    imageUrl: 'assets/images/fingerprint.png',
+    title: 'FINGERPRINT',
   ),
   Slide(
-    imageUrl: 'assets/images/voz.png',
-    title: 'FIRMA VOCAL',
+    imageUrl: 'assets/images/voice.png',
+    title: 'VOCAL SIGNATURE',
   ),
   Slide(
-    imageUrl: 'assets/images/pesos-signo.png',
-    title: 'DESPOSITAR PESOS',
+    imageUrl: 'assets/images/dollar-sign.png',
+    title: 'DEPOSIT PESOS',
   ),
 ];
