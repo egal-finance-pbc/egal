@@ -14,18 +14,18 @@ class Slide {
 final slideList = [
   Slide(
     imageUrl: 'assets/images/user.png',
-    title: 'PHOTOGRAPHY',
+    title: 'FOTOGRAFIA',
   ),
   Slide(
     imageUrl: 'assets/images/fingerprint.png',
-    title: 'FINGERPRINT',
+    title: 'HUELLA DIGITAL',
   ),
   Slide(
     imageUrl: 'assets/images/voice.png',
-    title: 'VOCAL SIGNATURE',
+    title: 'FIRMA VOCAL',
   ),
   Slide(
     imageUrl: 'assets/images/dollar-sign.png',
-    title: 'DEPOSIT PESOS',
+    title: 'DEPOSITAR PESOS',
   ),
 ];

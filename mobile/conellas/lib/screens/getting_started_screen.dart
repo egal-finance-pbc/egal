@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import '../widgets/slide_item.dart';
 import '../model/slide.dart';
 import '../widgets/slide_dots.dart';
+import '../screens/login_screen.dart';
+import '../screens/signup_screen.dart';
 
 class GettingStartedScreen extends StatefulWidget {
   @override
@@ -81,7 +82,9 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
                     ),
                      shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.5),),
-                      onPressed: () {},
+                      onPressed: ()  {
+                      Navigator.of(context).pushNamed(SignupScreen.routeName);
+                    },
                       color: Color(0xFF7F3F98),
                       textColor: Color(0xFFD89555),
                   ),
@@ -94,7 +97,9 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.5),),
-                      onPressed: () {},
+                      onPressed: () {
+                          Navigator.of(context).pushNamed(LoginScreen.routeName);
+                        },
                       color: Color(0xFF7F3F98),
                       textColor: Color(0xFFD89555),
                   ),
