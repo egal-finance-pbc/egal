@@ -29,3 +29,7 @@ admin:
 
 reload:
 	docker-compose restart web
+
+shell:
+	docker exec -it $(shell docker ps --filter name=web_web -q) \
+	./manage.py shell
