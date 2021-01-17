@@ -7,6 +7,18 @@ static: build
 	egal/conellas/web:latest \
 	./manage.py collectstatic --noinput
 
+shell: build
+	docker run -it --rm \
+	--volume $(CURDIR):/opt/conellas/web \
+	egal/conellas/web:latest \
+	./manage.py shell
+
+test: build
+	docker run -it --rm \
+	--volume $(CURDIR):/opt/conellas/web \
+	egal/conellas/web:latest \
+	./manage.py test -v2
+
 up:
 	docker-compose up --build
 
@@ -29,7 +41,3 @@ admin:
 
 reload:
 	docker-compose restart web
-
-shell:
-	docker exec -it $(shell docker ps --filter name=web_web -q) \
-	./manage.py shell
