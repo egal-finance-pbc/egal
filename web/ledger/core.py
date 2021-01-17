@@ -5,6 +5,10 @@ import requests
 import stellar_sdk as stellar
 
 from . import models
+from conellas import logging
+
+
+logger = logging.get_logger(__name__)
 
 
 class Gateway:
@@ -21,6 +25,7 @@ class Gateway:
             'addr': kp.public_key
         })
         if r.status_code != 200:
+            logger.error('Failed to fund stellar account', addr=kp.public_key, error=r.text)
             raise LedgerError('account creation failed', r.text)
         user = User.objects.create_user(username, first_name=first_name, last_name=last_name)
         return models.Account.objects.create(user=user, public_key=kp.public_key, secret=kp.secret)
