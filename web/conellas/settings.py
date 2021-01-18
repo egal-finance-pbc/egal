@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ledger.apps.LedgerConfig',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+# Stellar
+# https://developers.stellar.org/docs/
+
+STELLAR_HORIZON_URL = 'https://horizon-testnet.stellar.org'
+STELLAR_FRIENDBOT_URL = 'https://friendbot.stellar.org'
