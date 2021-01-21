@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
-import './screens/getting_started_screen.dart';
-import './screens/login_screen.dart';
-import './screens/signup_screen.dart';
+import 'package:conellas/Screens/Login/login_screen.dart';
+import 'package:conellas/constants.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Auth',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: GettingStartedScreen(),
-      routes: {
-        LoginScreen.routeName: (ctx) => LoginScreen(),
-        SignupScreen.routeName: (ctx) => SignupScreen(),
-      },
+      home: LoginScreen(),
     );
   }
 }
