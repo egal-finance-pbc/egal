@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -70,11 +71,18 @@ class _LoginPageState extends State<LoginPage> {
                     textColor: Colors.blue,
                     child: Text('Sign up', style: TextStyle(fontSize: 16)),
                     onPressed: () {
-                      //signup screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return RegisterPage();
+                            },
+                            ),
+                        );//signup screen
                     },
                   )
                 ],
-              mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
               ),
             ),
           ],
