@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../pages/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -7,9 +6,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,21 +20,21 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.center,
               padding: EdgeInsets.all(10),
               child: Text(
-                'ConEllas',
+                'Con Ellas',
                 style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30
-                ),
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 30),
               ),
             ),
             Container(
               padding: EdgeInsets.all(10),
               child: TextField(
-                controller: nameController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Username',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
@@ -46,10 +42,11 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Password',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
@@ -71,14 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                     textColor: Colors.blue,
                     child: Text('Sign up', style: TextStyle(fontSize: 16)),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return RegisterPage();
-                            },
-                            ),
-                        );//signup screen
+                      Navigator.pushNamed(context, '/second'); //signup screen
                     },
                   )
                 ],

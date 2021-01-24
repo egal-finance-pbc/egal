@@ -6,9 +6,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,43 +20,43 @@ class _RegisterPageState extends State<RegisterPage> {
               alignment: Alignment.center,
               padding: EdgeInsets.all(10),
               child: Text(
-                'ConEllas',
+                'Con Ellas',
                 style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30
-                ),
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 30),
               ),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
-                obscureText: true,
-                controller: passwordController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'First Name',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
-                obscureText: true,
-                controller: passwordController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Last Name',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
             Container(
               padding: EdgeInsets.all(10),
               child: TextField(
-                controller: nameController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Username',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
@@ -67,10 +64,11 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Password',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
@@ -78,10 +76,11 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Confirm Password',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
