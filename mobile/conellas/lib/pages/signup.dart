@@ -20,11 +20,11 @@ class _RegisterPageState extends State<RegisterPage> {
               alignment: Alignment.center,
               padding: EdgeInsets.all(10),
               child: Text(
-                'Con Ellas',
+                'ConEllas',
                 style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 30),
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30),
               ),
             ),
             Container(

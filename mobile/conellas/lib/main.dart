@@ -23,7 +23,8 @@ class ConEllasApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginPage());
+        home: LoginPage()
+    );
   }
 }
 
