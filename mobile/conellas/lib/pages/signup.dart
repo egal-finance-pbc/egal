@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _RegisterPageState createState() => new _RegisterPageState();
+  _SignUpPageState createState() => new _SignUpPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.w500,
-                  fontSize: 30),
+                  fontSize: 30
+                  ),
               ),
             ),
             Container(

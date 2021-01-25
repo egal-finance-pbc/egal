@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _SignInPageState createState() => new _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +22,10 @@ class _LoginPageState extends State<LoginPage> {
               child: Text(
                 'ConEllas',
                 style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30),
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 30
+                    ),
               ),
             ),
             Container(
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                     textColor: Colors.blue,
                     child: Text('Sign up', style: TextStyle(fontSize: 16)),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/second'); //signup screen
+                      Navigator.pushNamed(context, '/signup');
                     },
                   )
                 ],
