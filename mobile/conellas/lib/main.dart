@@ -13,17 +13,14 @@ class ConEllasApp extends StatelessWidget {
       title: 'Con Ellas',
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => SignInPage(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
         '/signup': (context) => SignUpPage(),
-        },
-        
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-      );
+      },
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+    );
   }
 }
 

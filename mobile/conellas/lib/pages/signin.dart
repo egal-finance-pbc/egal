@@ -10,7 +10,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign in'),
+        title: Text('Sign In'),
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -22,11 +22,10 @@ class _SignInPageState extends State<SignInPage> {
               child: Text(
                 'ConEllas',
                 style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 30
-                    ),
-              ),
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30),
+                ),
             ),
             Container(
               padding: EdgeInsets.all(10),
