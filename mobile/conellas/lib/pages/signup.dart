@@ -24,8 +24,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.w500,
-                  fontSize: 30),
+                  fontSize: 30
                 ),
+              ),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),

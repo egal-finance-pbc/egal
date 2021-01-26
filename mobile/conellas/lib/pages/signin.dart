@@ -24,8 +24,9 @@ class _SignInPageState extends State<SignInPage> {
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.w500,
-                  fontSize: 30),
+                  fontSize: 30
                 ),
+              ),
             ),
             Container(
               padding: EdgeInsets.all(10),
