@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _SignInPageState createState() => new _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign in'),
+        title: Text('Sign In'),
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -34,10 +31,11 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               padding: EdgeInsets.all(10),
               child: TextField(
-                controller: nameController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Username',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
@@ -45,10 +43,11 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
                 decoration: InputDecoration(
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Password',
+                  contentPadding: const EdgeInsets.all(15),
                 ),
               ),
             ),
@@ -70,11 +69,11 @@ class _LoginPageState extends State<LoginPage> {
                     textColor: Colors.blue,
                     child: Text('Sign up', style: TextStyle(fontSize: 16)),
                     onPressed: () {
-                      //signup screen
+                      Navigator.pushNamed(context, '/signup');
                     },
                   )
                 ],
-              mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
               ),
             ),
           ],
