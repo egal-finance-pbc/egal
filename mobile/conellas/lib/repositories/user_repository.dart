@@ -12,7 +12,7 @@ abstract class UserRepository {
   Future<List<UserModel>> findAll();
 
   @GET('/users/{id}')
-  Future<UserModel> findById(@Path('id') String id);
+  Future<UserModel> findById(@Path('id') int id);
 
   @POST('/users')
   Future<void> save(@Body() UserModel user);
