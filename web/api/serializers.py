@@ -2,15 +2,13 @@ from rest_framework import serializers
 
 from ledger.core import Gateway
 
-class RegistrationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ['first_name','last_name','username','password']
-        extra_kwargs = {
-                'password': {write_only:true}
-        }
-
+class RegistrationSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=60)
+    password = serializers.CharField(max_length=60)
+    first_name = serializers.CharField(max_length=60)
+    last_name = serializers.CharField(max_length=60)
+    
+    
     def create(self, validated_data):
         user = User(
             first_name=validated_data['first_name']
@@ -28,3 +26,4 @@ class RegistrationSerializer(serializers.ModelSerializer):
         instance.password = validated_data.get('password', instance.password)
         instance.save()
         return instance
+        
