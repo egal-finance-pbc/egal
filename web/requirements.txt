@@ -6,3 +6,7 @@ structlog==20.2.0
 djangorestframework==3.12.2
 markdown==3.3.3
 django-filter==2.4.0
+
+# The following deps are either for testing or development
+# TODO: Remove from production container dependencies.
+locust==1.4.3

@@ -1,0 +1,24 @@
+---
+version: '3'
+
+services:
+  master:
+    build: .
+    ports:
+      - 8089:8089
+    volumes:
+      - ./:/opt/locust
+    working_dir: /opt/locust
+    command: locust --master
+    environment:
+      - API_URL
+  worker:
+    build: .
+    volumes:
+      - ./:/opt/locust
+    working_dir: /opt/locust
+    command: locust --worker --master-host master
+    environment:
+      - API_URL
+    depends_on:
+      - master
