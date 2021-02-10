@@ -12,3 +12,15 @@ class SignUp(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class PaymentSerializer(serializers.Serializer):
+    destination = serializers.CharField(max_length=56)
+    description = serializers.CharField(max_length=28, required=False)
+    amount = serializers.DecimalField(max_digits=None, decimal_places=2)
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass

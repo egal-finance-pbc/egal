@@ -38,7 +38,7 @@ class Accounts(APIView):
 
         payload = serializers.SignUp(data=request.data)
         if not payload.is_valid():
-            raise ParseError()
+            raise ParseError(payload.errors)
 
         try:
             account = self.ledger.create_account(
@@ -86,6 +86,7 @@ class Account(APIView):
 
 class Me(APIView):
     """View to inspect user information."""
+
     def get(self, request):
         if request.user.is_anonymous:
             raise PermissionDenied()
@@ -100,3 +101,33 @@ class Me(APIView):
             'last_name': request.user.last_name,
             'public_key': account.public_key,
         })
+
+
+class Payments(APIView):
+    """Endpoint to manage payments."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ledger = Gateway()
+
+    def post(self, request):
+        if request.user.is_anonymous:
+            raise PermissionDenied()
+
+        payload = serializers.PaymentSerializer(data=request.data)
+        if not payload.is_valid():
+            raise ParseError(payload.errors)
+
+        try:
+            payment_url = self.ledger.make_payment(
+                src=request.user.account.public_key,
+                dst=payload.validated_data['destination'],
+                amount=payload.validated_data['amount'],
+                desc=payload.validated_data.get('description'),
+            )
+            return Response(headers={
+                'Location': payment_url,
+            }, status=status.HTTP_201_CREATED)
+
+        except LedgerError as e:
+            raise APIException(detail=e.message)
