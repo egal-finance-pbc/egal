@@ -5,5 +5,7 @@ from . import views
 
 urlpatterns = [
     path('accounts/', views.Accounts.as_view()),
-    path('accounts/tokens/', fviews.obtain_auth_token)
+    path('accounts/<str:pubkey>/', views.Account.as_view()),
+    path('tokens/', fviews.obtain_auth_token),
+    path('me/', views.Me.as_view()),
 ]
