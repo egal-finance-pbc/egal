@@ -35,6 +35,10 @@ migrate:
 	docker exec -it $(shell docker ps --filter name=web_web -q) \
 	./manage.py migrate
 
+cache:
+	docker exec -it $(shell docker ps --filter name=web_web -q) \
+	./manage.py createcachetable
+
 admin:
 	docker exec -it $(shell docker ps --filter name=web_web -q) \
 	./manage.py createsuperuser --username=admin --email=admin@localhost

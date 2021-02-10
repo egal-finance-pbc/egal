@@ -1,22 +1,37 @@
 from rest_framework import status
 from rest_framework.exceptions import ParseError, APIException
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
+from conellas.logging import get_logger
 from ledger.core import Gateway, LedgerError
 from . import serializers
+
+
+logger = get_logger(__name__)
+
+
+class SignUpThrottle(AnonRateThrottle):
+    rate = '60/minute'
+    scope = 'signup'
 
 
 class Accounts(APIView):
     """
     View to manage a collection of accounts.
     """
+    throttle_classes = [SignUpThrottle]
+    throttle_scope = SignUpThrottle.scope
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.ledger = Gateway()
 
     def post(self, request):
+        logger.info('Received signup request', remote_addr=request.META.get('REMOTE_ADDR'),
+                    x_forwarded_for=request.META.get('HTTP_X_FORWARDED_FOR'))
+
         payload = serializers.SignUp(data=request.data)
         if not payload.is_valid():
             raise ParseError()
