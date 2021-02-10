@@ -125,6 +125,17 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
+# Cache
+# https://docs.djangoproject.com/en/3.1/topics/cache/
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache',
+    }
+}
+
+
 # Django REST Framework
 # https://www.django-rest-framework.org/api-guide/settings/
 
