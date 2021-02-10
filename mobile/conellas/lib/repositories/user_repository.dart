@@ -4,7 +4,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'user_repository.g.dart';
 
-@RestApi(baseUrl: '')
+@RestApi(baseUrl: 'https://602338e56bf3e6001766ae35.mockapi.io/api/')
 abstract class UserRepository {
   factory UserRepository(Dio dio, {String baseUrl}) = _UserRepository;
 
@@ -12,7 +12,7 @@ abstract class UserRepository {
   Future<List<UserModel>> findAll();
 
   @GET('/users/{id}')
-  Future<UserModel> findById(@Path('id') int id);
+  Future<UserModel> findById(@Path('id') String  id);
 
   @POST('/users')
   Future<void> save(@Body() UserModel user);

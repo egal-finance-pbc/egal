@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'pages/signin.dart';
+//import 'pages/signin.dart';
 import 'pages/signup.dart';
+import 'package:conellas/home_page.dart';
 
 void main() {
   runApp(ConEllasApp());
@@ -13,7 +14,7 @@ class ConEllasApp extends StatelessWidget {
       title: 'Con Ellas',
       initialRoute: '/',
       routes: {
-        '/': (context) => SignInPage(),
+        '/': (context) => HomePage(),
         '/signup': (context) => SignUpPage(),
       },
       theme: ThemeData(

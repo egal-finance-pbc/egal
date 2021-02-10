@@ -9,6 +9,7 @@ part of 'user_repository.dart';
 class _UserRepository implements UserRepository {
   _UserRepository(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
+    baseUrl ??= 'https://602338e56bf3e6001766ae35.mockapi.io/api/';
   }
 
   final Dio _dio;
