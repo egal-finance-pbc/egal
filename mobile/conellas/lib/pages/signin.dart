@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:conellas/pages/BalancePage.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -58,15 +59,29 @@ class _SignInPageState extends State<SignInPage> {
                 textColor: Colors.white,
                 color: Colors.blue,
                 child: Text('Login'),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(
+                      MaterialPageRoute(
+                          builder: (context)=> BalancePage()
+                      )
+                  );
+                },
+
               ),
             ),
+
+
+
+
+
+
             Container(
               child: Row(
                 children: <Widget>[
                   Text('Don\'t have an account?'),
                   FlatButton(
-                    textColor: Colors.blue,
+                      textColor: Colors.blue,
                     child: Text('Sign up', style: TextStyle(fontSize: 16)),
                     onPressed: () {
                       Navigator.pushNamed(context, '/signup');
@@ -80,5 +95,6 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+
   }
 }
