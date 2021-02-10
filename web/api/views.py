@@ -9,20 +9,22 @@ from ledger.core import Gateway, LedgerError
 from . import serializers
 
 
+SIGNUP_THROTTLE_SCOPE = 'signup'
+
+
 logger = get_logger(__name__)
 
 
 class SignUpThrottle(AnonRateThrottle):
     rate = '60/minute'
-    scope = 'signup'
+    scope = SIGNUP_THROTTLE_SCOPE
 
 
 class Accounts(APIView):
-    """
-    View to manage a collection of accounts.
-    """
+    """View to manage a collection of accounts."""
+
     throttle_classes = [SignUpThrottle]
-    throttle_scope = SignUpThrottle.scope
+    throttle_scope = SIGNUP_THROTTLE_SCOPE
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
