@@ -72,6 +72,9 @@ class Account(APIView):
             if account is None:
                 raise NotFound()
 
+            if account.user.id != request.user.id:
+                raise PermissionDenied()
+
             balance = self.ledger.get_account_balance(pubkey)
             return Response(data={
                 'balance': balance,
