@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => new _SignUpPageState();
@@ -13,7 +14,7 @@ class _SignUpPageState extends State<SignUpPage> {
         title: Text('Sign Up'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
             Container(
@@ -28,9 +29,45 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            Container(
+            SignInForm(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SignInForm extends StatefulWidget {
+  @override
+  _SignInFormState createState() {
+    return _SignInFormState();
+  }
+}
+
+class _SignInFormState extends State<SignInForm> {
+  final _formKey = GlobalKey<FormState>();
+
+   //TextController to read text entered in text field
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value){
+                  if (value.isEmpty){
+                    return 'Missing first name';
+                  } else if(value.length > 150){
+                    return 'Firts name length exceded';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -41,7 +78,15 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value){
+                  if (value.isEmpty){
+                    return 'Missing last name';
+                  } else if(value.length > 150){
+                    return 'Last name length exceded';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -52,7 +97,15 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.all(10),
-              child: TextField(
+              child: TextFormField(
+                validator: (value){
+                  if (value.isEmpty){
+                    return 'Missing username';
+                  } else if(value.length > 150){
+                    return 'Username length exceded';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -63,7 +116,15 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                controller: passwordController,
+                keyboardType: TextInputType.text,
+                validator: (String value){
+                  if (value.isEmpty){
+                    return 'Please a Enter Password';
+                  }
+                  return null;
+                },
                 obscureText: true,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -75,7 +136,19 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                controller: confirmPasswordController,
+                 keyboardType: TextInputType.text,
+                validator: (String value){
+                  if (value.isEmpty){
+                    return 'Please re-enter password';
+                  }
+                  
+                  if (passwordController.text!=confirmPasswordController.text){
+                    return "Password does not match";
+                  }
+                  return null;
+                },
                 obscureText: true,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -86,18 +159,22 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             Container(
-              height: 50,
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: RaisedButton(
-                textColor: Colors.white,
-                color: Colors.blue,
-                child: Text('Register'),
-                onPressed: () {},
-              ),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            width: double.infinity,
+            height: 60,
+            child: ElevatedButton(
+              onPressed: () {
+
+                if (_formKey.currentState.validate()) {
+                  Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text('Sending your information')));
+                }
+              },
+              child: Text('Register'),
             ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )
     );
   }
 }
