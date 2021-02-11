@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
+
 import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
@@ -122,8 +124,10 @@ class _LoginFormState extends State<LoginForm> {
                     this.usernameController.text,
                     this.passwordController.text,
                   );
+                  await FlutterSession().set('token', token.token);
                   Navigator.pushNamed(context, '/home');
                 } catch(err) {
+                  await FlutterSession().set('token', '');
                   showDialog(
                     context: context,
                     builder: (context) {
