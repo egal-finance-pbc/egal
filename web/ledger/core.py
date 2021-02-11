@@ -34,6 +34,16 @@ class Gateway:
     def create_keypair() -> stellar.Keypair:
         return stellar.Keypair.random()
 
+    def get_account(self, pubkey: str) -> models.Account:
+        return models.Account.objects.filter(public_key=pubkey).first()
+
+    def get_account_balance(self, pubkey: str) -> str:
+        account = self.server.accounts().account_id(pubkey).call()
+        if len(account['balances']) > 0:
+            return account['balances'][0]['balance']
+        else:
+            raise LedgerError('account missing balance')
+
 
 class LedgerError(Exception):
     def __init__(self, message, debug=None):
