@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   if(value.trim().length > 150){
                     return null;
                   }
-                  return 'Favor de poner su nombre';
+                  return 'Missing first name';
                 },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -52,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   if(value.trim().length > 150){
                     return null;
                   }
-                  return 'Favor de poner su apellido';
+                  return 'Missing last name';
                 },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   if(value.trim().length > 150){
                     return null;
                   }
-                  return 'Favor de indicar su nombre de usuario';
+                  return 'Missing username';
                 },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -84,7 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: TextFormField(
                 validator: (value){
                   if(value.isEmpty){
-                    return 'Favor de ingresar su contraseña';
+                    return 'Missing password';
                   }
                   return null;
                 },
