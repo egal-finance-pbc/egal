@@ -39,17 +39,17 @@ class _SignUpPageState extends State<SignUpPage> {
 
 class SignInForm extends StatefulWidget {
   @override
-  SignInFormState createState() {
-    return SignInFormState();
+  _SignInFormState createState() {
+    return _SignInFormState();
   }
 }
 
-class SignInFormState extends State<SignInForm> {
+class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
 
    //TextController to read text entered in text field
-  final TextEditingController password = TextEditingController();
-  final TextEditingController confirmpassword = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +61,9 @@ class SignInFormState extends State<SignInForm> {
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
                 validator: (value){
-                  if(value.isEmpty){
+                  if (value.isEmpty){
                     return 'Missing first name';
-                  }else if(value.length > 150){
+                  } else if(value.length > 150){
                     return 'Firts name length exceded';
                   }
                   return null;
@@ -80,9 +80,9 @@ class SignInFormState extends State<SignInForm> {
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
                 validator: (value){
-                  if(value.isEmpty){
+                  if (value.isEmpty){
                     return 'Missing last name';
-                  }else if(value.length > 150){
+                  } else if(value.length > 150){
                     return 'Last name length exceded';
                   }
                   return null;
@@ -99,9 +99,9 @@ class SignInFormState extends State<SignInForm> {
               padding: EdgeInsets.all(10),
               child: TextFormField(
                 validator: (value){
-                  if(value.isEmpty){
+                  if (value.isEmpty){
                     return 'Missing username';
-                  }else if(value.length > 150){
+                  } else if(value.length > 150){
                     return 'Username length exceded';
                   }
                   return null;
@@ -117,10 +117,10 @@ class SignInFormState extends State<SignInForm> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: TextFormField(
-                controller: password,
+                controller: passwordController,
                 keyboardType: TextInputType.text,
                 validator: (String value){
-                  if(value.isEmpty){
+                  if (value.isEmpty){
                     return 'Please a Enter Password';
                   }
                   return null;
@@ -137,17 +137,14 @@ class SignInFormState extends State<SignInForm> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
-                controller: confirmpassword,
+                controller: confirmPasswordController,
                  keyboardType: TextInputType.text,
                 validator: (String value){
-                  if(value.isEmpty){
+                  if (value.isEmpty){
                     return 'Please re-enter password';
                   }
-                  print(password.text);
-
-                  print(confirmpassword.text);
                   
-                  if(password.text!=confirmpassword.text){
+                  if (passwordController.text!=confirmPasswordController.text){
                     return "Password does not match";
                   }
                   return null;
