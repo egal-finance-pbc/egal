@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
+
+import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -53,13 +56,15 @@ class _SignInPageState extends State<SignInPage> {
 
 class LoginForm extends StatefulWidget {
   @override
-  LoginFormState createState() {
-    return LoginFormState();
+  _LoginFormState createState() {
+    return _LoginFormState();
   }
 }
 
-class LoginFormState extends State<LoginForm> {
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +75,7 @@ class LoginFormState extends State<LoginForm> {
           Container(
             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: TextFormField(
+              controller: this.usernameController,
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Missing username';
@@ -88,6 +94,7 @@ class LoginFormState extends State<LoginForm> {
           Container(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
             child: TextFormField(
+              controller: this.passwordController,
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Missing password';
@@ -107,11 +114,38 @@ class LoginFormState extends State<LoginForm> {
             width: double.infinity,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {
-
-                if (_formKey.currentState.validate()) {
-                  Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text('Not implemented yet')));
+              onPressed: () async {
+                if (!_formKey.currentState.validate()) {
+                  return;
+                }
+                try {
+                  var api = API();
+                  var token = await api.login(
+                    this.usernameController.text,
+                    this.passwordController.text,
+                  );
+                  await FlutterSession().set('token', token.token);
+                  Navigator.pushNamed(context, '/home');
+                } catch(err) {
+                  await FlutterSession().set('token', '');
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Invalid credentials"),
+                        content: Text(err.toString()),
+                        actions: [
+                          FlatButton(
+                            child: Text("Try again"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                    barrierDismissible: false,
+                  );
                 }
               },
               child: Text('Login'),
