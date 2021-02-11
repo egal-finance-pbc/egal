@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import uuid
 
 import locust
@@ -22,6 +23,7 @@ class APIUser(locust.HttpUser):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.settings = helpers.Settings.get_instance()
         username = str(uuid.uuid4())
         password, first, last, _, _ = username.split('-')
         self.login = {
@@ -33,6 +35,7 @@ class APIUser(locust.HttpUser):
         self.created = False
         self.token = None
         self.me = None
+        self.account = None
 
     @locust.task
     def signup(self) -> None:
@@ -56,6 +59,8 @@ class APIUser(locust.HttpUser):
         if r.status_code == 200:
             self.token = r.json()['token']
             logger.info('%s token received', self.token)
+        else:
+            logger.error(r.text)
 
     @locust.task
     def me(self) -> None:
@@ -67,7 +72,10 @@ class APIUser(locust.HttpUser):
         })
         if r.status_code == 200:
             self.me = r.json()
+            self.settings.state.set(self.me['public_key'], self.me)
             logger.info(self.me)
+        else:
+            logger.error(r.text)
 
     @locust.task
     def account(self) -> None:
@@ -78,4 +86,41 @@ class APIUser(locust.HttpUser):
         r = self.client.get(tpl.format(id=self.me['public_key']), headers={
             'Authorization': 'Token {}'.format(self.token),
         }, name=tpl)
-        logger.info('%s %s', self.me['public_key'], r.text)
+        if r.status_code == 200:
+            self.account = r.json()
+            logger.info('%s %s', self.me['public_key'], r.text)
+        else:
+            logger.error(r.text)
+
+    @locust.task
+    def payment(self) -> None:
+        if self.account is None:
+            return
+
+        if len(self.settings.state.keys()) < 2:
+            logger.info('Not enough accounts for payments')
+            return
+
+        dst_key = None
+        while dst_key is None:
+            c = random.choice(self.settings.state.keys())
+            if c != self.me['public_key']:
+                dst_key = c
+
+        balance = float(self.account['balance'])
+        amount = random.randint(1, int(balance/8))
+        r = self.client.post('/api/v1/payments/', headers={
+            'Authorization': 'Token {}'.format(self.token),
+        }, data={
+            'destination': dst_key,
+            'amount': str(amount),
+        })
+
+        if r.status_code == 201:
+            src_key = self.me['public_key']
+            location = r.headers['Location']
+            logger.info('${amount} payment [{location}] [{src} -> {dst}]'.format(
+                amount=amount, location=location, src=src_key, dst=dst_key,
+            ))
+        else:
+            logger.error(r.text)

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 import requests
 import stellar_sdk as stellar
+from stellar_sdk import exceptions
 
 from . import models
 from conellas import logging
@@ -34,7 +35,8 @@ class Gateway:
     def create_keypair() -> stellar.Keypair:
         return stellar.Keypair.random()
 
-    def get_account(self, pubkey: str) -> models.Account:
+    @staticmethod
+    def get_account(pubkey: str) -> models.Account:
         return models.Account.objects.filter(public_key=pubkey).first()
 
     def get_account_balance(self, pubkey: str) -> str:
@@ -43,6 +45,29 @@ class Gateway:
             return account['balances'][0]['balance']
         else:
             raise LedgerError('account missing balance')
+
+    def make_payment(self, src, dst, amount, desc=None):
+        src_account = self.get_account(src)
+        if src_account is None:
+            raise LedgerError('invalid source account')
+
+        try:
+            stellar_src_account = self.server.load_account(src)
+            tx = stellar.TransactionBuilder(
+                source_account=stellar_src_account,
+            ).append_operation(stellar.operation.Payment(
+                destination=dst,
+                asset=stellar.Asset.native(),
+                amount=amount,
+            )).add_memo(stellar.TextMemo(str(desc))).build()
+            stellar_src_keypair = stellar.Keypair.from_secret(src_account.secret)
+            tx.sign(stellar_src_keypair)
+            stellar_r = self.server.submit_transaction(tx)
+            return stellar_r["_links"]["self"]["href"]
+
+        except exceptions.SdkError as e:
+            logger.error('Payment transaction failed', repr=repr(e), str=str(e))
+            raise LedgerError('failed to complete payment')
 
 
 class LedgerError(Exception):
