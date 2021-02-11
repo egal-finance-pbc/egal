@@ -30,7 +30,13 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                validator: (String value){
+                  if(value.trim().length > 150){
+                    return null;
+                  }
+                  return 'Favor de poner su nombre';
+                },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -41,7 +47,13 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                validator: (String value){
+                  if(value.trim().length > 150){
+                    return null;
+                  }
+                  return 'Favor de poner su apellido';
+                },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -52,7 +64,13 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.all(10),
-              child: TextField(
+              child: TextFormField(
+                validator: (String value){
+                  if(value.trim().length > 150){
+                    return null;
+                  }
+                  return 'Favor de indicar su nombre de usuario';
+                },
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -63,7 +81,13 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value){
+                  if(value.isEmpty){
+                    return 'Favor de ingresar su contraseña';
+                  }
+                  return null;
+                },
                 obscureText: true,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
