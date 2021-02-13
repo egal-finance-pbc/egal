@@ -50,17 +50,17 @@ class API {
 }
 
 class Account {
-  final String first_name;
-  final String last_name;
+  final String firstName;
+  final String lastName;
   final String username;
   final String password;
 
-  Account({this.first_name, this.last_name, this.username, this.password});
+  Account({this.firstName, this.lastName, this.username, this.password});
 
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
-      first_name: json['first'],
-      last_name: json['last'],
+      firstName: json['first'],
+      lastName: json['last'],
       username: json['username'],
       password: json['password'],
     );

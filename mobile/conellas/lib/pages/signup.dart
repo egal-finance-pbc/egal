@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter_session/flutter_session.dart';
+
+import '../clients/api.dart';
 
 
 class SignUpPage extends StatefulWidget {
@@ -48,6 +51,9 @@ class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
 
    //TextController to read text entered in text field
+  final usernameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
@@ -60,6 +66,7 @@ class _SignInFormState extends State<SignInForm> {
           Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
+                controller: firstNameController,
                 validator: (value){
                   if (value.isEmpty){
                     return 'Missing first name';
@@ -79,6 +86,7 @@ class _SignInFormState extends State<SignInForm> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
+                controller: lastNameController,
                 validator: (value){
                   if (value.isEmpty){
                     return 'Missing last name';
@@ -98,6 +106,7 @@ class _SignInFormState extends State<SignInForm> {
             Container(
               padding: EdgeInsets.all(10),
               child: TextFormField(
+                controller: usernameController,
                 validator: (value){
                   if (value.isEmpty){
                     return 'Missing username';
@@ -159,15 +168,41 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ),
             Container(
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
             width: double.infinity,
             height: 60,
             child: ElevatedButton(
-              onPressed: () {
-
-                if (_formKey.currentState.validate()) {
-                  Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text('Sending your information')));
+              onPressed: () async {
+                if (!_formKey.currentState.validate()) {
+                  return;
+                }
+                try {
+                  var api = API();
+                  var account = await api.createUser(
+                    this.firstNameController.text,
+                    this.lastNameController.text,
+                    this.usernameController.text,
+                    this.passwordController.text,
+                  );
+                } catch(err) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Account created successfully"),
+                        content: Text(err.toString()),
+                        actions: [
+                          FlatButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/home');
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                    barrierDismissible: false,
+                  );
                 }
               },
               child: Text('Register'),
