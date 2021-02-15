@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_session/flutter_session.dart';
+import 'package:conellas/pages/signin.dart';
 
 import '../clients/api.dart';
 
@@ -173,12 +173,12 @@ class _SignInFormState extends State<SignInForm> {
             height: 60,
             child: ElevatedButton(
               onPressed: () async {
-                if (!_formKey.currentState.validate()) {
-                  return;
+                if (_formKey.currentState.validate()) {
+                  registrationAlert(context);
                 }
                 try {
                   var api = API();
-                  var account = await api.createUser(
+                  var account = await api.signUp(
                     this.firstNameController.text,
                     this.lastNameController.text,
                     this.usernameController.text,
@@ -189,13 +189,13 @@ class _SignInFormState extends State<SignInForm> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text("Account created successfully"),
+                        title: Text("Registration failed"),
                         content: Text(err.toString()),
                         actions: [
                           FlatButton(
-                            child: Text("OK"),
+                            child: Text("Try again"),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/home');
+                              Navigator.of(context).pop();
                             },
                           ),
                         ],
@@ -212,4 +212,29 @@ class _SignInFormState extends State<SignInForm> {
       )
     );
   }
+}
+void registrationAlert(BuildContext context){
+  var alertDialog = AlertDialog(
+    title: Text("Succesful registration"),
+    content: Text("Please verify your email"),
+    actions: [
+      FlatButton(
+        child: Text("close"),
+        onPressed: (){
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder:(context) => SignInPage()
+            ),
+          );
+        },
+      ),
+    ],
+  );
+
+  showDialog(
+     context: context,
+     builder: (BuildContext context){
+       return alertDialog;
+     }
+  );
 }

@@ -5,7 +5,6 @@ class API {
   String url;
 
   API() {
-    // ignore: todo
     // TODO: Make base URL address:port dynamic.
     this.url = 'http://10.0.2.2:5000/api/v1/';
   }
@@ -28,14 +27,14 @@ class API {
     }
   }
 
-  Future<Account> createUser(String first, last, username, password) async {
+  Future<Account> signUp(String firstName, lastName, username, password) async {
     final response = await http.post(this.url + 'accounts/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
-        'first_name': first,
-        'last_name': last,
+        'firstName': firstName,
+        'lastName': lastName,
         'username': username,
         'password': password,
       }),
@@ -44,7 +43,7 @@ class API {
     if (response.statusCode == 201) {
       return Account.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to create user.');
+      throw Exception(response.body);
     }
   }
 }
@@ -59,8 +58,8 @@ class Account {
 
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
-      firstName: json['first'],
-      lastName: json['last'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
       username: json['username'],
       password: json['password'],
     );
