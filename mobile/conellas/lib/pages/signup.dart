@@ -173,8 +173,15 @@ class _SignInFormState extends State<SignInForm> {
             height: 60,
             child: ElevatedButton(
               onPressed: () async {
-                if (!_formKey.currentState.validate()) {
-                  return;
+                if (_formKey.currentState.validate()) {
+                  registrationAlert(context);
+                  var api = API();
+                  var account = await api.signUp(
+                    this.firstNameController.text,
+                    this.lastNameController.text,
+                    this.usernameController.text,
+                    this.passwordController.text,
+                  );
                 }
                 try {
                   var api = API();
@@ -184,13 +191,7 @@ class _SignInFormState extends State<SignInForm> {
                     this.usernameController.text,
                     this.passwordController.text,
                   );
-                  await FlutterSession().set('account', account.firstName);
-                  await FlutterSession().set('account', account.lastName);
-                  await FlutterSession().set('account', account.username);
-                  await FlutterSession().set('account', account.password);
-                  Navigator.pushNamed(context, '/');
                 } catch(err) {
-                  await FlutterSession().set('account', '');
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -218,4 +219,18 @@ class _SignInFormState extends State<SignInForm> {
       )
     );
   }
+void registrationAlert(BuildContext context){
+    var alertDialog = AlertDialog(
+      title: Text("Successful registration"),
+      content: Text("Please verify your email"),
+      actions: [
+        FlatButton(
+          child: Text('Close'),
+          onPressed: (){
+            Navigator.pushNamed(context, '/');
+          },
+        ),
+      ],
+    );
+}
 }
