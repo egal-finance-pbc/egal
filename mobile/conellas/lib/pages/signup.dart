@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:conellas/pages/signin.dart';
+import 'package:flutter_session/flutter_session.dart';
 
 import '../clients/api.dart';
 
@@ -173,8 +173,8 @@ class _SignInFormState extends State<SignInForm> {
             height: 60,
             child: ElevatedButton(
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  registrationAlert(context);
+                if (!_formKey.currentState.validate()) {
+                  return;
                 }
                 try {
                   var api = API();
@@ -184,7 +184,13 @@ class _SignInFormState extends State<SignInForm> {
                     this.usernameController.text,
                     this.passwordController.text,
                   );
+                  await FlutterSession().set('account', account.firstName);
+                  await FlutterSession().set('account', account.lastName);
+                  await FlutterSession().set('account', account.username);
+                  await FlutterSession().set('account', account.password);
+                  Navigator.pushNamed(context, '/');
                 } catch(err) {
+                  await FlutterSession().set('account', '');
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -212,29 +218,4 @@ class _SignInFormState extends State<SignInForm> {
       )
     );
   }
-}
-void registrationAlert(BuildContext context){
-  var alertDialog = AlertDialog(
-    title: Text("Succesful registration"),
-    content: Text("Please verify your email"),
-    actions: [
-      FlatButton(
-        child: Text("close"),
-        onPressed: (){
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder:(context) => SignInPage()
-            ),
-          );
-        },
-      ),
-    ],
-  );
-
-  showDialog(
-     context: context,
-     builder: (BuildContext context){
-       return alertDialog;
-     }
-  );
 }
