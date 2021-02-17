@@ -27,14 +27,14 @@ class API {
     }
   }
 
-  Future<Account> signUp(String firstName, lastName, username, password) async {
+  Future<Account> signUp(String first_name, last_name, username, password) async {
     final response = await http.post(this.url + 'accounts/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
-        'firstName': firstName,
-        'lastName': lastName,
+        'first_name': first_name,
+        'last_name': last_name,
         'username': username,
         'password': password,
       }),
