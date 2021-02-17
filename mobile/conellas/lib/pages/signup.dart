@@ -219,18 +219,24 @@ class _SignInFormState extends State<SignInForm> {
       )
     );
   }
-void registrationAlert(BuildContext context){
+  void registrationAlert (BuildContext context){
     var alertDialog = AlertDialog(
       title: Text("Successful registration"),
       content: Text("Please verify your email"),
       actions: [
         FlatButton(
-          child: Text('Close'),
-          onPressed: (){
+          child: Text("Close"),
+          onPressed: () {
             Navigator.pushNamed(context, '/');
           },
         ),
       ],
     );
-}
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return alertDialog;
+        }
+    );
+  }
 }
