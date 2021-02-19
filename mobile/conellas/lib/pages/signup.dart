@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
 
 import '../clients/api.dart';
 
@@ -50,7 +49,6 @@ class SignInForm extends StatefulWidget {
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
 
-   //TextController to read text entered in text field
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -154,7 +152,7 @@ class _SignInFormState extends State<SignInForm> {
                   }
                   
                   if (passwordController.text!=confirmPasswordController.text){
-                    return "Password does not match";
+                    return "Passwords don't match";
                   }
                   return null;
                 },
@@ -168,29 +166,23 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ),
             Container(
-             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-            width: double.infinity,
-            height: 60,
-            child: ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  registrationAlert(context);
-                  var api = API();
-                  var account = await api.signUp(
-                    this.firstNameController.text,
-                    this.lastNameController.text,
-                    this.usernameController.text,
-                    this.passwordController.text,
-                  );
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+              width: double.infinity,
+              height: 60,
+              child: ElevatedButton(
+                onPressed: () async {
+                if (!_formKey.currentState.validate()) {
+                  return;
                 }
                 try {
                   var api = API();
-                  var account = await api.signUp(
+                  await api.signup(
                     this.firstNameController.text,
                     this.lastNameController.text,
                     this.usernameController.text,
                     this.passwordController.text,
                   );
+                  registrationAlert(context);
                 } catch(err) {
                   showDialog(
                     context: context,
@@ -222,10 +214,10 @@ class _SignInFormState extends State<SignInForm> {
   void registrationAlert (BuildContext context){
     var alertDialog = AlertDialog(
       title: Text("Successful registration"),
-      content: Text("Please verify your email"),
+      content: Text("You can login now"),
       actions: [
         FlatButton(
-          child: Text("Close"),
+          child: Text("OK"),
           onPressed: () {
             Navigator.pushNamed(context, '/');
           },
