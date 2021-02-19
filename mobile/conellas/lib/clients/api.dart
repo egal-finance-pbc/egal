@@ -11,7 +11,7 @@ class API {
 
   Future<Token> login(String username, password) async {
     final response = await http.post(this.url + 'tokens/',
-      headers: <String, String> {
+      headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
@@ -25,6 +25,25 @@ class API {
     } else {
       throw Exception(response.body);
     }
+  }
+
+  Future<bool> signup(String firstName, lastName, username, password) async {
+    final response = await http.post(this.url + 'accounts/',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'first_name': firstName,
+        'last_name': lastName,
+        'username': username,
+        'password': password,
+      }),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception(response.body);
+    }
+    return true;
   }
 }
 
