@@ -10,7 +10,8 @@ class API {
   }
 
   Future<Token> login(String username, password) async {
-    final response = await http.post(this.url + 'tokens/',
+    final response = await http.post(
+      this.url + 'tokens/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -28,7 +29,8 @@ class API {
   }
 
   Future<bool> signup(String firstName, lastName, username, password) async {
-    final response = await http.post(this.url + 'accounts/',
+    final response = await http.post(
+      this.url + 'accounts/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

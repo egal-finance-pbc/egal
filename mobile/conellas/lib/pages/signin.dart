@@ -27,7 +27,7 @@ class _SignInPageState extends State<SignInPage> {
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.w500,
-                  fontSize: 30
+                  fontSize: 30,
                 ),
               ),
             ),
@@ -89,7 +89,7 @@ class _LoginFormState extends State<LoginForm> {
                 border: OutlineInputBorder(),
                 contentPadding: const EdgeInsets.all(15),
               ),
-            )
+            ),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -126,7 +126,7 @@ class _LoginFormState extends State<LoginForm> {
                   );
                   await FlutterSession().set('token', token.token);
                   Navigator.pushNamed(context, '/home');
-                } catch(err) {
+                } catch (err) {
                   await FlutterSession().set('token', '');
                   showDialog(
                     context: context,
@@ -152,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

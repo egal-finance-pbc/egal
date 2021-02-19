@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../clients/api.dart';
 
-
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => new _SignUpPageState();
@@ -27,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.w500,
-                  fontSize: 30
+                  fontSize: 30,
                 ),
               ),
             ),
@@ -48,7 +47,6 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
-
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -62,115 +60,114 @@ class _SignInFormState extends State<SignInForm> {
       child: Column(
         children: [
           Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextFormField(
-                controller: firstNameController,
-                validator: (value){
-                  if (value.isEmpty){
-                    return 'Missing first name';
-                  } else if(value.length > 150){
-                    return 'Firts name length exceded';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'First Name',
-                  contentPadding: const EdgeInsets.all(15),
-                ),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: TextFormField(
+              controller: firstNameController,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Missing first name';
+                } else if (value.length > 150) {
+                  return 'Firts name length exceded';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                labelText: 'First Name',
+                contentPadding: const EdgeInsets.all(15),
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextFormField(
-                controller: lastNameController,
-                validator: (value){
-                  if (value.isEmpty){
-                    return 'Missing last name';
-                  } else if(value.length > 150){
-                    return 'Last name length exceded';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'Last Name',
-                  contentPadding: const EdgeInsets.all(15),
-                ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: TextFormField(
+              controller: lastNameController,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Missing last name';
+                } else if (value.length > 150) {
+                  return 'Last name length exceded';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                labelText: 'Last Name',
+                contentPadding: const EdgeInsets.all(15),
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                controller: usernameController,
-                validator: (value){
-                  if (value.isEmpty){
-                    return 'Missing username';
-                  } else if(value.length > 150){
-                    return 'Username length exceded';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                  contentPadding: const EdgeInsets.all(15),
-                ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              controller: usernameController,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Missing username';
+                } else if (value.length > 150) {
+                  return 'Username length exceded';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                labelText: 'Username',
+                contentPadding: const EdgeInsets.all(15),
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextFormField(
-                controller: passwordController,
-                keyboardType: TextInputType.text,
-                validator: (String value){
-                  if (value.isEmpty){
-                    return 'Please a Enter Password';
-                  }
-                  return null;
-                },
-                obscureText: true,
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  contentPadding: const EdgeInsets.all(15),
-                ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: TextFormField(
+              controller: passwordController,
+              keyboardType: TextInputType.text,
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please a Enter Password';
+                }
+                return null;
+              },
+              obscureText: true,
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+                contentPadding: const EdgeInsets.all(15),
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextFormField(
-                controller: confirmPasswordController,
-                 keyboardType: TextInputType.text,
-                validator: (String value){
-                  if (value.isEmpty){
-                    return 'Please re-enter password';
-                  }
-                  
-                  if (passwordController.text!=confirmPasswordController.text){
-                    return "Passwords don't match";
-                  }
-                  return null;
-                },
-                obscureText: true,
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'Confirm Password',
-                  contentPadding: const EdgeInsets.all(15),
-                ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: TextFormField(
+              controller: confirmPasswordController,
+              keyboardType: TextInputType.text,
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please re-enter password';
+                }
+                if (passwordController.text != confirmPasswordController.text) {
+                  return "Passwords don't match";
+                }
+                return null;
+              },
+              obscureText: true,
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                labelText: 'Confirm Password',
+                contentPadding: const EdgeInsets.all(15),
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-              width: double.infinity,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () async {
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+            width: double.infinity,
+            height: 60,
+            child: ElevatedButton(
+              onPressed: () async {
                 if (!_formKey.currentState.validate()) {
                   return;
                 }
@@ -183,7 +180,7 @@ class _SignInFormState extends State<SignInForm> {
                     this.passwordController.text,
                   );
                   registrationAlert(context);
-                } catch(err) {
+                } catch (err) {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -208,10 +205,11 @@ class _SignInFormState extends State<SignInForm> {
             ),
           ),
         ],
-      )
+      ),
     );
   }
-  void registrationAlert (BuildContext context){
+
+  void registrationAlert(BuildContext context) {
     var alertDialog = AlertDialog(
       title: Text("Successful registration"),
       content: Text("You can login now"),
@@ -224,11 +222,12 @@ class _SignInFormState extends State<SignInForm> {
         ),
       ],
     );
+
     showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return alertDialog;
-        }
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      },
     );
   }
 }
