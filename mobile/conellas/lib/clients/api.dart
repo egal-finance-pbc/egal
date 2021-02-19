@@ -40,7 +40,7 @@ class API {
       }),
     );
 
-    if (response.statusCode != 201){
+    if (response.statusCode != 201) {
       throw Exception(response.body);
     }
     return true;
