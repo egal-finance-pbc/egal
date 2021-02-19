@@ -27,42 +27,23 @@ class API {
     }
   }
 
-  Future<Account> signUp(String first_name, last_name, username, password) async {
+  Future<bool> signup(String firstName, lastName, username, password) async {
     final response = await http.post(this.url + 'accounts/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
-        'first_name': first_name,
-        'last_name': last_name,
+        'first_name': firstName,
+        'last_name': lastName,
         'username': username,
         'password': password,
       }),
     );
 
-    if (response.statusCode == 201) {
-      return Account.fromJson(jsonDecode(response.body));
-    } else {
+    if (response.statusCode != 201){
       throw Exception(response.body);
     }
-  }
-}
-
-class Account {
-  final String firstName;
-  final String lastName;
-  final String username;
-  final String password;
-
-  Account({this.firstName, this.lastName, this.username, this.password});
-
-  factory Account.fromJson(Map<String, dynamic> json) {
-    return Account(
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      username: json['username'],
-      password: json['password'],
-    );
+    return true;
   }
 }
 
