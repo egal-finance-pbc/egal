@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
 class API {
@@ -46,6 +48,37 @@ class API {
       throw Exception(response.body);
     }
     return true;
+  }
+
+  Future<Me> fetchMe() async {
+    var token = await FlutterSession().get('token');
+    final response = await http.get(this.url + 'me/',
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return Me.fromJson(json.decode(response.body));
+    } else {
+      throw Exception(response.body);
+    }
+  }
+}
+
+class Me {
+  final String firstName;
+  final String lastName;
+  final String username;
+  final String publicKey;
+
+  Me({this.firstName, this.lastName, this.username, this.publicKey});
+
+  factory Me.fromJson(Map<String, dynamic> json) {
+    return Me(
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      username: json['username'],
+      publicKey: json['public_key'],
+    );
   }
 }
 
