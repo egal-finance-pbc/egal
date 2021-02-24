@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../clients/api.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -30,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            SignInForm(),
+            SignUpForm(),
           ],
         ),
       ),
@@ -38,14 +37,14 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 }
 
-class SignInForm extends StatefulWidget {
+class SignUpForm extends StatefulWidget {
   @override
-  _SignInFormState createState() {
-    return _SignInFormState();
+  _SignUpFormState createState() {
+    return _SignUpFormState();
   }
 }
 
-class _SignInFormState extends State<SignInForm> {
+class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();

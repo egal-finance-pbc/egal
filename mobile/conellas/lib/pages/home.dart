@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
+import 'package:conellas/clients/api.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,24 +9,68 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<Me> futureMe;
+  var api = API();
+
+  @override
+  void initState() {
+    super.initState();
+    futureMe = api.me();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome home'),
-      ),
-      body: FutureBuilder(
-        future: FlutterSession().get('token'),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Text('Loading token...');
-          }
-          if (!snapshot.hasData) {
-            return Text('Token not found');
-          }
-          return Text(snapshot.data);
-        },
+      body: Container(
+        color: Colors.blue,
+        child: FutureBuilder<Me>(
+          future: futureMe,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListTile(
+                leading: IconButton(
+                  color: Colors.white,
+                  icon: Icon(Icons.qr_code),
+                  iconSize: 35,
+                  onPressed: (){
+                  },
+                ),
+                title: Text(
+                    snapshot.data.firstName +' '+ snapshot.data.lastName,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                subtitle: Text(
+                  snapshot.data.username,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white70,
+                  ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            // By default, show a loading spinner.
+            return CircularProgressIndicator();
+          },
+
+
+        ),
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
