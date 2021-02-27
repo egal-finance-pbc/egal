@@ -5,7 +5,7 @@ import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
   @override
-  _SignInPageState createState(){
+  _SignInPageState createState() {
     return new _SignInPageState();
   }
 }

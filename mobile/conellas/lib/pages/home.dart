@@ -32,11 +32,10 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   icon: Icon(Icons.qr_code),
                   iconSize: 35,
-                  onPressed: (){
-                  },
+                  onPressed: () {},
                 ),
                 title: Text(
-                    snapshot.data.firstName +' '+ snapshot.data.lastName,
+                  snapshot.data.firstName + ' ' + snapshot.data.lastName,
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -56,21 +55,8 @@ class _HomePageState extends State<HomePage> {
             // By default, show a loading spinner.
             return CircularProgressIndicator();
           },
-
-
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

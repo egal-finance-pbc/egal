@@ -52,7 +52,8 @@ class API {
 
   Future<Me> me() async {
     var token = await FlutterSession().get('token');
-    final response = await http.get(this.url + 'me/',
+    final response = await http.get(
+      this.url + 'me/',
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
