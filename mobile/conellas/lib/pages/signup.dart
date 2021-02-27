@@ -178,26 +178,9 @@ class _SignUpFormState extends State<SignUpForm> {
                     this.usernameController.text,
                     this.passwordController.text,
                   );
-                  registrationAlert(context);
+                  showSuccessDialog(context);
                 } catch (err) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Registration failed"),
-                        content: Text(err.toString()),
-                        actions: [
-                          FlatButton(
-                            child: Text("Try again"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                    barrierDismissible: false,
-                  );
+                  showErrorDialog(context, err);
                 }
               },
               child: Text('Register'),
@@ -208,8 +191,8 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void registrationAlert(BuildContext context) {
-    var alertDialog = AlertDialog(
+  void showSuccessDialog(BuildContext context) {
+    var successDialog = AlertDialog(
       title: Text("Successful registration"),
       content: Text("You can login now"),
       actions: [
@@ -224,8 +207,30 @@ class _SignUpFormState extends State<SignUpForm> {
 
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return alertDialog;
+      builder: (BuildContext _) {
+        return successDialog;
+      },
+    );
+  }
+
+  void showErrorDialog(BuildContext context, err) {
+    var errorDialog = AlertDialog(
+      title: Text("Registration failed"),
+      content: Text(err.toString()),
+      actions: [
+        FlatButton(
+          child: Text("Try again"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext _) {
+        return errorDialog;
       },
     );
   }
