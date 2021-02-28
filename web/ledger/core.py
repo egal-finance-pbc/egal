@@ -1,8 +1,10 @@
 from decimal import Decimal
+from typing import List
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.db.models import Q
 import requests
 import stellar_sdk as stellar
 from stellar_sdk import exceptions
@@ -85,6 +87,11 @@ class Gateway:
         except exceptions.SdkError as e:
             logger.error('Payment transaction failed', repr=repr(e), str=str(e))
             raise LedgerError('failed to complete payment')
+
+    @staticmethod
+    def search_payments(account: models.Account) -> List[models.Payment]:
+        criteria = Q(source=account) | Q(destination=account)
+        return models.Payment.objects.filter(criteria)
 
 
 class LedgerError(Exception):

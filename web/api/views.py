@@ -110,6 +110,28 @@ class Payments(APIView):
         super().__init__(**kwargs)
         self.ledger = Gateway()
 
+    def get(self, request):
+        if request.user.is_anonymous:
+            raise PermissionDenied()
+
+        payments = self.ledger.search_payments(request.user.account)
+        return Response(data=[{
+            'amount': str(p.amount),
+            'description': p.description,
+            'source': {
+                'username': p.source.user.username,
+                'first_name': p.source.user.first_name,
+                'last_name': p.source.user.last_name,
+                'public_key': p.source.public_key,
+            },
+            'destination': {
+                'username': p.destination.user.username,
+                'first_name': p.destination.user.first_name,
+                'last_name': p.destination.user.last_name,
+                'public_key': p.destination.public_key,
+            },
+        } for p in payments])
+
     def post(self, request):
         if request.user.is_anonymous:
             raise PermissionDenied()
