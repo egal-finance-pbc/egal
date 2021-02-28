@@ -32,6 +32,23 @@ class Accounts(APIView):
         super().__init__(**kwargs)
         self.ledger = Gateway()
 
+    def get(self, request):
+        if request.user.is_anonymous:
+            raise PermissionDenied()
+
+        payload = serializers.AccountQuerySerializer(data=request.query_params)
+        if not payload.is_valid():
+            raise ParseError(payload.errors)
+
+        accounts = self.ledger.search_accounts(payload.validated_data['q'])
+        return Response(data=[{
+            'username': a.user.username,
+            'first_name': a.user.first_name,
+            'last_name': a.user.last_name,
+            'public_key': a.public_key,
+
+        } for a in accounts])
+
     def post(self, request):
         logger.info('Received signup request', remote_addr=request.META.get('REMOTE_ADDR'),
                     x_forwarded_for=request.META.get('HTTP_X_FORWARDED_FOR'))

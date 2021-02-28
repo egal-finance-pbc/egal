@@ -24,3 +24,13 @@ class PaymentSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class AccountQuerySerializer(serializers.Serializer):
+    q = serializers.CharField(min_length=3, max_length=512)
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
