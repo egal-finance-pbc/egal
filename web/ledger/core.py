@@ -93,6 +93,12 @@ class Gateway:
         criteria = Q(source=account) | Q(destination=account)
         return models.Payment.objects.filter(criteria)
 
+    @staticmethod
+    def search_accounts(q: str) -> List[models.Account]:
+        criteria = Q(user__username__icontains=q) \
+            | Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q)
+        return models.Account.objects.filter(criteria)
+
 
 class LedgerError(Exception):
     def __init__(self, message, debug=None):
