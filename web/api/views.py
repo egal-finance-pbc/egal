@@ -119,14 +119,14 @@ class Payments(APIView):
             raise ParseError(payload.errors)
 
         try:
-            payment_url = self.ledger.make_payment(
-                src=request.user.account.public_key,
+            payment = self.ledger.make_payment(
+                src=request.user.account,
                 dst=payload.validated_data['destination'],
                 amount=payload.validated_data['amount'],
                 desc=payload.validated_data.get('description'),
             )
             return Response(headers={
-                'Location': payment_url,
+                'Location': payment.transaction_url,
             }, status=status.HTTP_201_CREATED)
 
         except LedgerError as e:

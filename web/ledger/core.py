@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -37,7 +39,10 @@ class Gateway:
 
     @staticmethod
     def get_account(pubkey: str) -> models.Account:
-        return models.Account.objects.filter(public_key=pubkey).first()
+        account = models.Account.objects.filter(public_key=pubkey).first()
+        if account is None:
+            raise LedgerError('account not found')
+        return account
 
     def get_account_balance(self, pubkey: str) -> str:
         account = self.server.accounts().account_id(pubkey).call()
@@ -46,24 +51,36 @@ class Gateway:
         else:
             raise LedgerError('account missing balance')
 
-    def make_payment(self, src, dst, amount, desc=None):
-        src_account = self.get_account(src)
-        if src_account is None:
-            raise LedgerError('invalid source account')
-
+    @transaction.atomic
+    def make_payment(self, src: models.Account, dst: str, amount: Decimal, desc=None) -> models.Payment:
         try:
-            stellar_src_account = self.server.load_account(src)
-            tx = stellar.TransactionBuilder(
-                source_account=stellar_src_account,
-            ).append_operation(stellar.operation.Payment(
-                destination=dst,
-                asset=stellar.Asset.native(),
+            payment = models.Payment(
+                destination=self.get_account(dst),
                 amount=amount,
-            )).add_memo(stellar.TextMemo(str(desc))).build()
-            stellar_src_keypair = stellar.Keypair.from_secret(src_account.secret)
+                source=src,
+            )
+            if desc is not None:
+                payment.description = str(desc)
+            payment.save()
+
+            stellar_src_account = self.server.load_account(src.public_key)
+            stellar_src_keypair = stellar.Keypair.from_secret(src.secret)
+            fee = self.server.fetch_base_fee()
+            tx = stellar.TransactionBuilder(
+                network_passphrase=stellar.Network.TESTNET_NETWORK_PASSPHRASE,
+                source_account=stellar_src_account,
+                base_fee=fee,
+            ).append_operation(stellar.operation.Payment(
+                asset=stellar.Asset.native(),
+                amount=str(amount),
+                destination=dst,
+            )).add_text_memo(str(payment.pk)).build()
             tx.sign(stellar_src_keypair)
             stellar_r = self.server.submit_transaction(tx)
-            return stellar_r["_links"]["self"]["href"]
+            href = stellar_r["_links"]["self"]["href"]
+            payment.transaction_url = href
+            payment.save()
+            return payment
 
         except exceptions.SdkError as e:
             logger.error('Payment transaction failed', repr=repr(e), str=str(e))
