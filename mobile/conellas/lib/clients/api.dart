@@ -63,6 +63,31 @@ class API {
       throw Exception(response.body);
     }
   }
+
+  Future<Account> account() async {
+    var token = await FlutterSession().get('token');
+    var accountId = await FlutterSession().get('publicKey');
+    final response = await http.get(
+      this.url + 'accounts/$accountId/',
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return Account.fromJson(json.decode(response.body));
+    } else {
+      throw Exception(response.body);
+    }
+  }
+}
+
+class Account {
+  final String balance;
+
+  Account({this.balance});
+
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(balance: json['balance']);
+  }
 }
 
 class Me {
