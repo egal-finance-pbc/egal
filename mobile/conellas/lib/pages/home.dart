@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
-import 'package:flutter_session/flutter_session.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -73,23 +73,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget balanceContainer() {
-    return Container();
-  }
-
-  Widget transactionsContainer() {
+    var futureAccount = api.account();
     return Container(
-      child: FutureBuilder<Me>(
-        future: this.getUserData(),
+      child: FutureBuilder<Account>(
+        future: futureAccount,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Text([
-              snapshot.data.firstName,
-              snapshot.data.lastName,
-              snapshot.data.username,
-              snapshot.data.publicKey,
-            ].join(' / '));
+            return Text(snapshot.data.balance.toString());
           } else if (snapshot.hasError) {
-            return Text('Failed to load user data');
+            return Text("${snapshot.error}");
           }
           // By default, show a loading spinner.
           return Text('Loading data...');
@@ -98,13 +90,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<Me> getUserData() async {
-    var session = FlutterSession();
-    return Me(
-      firstName: await session.get('firstName'),
-      lastName: await session.get('lastName'),
-      username: await session.get('username'),
-      publicKey: await session.get('publicKey'),
-    );
+  Widget transactionsContainer() {
+    return Container();
   }
 }
