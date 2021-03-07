@@ -25,9 +25,9 @@ class API {
 
     if (response.statusCode == 200) {
       return Token.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
+
   }
 
   Future<bool> signup(String firstName, lastName, username, password) async {
@@ -59,9 +59,8 @@ class API {
 
     if (response.statusCode == 200) {
       return Me.fromJson(json.decode(response.body));
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
   }
 
   Future<Account> account() async {
@@ -74,9 +73,8 @@ class API {
 
     if (response.statusCode == 200) {
       return Account.fromJson(json.decode(response.body));
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
   }
 }
 

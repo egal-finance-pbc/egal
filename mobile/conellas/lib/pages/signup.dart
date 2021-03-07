@@ -66,7 +66,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 if (value.isEmpty) {
                   return 'Missing first name';
                 } else if (value.length > 150) {
-                  return 'Firts name length exceded';
+                  return 'First name length exceded';
                 }
                 return null;
               },
