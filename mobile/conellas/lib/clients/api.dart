@@ -65,9 +65,9 @@ class API {
 
   Future<Account> account() async {
     var token = await FlutterSession().get('token');
-    var accountId = await FlutterSession().get('publicKey');
+    var me = await FlutterSession().get('publicKey');
     final response = await http.get(
-      this.url + 'accounts/$accountId/',
+      this.url + 'accounts/$me/',
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
