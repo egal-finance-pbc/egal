@@ -25,9 +25,9 @@ class API {
 
     if (response.statusCode == 200) {
       return Token.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
+
   }
 
   Future<bool> signup(String firstName, lastName, username, password) async {
@@ -59,9 +59,32 @@ class API {
 
     if (response.statusCode == 200) {
       return Me.fromJson(json.decode(response.body));
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
+  }
+
+  Future<Account> account() async {
+    var token = await FlutterSession().get('token');
+    var me = await FlutterSession().get('publicKey');
+    final response = await http.get(
+      this.url + 'accounts/$me/',
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return Account.fromJson(json.decode(response.body));
+    }
+    throw Exception(response.body);
+  }
+}
+
+class Account {
+  final String balance;
+
+  Account({this.balance});
+
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(balance: json['balance']);
   }
 }
 

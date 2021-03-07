@@ -66,7 +66,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 if (value.isEmpty) {
                   return 'Missing first name';
                 } else if (value.length > 150) {
-                  return 'Firts name length exceded';
+                  return 'First name length exceeded';
                 }
                 return null;
               },
@@ -86,7 +86,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 if (value.isEmpty) {
                   return 'Missing last name';
                 } else if (value.length > 150) {
-                  return 'Last name length exceded';
+                  return 'Last name length exceeded';
                 }
                 return null;
               },
@@ -106,7 +106,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 if (value.isEmpty) {
                   return 'Missing username';
                 } else if (value.length > 150) {
-                  return 'Username length exceded';
+                  return 'Username length exceeded';
                 }
                 return null;
               },

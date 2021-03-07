@@ -128,11 +128,10 @@ class _LoginFormState extends State<LoginForm> {
                   );
                   var sessionStorage = FlutterSession();
                   await sessionStorage.set('token', token.token);
+
                   var me = await api.me();
-                  await sessionStorage.set('firstName', me.firstName);
-                  await sessionStorage.set('lastName', me.lastName);
-                  await sessionStorage.set('username', me.username);
                   await sessionStorage.set('publicKey', me.publicKey);
+
                   Navigator.pushNamed(context, '/home');
                 } catch (err) {
                   await FlutterSession().set('token', '');
