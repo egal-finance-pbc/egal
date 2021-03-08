@@ -1,30 +1,25 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
-
   @override
   _HomePageState createState() {
     return new _HomePageState();
   }
-
 }
 
 class _HomePageState extends State<HomePage> {
-
   API api;
   @override
   void initState() {
-
     super.initState();
     this.api = API();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         children: [
@@ -93,25 +88,20 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('your balance',  textAlign: TextAlign.center, style: TextStyle(
-            fontSize: 20,
+          Text('Available Money',  textAlign: TextAlign.center, style: TextStyle(
+            fontSize: 15,
             color: Colors.blue,
           ),),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(CupertinoIcons.money_dollar, size: 45,color: Colors.blue,),
               FutureBuilder<Account>(
                 future: futureBalance,
                 builder: (context,snapshot){
                   if(snapshot.hasData){
-                    // in this part i convert the balance to double to convert it to string.
-                    //  but now it only shows 2 decimal places
-                    //It's a primitive way but it's the one that worked for me
-                    String balance = snapshot.data.balance.toString();
-                    double balanceDouble = double.parse(balance);
-                    String balanceDecimal = balanceDouble.toStringAsFixed(2);
-                    return Text(balanceDecimal, textAlign: TextAlign.center,
+                    double balanceDouble = double.parse(snapshot.data.balance);
+                    final balanceDecimal = new NumberFormat.simpleCurrency();
+                    return Text(balanceDecimal.format(balanceDouble), textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 45,
                         color: Colors.blue,
@@ -190,6 +180,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget transactionsContainer() {
-    return Container();
+    return Container(
+
+    );
   }
 }
