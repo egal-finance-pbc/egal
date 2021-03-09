@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+final currency = new NumberFormat.simpleCurrency();
 
 class HomePage extends StatefulWidget {
   @override
@@ -100,8 +101,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context,snapshot){
                   if(snapshot.hasData){
                     double balanceDouble = double.parse(snapshot.data.balance);
-                    final balanceDecimal = new NumberFormat.simpleCurrency();
-                    return Text(balanceDecimal.format(balanceDouble), textAlign: TextAlign.center,
+                    return Text(currency.format(balanceDouble), textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 45,
                         color: Colors.blue,
@@ -180,8 +180,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget transactionsContainer() {
-    return Container(
-
-    );
+    return Container();
   }
 }
