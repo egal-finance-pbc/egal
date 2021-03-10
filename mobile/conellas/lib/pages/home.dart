@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
   Widget balanceContainer() {
     var futureBalance = api.account();
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+      padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
       height: 200,
       width: double.maxFinite,
       //Balance
@@ -127,10 +127,11 @@ class _HomePageState extends State<HomePage> {
 
           //Buttons
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(padding: EdgeInsets.fromLTRB(0, 90, 0, 0)),
               FlatButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, '/search');
                 },
                 child: Text(
                   'Send',
@@ -150,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                 minWidth: 150,
               ),
               SizedBox(
-                width: 40,
+                width: 35,
               ),
               FlatButton(
                 onPressed: () {
