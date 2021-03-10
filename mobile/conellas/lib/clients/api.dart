@@ -27,7 +27,6 @@ class API {
       return Token.fromJson(jsonDecode(response.body));
     }
     throw Exception(response.body);
-
   }
 
   Future<bool> signup(String firstName, lastName, username, password) async {
