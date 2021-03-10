@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'pages/signin.dart';
 import 'pages/signup.dart';
 import 'pages/home.dart';
+import 'pages/search.dart';
 
 void main() {
   runApp(ConEllasApp());
@@ -17,6 +18,7 @@ class ConEllasApp extends StatelessWidget {
         '/': (context) => SignInPage(),
         '/signup': (context) => SignUpPage(),
         '/home': (context) => HomePage(),
+        '/search': (context) => SearchPage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
