@@ -7,9 +7,10 @@ class SearchPage extends StatefulWidget {
     return new _SearchPageState();
   }
 }
+
 class _SearchPageState extends State<SearchPage> {
-  @override
   API api;
+
   @override
   void initState() {
     super.initState();
@@ -27,8 +28,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
-
-
+  
   Widget headerContainer() {
     return Container(
       child: AppBar(
@@ -46,4 +46,3 @@ class _SearchPageState extends State<SearchPage> {
     return Container();
   }
 }
-

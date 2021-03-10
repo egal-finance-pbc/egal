@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     ));
     return Container(
       color: Colors.blue,
-      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+      padding: const EdgeInsets.fromLTRB (0, 30, 0, 0),
       child: FutureBuilder<Me>(
         future: futureMe,
         builder: (context, snapshot) {
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
   Widget balanceContainer() {
     var futureBalance = api.account();
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       height: 200,
       width: double.maxFinite,
       //Balance
