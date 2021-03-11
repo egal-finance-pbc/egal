@@ -21,7 +21,7 @@ class ConEllasApp extends StatelessWidget {
       routes: {
         '/': (context) => SignInPage(),
         '/signup': (context) => SignUpPage(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => HomePage(deps),
         '/search': (context) => SearchPage(deps),
       },
       theme: ThemeData(

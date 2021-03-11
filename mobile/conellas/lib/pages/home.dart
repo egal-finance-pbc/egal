@@ -1,3 +1,4 @@
+import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,10 @@ import 'package:intl/intl.dart';
 final currency = new NumberFormat.simpleCurrency();
 
 class HomePage extends StatefulWidget {
+  final Dependencies deps;
+
+  HomePage(this.deps, {Key key}) : super(key: key);
+
   @override
   _HomePageState createState() {
     return new _HomePageState();
@@ -13,14 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  API api;
-
-  @override
-  void initState() {
-    super.initState();
-    this.api = API();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget headerContainer() {
-    var futureMe = api.me();
+    var futureMe = widget.deps.api.me();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.light,
@@ -80,7 +77,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget balanceContainer() {
-    var futureBalance = api.account();
+    var futureBalance = widget.deps.api.account();
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       height: 200,
