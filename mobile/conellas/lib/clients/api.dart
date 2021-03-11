@@ -75,6 +75,45 @@ class API {
     }
     throw Exception(response.body);
   }
+
+  Future<List<User>> search(String q) async {
+    final token = await FlutterSession().get('token');
+    final query = Uri(queryParameters: {'q': q}).query;
+    final response = await http.get(
+      this.url + 'accounts/?' + query,
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+    if (response.statusCode == 200) {
+      return User.fromList(json.decode(response.body));
+    }
+    throw Exception(response.body);
+  }
+}
+
+class User {
+  final String firstName;
+  final String lastName;
+  final String username;
+  final String publicKey;
+
+  User({this.firstName, this.lastName, this.username, this.publicKey});
+
+  static List<User> fromList(List<dynamic> list) {
+    var users = List<User>();
+    for (final item in list) {
+      users.add(User(
+        firstName: item['first_name'],
+        lastName: item['last_name'],
+        username: item['username'],
+        publicKey: item['public_key'],
+      ));
+    }
+    return users;
+  }
+
+  String fullName() {
+    return '$firstName $lastName';
+  }
 }
 
 class Account {
