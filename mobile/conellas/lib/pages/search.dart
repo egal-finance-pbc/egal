@@ -1,4 +1,5 @@
 import 'package:conellas/clients/api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   API api;
+  bool isSearch = false;
 
   @override
   void initState() {
@@ -28,15 +30,44 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
-  
+
   Widget headerContainer() {
     return Container(
       child: AppBar(
-        title: Text('Search'),
+        leading: !isSearch
+            ? IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home');
+                },
+              )
+            : IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  setState(() {
+                    this.isSearch = false;
+                  });
+                },
+              ),
+        title: !isSearch
+            ? Text('Search')
+            : TextField(
+                style: TextStyle(color: Colors.white, fontSize: 20),
+                decoration: InputDecoration(
+                  hintText: 'Search user here',
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {}),
+              onPressed: () {
+                setState(() {
+                  this.isSearch = true;
+                });
+              }),
         ],
       ),
     );
