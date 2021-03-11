@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     ));
     return Container(
       color: Colors.blue,
-      padding: const EdgeInsets.fromLTRB (0, 30, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: FutureBuilder<Me>(
         future: futureMe,
         builder: (context, snapshot) {
@@ -52,8 +52,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 icon: Icon(Icons.qr_code_rounded),
                 iconSize: 35,
-                onPressed: () {
-                },
+                onPressed: () {},
               ),
               title: Text(
                 '${snapshot.data.firstName} ${snapshot.data.lastName}',
@@ -88,7 +87,7 @@ class _HomePageState extends State<HomePage> {
       width: double.maxFinite,
       //Balance
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(
             'Available Money',
@@ -99,7 +98,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               FutureBuilder<Account>(
                 future: futureBalance,
@@ -127,8 +126,9 @@ class _HomePageState extends State<HomePage> {
 
           //Buttons
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 0)),
               FlatButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/search');
@@ -136,42 +136,28 @@ class _HomePageState extends State<HomePage> {
                 child: Text(
                   'Send',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     color: Colors.blue,
                   ),
                 ),
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     color: Colors.blue,
-                    width: 3,
+                    width: 2,
                     style: BorderStyle.solid,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                minWidth: 150,
-              ),
-              SizedBox(
-                width: 35,
+                minWidth: 250,
               ),
               FlatButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 child: Row(
                   children: <Widget>[
                     Icon(
                       Icons.qr_code_scanner_rounded,
-                      size: 28,
+                      size: 30,
                       color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Search',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
                     ),
                   ],
                 ),
@@ -183,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                minWidth: 150,
+                minWidth: 30,
                 color: Colors.blue,
               ),
             ],

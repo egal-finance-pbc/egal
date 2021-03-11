@@ -10,7 +10,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   API api;
-  bool isSearch = false;
 
   @override
   void initState() {
@@ -23,6 +22,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       body: Column(
         children: [
+          this.appBarContainer(),
           this.headerContainer(),
           this.listContainer(),
         ],
@@ -30,44 +30,43 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget headerContainer() {
+  Widget appBarContainer() {
     return Container(
       child: AppBar(
-        leading: !isSearch
-            ? IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
-                },
-              )
-            : IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  setState(() {
-                    this.isSearch = false;
-                  });
-                },
-              ),
-        title: !isSearch
-            ? Text('Search')
-            : TextField(
-                style: TextStyle(color: Colors.white, fontSize: 20),
+        title: Text('Search'),
+      ),
+    );
+  }
+
+  Widget headerContainer() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+      child: Form(
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: 'Search user here',
-                  hintStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  labelText: 'Search user',
+                  contentPadding: const EdgeInsets.all(15),
+                  border: OutlineInputBorder(),
                 ),
               ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                setState(() {
-                  this.isSearch = true;
-                });
-              }),
-        ],
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            FlatButton(
+              onPressed: () {},
+              child: Text(
+                'Search',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.blue,
+              height: 48,
+            )
+          ],
+        ),
       ),
     );
   }
