@@ -20,7 +20,8 @@ class _SearchPageState extends State<SearchPage> {
       body: Column(
         children: [
           this.headerContainer(),
-          this.listContainer(),
+          this.fieldContainer(),
+          this.resultsContainer(),
         ],
       ),
     );
@@ -29,17 +30,27 @@ class _SearchPageState extends State<SearchPage> {
   Widget headerContainer() {
     return Container(
       child: AppBar(
-        title: Text('Search'),
+        title: Text('Who should we pay?'),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {}),
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
         ],
       ),
     );
   }
 
-  Widget listContainer() {
+  Widget fieldContainer() {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: TextField(
+          autofocus: true,
+          textInputAction: TextInputAction.search,
+        ),
+      ),
+    );
+  }
+
+  Widget resultsContainer() {
     return Container();
   }
 }
