@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'pages/signin.dart';
-import 'pages/signup.dart';
+
+import 'common/deps.dart';
 import 'pages/home.dart';
 import 'pages/search.dart';
+import 'pages/signin.dart';
+import 'pages/signup.dart';
 
 void main() {
   runApp(ConEllasApp());
 }
 
 class ConEllasApp extends StatelessWidget {
+  final Dependencies deps = Dependencies();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +22,7 @@ class ConEllasApp extends StatelessWidget {
         '/': (context) => SignInPage(),
         '/signup': (context) => SignUpPage(),
         '/home': (context) => HomePage(),
-        '/search': (context) => SearchPage(),
+        '/search': (context) => SearchPage(deps),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
