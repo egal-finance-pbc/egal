@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class API {
@@ -76,6 +79,21 @@ class API {
     throw Exception(response.body);
   }
 }
+
+class APIError {
+	factory APIError.fromResponse(http.Response response){
+    return APIError.fromResponse(response);
+  }
+	
+  Widget title(){
+    
+  }
+
+	Widget content(){
+  }
+
+}
+
 
 class Account {
   final String balance;
