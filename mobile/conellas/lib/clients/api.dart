@@ -86,10 +86,11 @@ class APIError {
   }
 	
   Widget title(){
-    
+    return Container();
   }
 
 	Widget content(){
+    return Container();
   }
 
 }
