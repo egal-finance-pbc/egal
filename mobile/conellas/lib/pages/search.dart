@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../clients/api.dart';
 import '../common/deps.dart';
 
 class SearchPage extends StatefulWidget {
@@ -15,14 +14,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  API api;
-
-  @override
-  void initState() {
-    super.initState();
-    this.api = API();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
