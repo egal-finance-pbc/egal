@@ -81,20 +81,18 @@ class API {
 }
 
 class APIError {
-	factory APIError.fromResponse(http.Response response){
+  factory APIError.fromResponse(http.Response response) {
     return APIError.fromResponse(response);
   }
-	
-  Widget title(){
+
+  Widget title() {
     return Container();
   }
 
-	Widget content(){
+  Widget content() {
     return Container();
   }
-
 }
-
 
 class Account {
   final String balance;

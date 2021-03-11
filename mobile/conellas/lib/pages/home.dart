@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     ));
     return Container(
       color: Colors.blue,
-      padding: const EdgeInsets.fromLTRB (0, 30, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: FutureBuilder<Me>(
         future: futureMe,
         builder: (context, snapshot) {
@@ -52,8 +52,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 icon: Icon(Icons.qr_code_rounded),
                 iconSize: 35,
-                onPressed: () {
-                },
+                onPressed: () {},
               ),
               title: Text(
                 '${snapshot.data.firstName} ${snapshot.data.lastName}',
@@ -154,8 +153,7 @@ class _HomePageState extends State<HomePage> {
                 width: 35,
               ),
               FlatButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 child: Row(
                   children: <Widget>[
                     Icon(

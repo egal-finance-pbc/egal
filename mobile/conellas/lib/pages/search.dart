@@ -28,15 +28,13 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
-  
+
   Widget headerContainer() {
     return Container(
       child: AppBar(
         title: Text('Search'),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {}),
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
         ],
       ),
     );
