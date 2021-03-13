@@ -5,10 +5,6 @@ import 'package:flutter_session/flutter_session.dart';
 import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
-  final Dependencies deps;
-
-  SignInPage(this.deps, {Key key}) : super(key: key);
-
   @override
   _SignInPageState createState() {
     return new _SignInPageState();
@@ -16,23 +12,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final _formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          this.appBar(),
-          this.loginForm(),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget appBar() {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign In'),
@@ -53,7 +34,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            //LoginForm(),
+            LoginForm(Dependencies()),
             Container(
               child: Row(
                 children: <Widget>[
@@ -69,14 +50,31 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
             ),
+
           ],
         ),
       ),
     );
   }
+}
 
+class LoginForm extends StatefulWidget {
+  final Dependencies deps;
 
-  Widget loginForm() {
+  LoginForm(this.deps, {Key key}) : super(key: key);
+  @override
+  _LoginFormState createState() {
+    return _LoginFormState();
+  }
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -128,6 +126,7 @@ class _SignInPageState extends State<SignInPage> {
                   return;
                 }
                 try {
+
                   var token = await widget.deps.api.login(
                     this.usernameController.text,
                     this.passwordController.text,
