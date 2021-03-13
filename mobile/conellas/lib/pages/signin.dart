@@ -50,7 +50,6 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
             ),
-
           ],
         ),
       ),
@@ -126,7 +125,6 @@ class _LoginFormState extends State<LoginForm> {
                   return;
                 }
                 try {
-
                   var token = await widget.deps.api.login(
                     this.usernameController.text,
                     this.passwordController.text,
