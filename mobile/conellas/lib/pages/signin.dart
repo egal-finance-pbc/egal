@@ -1,9 +1,14 @@
+import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 
 import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
+  final Dependencies deps;
+
+  SignInPage(this.deps, {Key key}) : super(key: key);
+
   @override
   _SignInPageState createState() {
     return new _SignInPageState();
@@ -11,8 +16,23 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final _formKey = GlobalKey<FormState>();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          this.appBar(),
+          this.loginForm(),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget appBar() {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign In'),
@@ -33,7 +53,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            LoginForm(),
+            //LoginForm(),
             Container(
               child: Row(
                 children: <Widget>[
@@ -54,22 +74,9 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
-}
 
-class LoginForm extends StatefulWidget {
-  @override
-  _LoginFormState createState() {
-    return _LoginFormState();
-  }
-}
 
-class _LoginFormState extends State<LoginForm> {
-  final _formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget loginForm() {
     return Form(
       key: _formKey,
       child: Column(
@@ -121,15 +128,14 @@ class _LoginFormState extends State<LoginForm> {
                   return;
                 }
                 try {
-                  var api = API();
-                  var token = await api.login(
+                  var token = await widget.deps.api.login(
                     this.usernameController.text,
                     this.passwordController.text,
                   );
-                  var sessionStorage = FlutterSession();
+                  var sessionStorage = widget.deps.session;
                   await sessionStorage.set('token', token.token);
 
-                  var me = await api.me();
+                  var me = await widget.deps.api.me();
                   await sessionStorage.set('publicKey', me.publicKey);
 
                   Navigator.pushNamed(context, '/home');

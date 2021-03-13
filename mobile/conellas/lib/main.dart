@@ -19,7 +19,7 @@ class ConEllasApp extends StatelessWidget {
       title: 'Con Ellas',
       initialRoute: '/',
       routes: {
-        '/': (context) => SignInPage(),
+        '/': (context) => SignInPage(deps),
         '/signup': (context) => SignUpPage(),
         '/home': (context) => HomePage(deps),
         '/search': (context) => SearchPage(deps),
