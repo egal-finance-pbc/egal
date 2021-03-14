@@ -5,6 +5,10 @@ import 'package:flutter_session/flutter_session.dart';
 import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
+  final Dependencies deps;
+
+  SignInPage(this.deps, {Key key}) : super(key: key);
+
   @override
   _SignInPageState createState() {
     return new _SignInPageState();
@@ -34,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            LoginForm(Dependencies()),
+            LoginForm(widget.deps),
             Container(
               child: Row(
                 children: <Widget>[
@@ -61,6 +65,7 @@ class LoginForm extends StatefulWidget {
   final Dependencies deps;
 
   LoginForm(this.deps, {Key key}) : super(key: key);
+
   @override
   _LoginFormState createState() {
     return _LoginFormState();
