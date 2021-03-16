@@ -111,6 +111,35 @@ class API {
       throw Exception(response.body);
     }
   }
+
+  Future<Payment> payments() async {
+    var token = await FlutterSession().get('token');
+    final response = await http.get(
+      this.url + 'payments/',
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return Payment.fromJson(json.decode(response.body));
+    }
+    throw Exception(response.body);
+  }
+}
+
+class Payment {
+  final String destination;
+  final String source;
+  final String description;
+
+  Payment({this.destination, this.source, this.description});
+
+  factory Payment.fromJson(Map<String, dynamic> json) {
+    return Payment(
+      destination: json['destination'],
+      source: json['source'],
+      description: json['description'],
+    );
+  }
 }
 
 class User {
