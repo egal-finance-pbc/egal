@@ -88,6 +88,28 @@ class API {
     }
     throw Exception(response.body);
   }
+
+  Future<void> pay(String dest, double amount, String desc) async {
+    final token = await FlutterSession().get('token');
+    var body = <String, dynamic>{
+      'amount': amount,
+      'destination': dest,
+    };
+    if (desc.isNotEmpty) {
+      body['description'] = desc;
+    }
+    final response = await http.post(
+      this.url + 'payments/',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode != 201) {
+      throw Exception(response.body);
+    }
+  }
 }
 
 class User {

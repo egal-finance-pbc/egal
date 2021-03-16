@@ -125,7 +125,9 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ],
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/send', arguments: item);
+              },
             );
           },
         );
