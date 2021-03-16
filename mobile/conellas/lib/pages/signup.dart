@@ -1,7 +1,12 @@
+import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import '../clients/api.dart';
 
 class SignUpPage extends StatefulWidget {
+  final Dependencies deps;
+
+  SignUpPage(this.deps, {Key key}) : super(key: key);
+
   @override
   _SignUpPageState createState() => new _SignUpPageState();
 }
@@ -29,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            SignUpForm(),
+            SignUpForm(widget.deps),
           ],
         ),
       ),
@@ -38,6 +43,10 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 class SignUpForm extends StatefulWidget {
+  final Dependencies deps;
+
+  SignUpForm(this.deps, {Key key}) : super(key: key);
+
   @override
   _SignUpFormState createState() {
     return _SignUpFormState();
@@ -171,8 +180,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   return;
                 }
                 try {
-                  var api = API();
-                  await api.signup(
+                  await widget.deps.api.signup(
                     this.firstNameController.text,
                     this.lastNameController.text,
                     this.usernameController.text,
