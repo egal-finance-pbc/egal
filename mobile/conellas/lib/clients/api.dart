@@ -127,9 +127,9 @@ class API {
 }
 
 class Payment {
-  final String destination;
-  final String source;
   final String description;
+  final User source;
+  final User destination;
 
   Payment({this.destination, this.source, this.description});
 
