@@ -189,6 +189,66 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget transactionsContainer() {
-    return Container();
+    var futurePayments = widget.deps.api.payments();
+    const padding = EdgeInsets.fromLTRB(20, 15, 20, 0);
+    return Container(
+      color: Colors.blue,
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+      child: FutureBuilder<List<Payment>>(
+        future: futurePayments,
+        builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.none) {
+            // Search operation has not started yet
+            return Padding(
+              padding: padding,
+              child: Text('Type at least 3 letters and press enter'),
+            );
+          }
+          if (snapshot.connectionState != ConnectionState.done) {
+            // Search operation is waiting or active
+            return Padding(
+              padding: padding,
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Padding(
+              padding: padding,
+              child: Text('${snapshot.error}'),
+            );
+          }
+          if (snapshot.data.isEmpty) {
+            return Padding(
+              padding: padding,
+              child: Text('No users found'),
+            );
+          }
+          return ListView.separated(
+            shrinkWrap: true,
+            itemCount: snapshot.data.length,
+            separatorBuilder: (_, int index) => Divider(),
+            itemBuilder: (BuildContext context, int index) {
+              final item = snapshot.data[index];
+              return ListTile(
+                title: Text(
+                  '${item.source} ${item.destination}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                subtitle: Text(
+                  '@${item.description}',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white70,
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
