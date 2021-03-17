@@ -131,15 +131,15 @@ class Payment {
   final User source;
   final User destination;
 
-  Payment({this.destination, this.source, this.description});
+  Payment({this.description, this.source, this.destination});
 
   static List<Payment> fromList(List<dynamic> list) {
     var payments = List<Payment>();
     for (final item in list) {
       payments.add(Payment(
-      destination: item['destination'],
-      source: item['source'],
-      description: item['description'],
+        description: item['description'],
+        source: User.fromJson(item['source']),
+        destination: User.fromJson(item['destination']),
     ));
   }
     return payments;
@@ -165,6 +165,15 @@ class User {
       ));
     }
     return users;
+  }
+
+  factory User.fromJson(Map<String, dynamic> item) {
+    return User(
+      firstName: item['first_name'],
+      lastName: item['last_name'],
+      username: item['username'],
+      publicKey: item['public_key'],
+    );
   }
 
   String fullName() {
