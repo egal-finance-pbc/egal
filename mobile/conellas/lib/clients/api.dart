@@ -139,13 +139,31 @@ class User {
   }
 }
 
-class APIError {
+class APIError extends Exception {
   factory APIError.fromResponse(http.Response response) {
     return null;
   }
 
-  Widget title() {
-    return Container();
+  dynamic title(http.Response response) {
+    switch (response.statusCode){
+      case 400:
+        return Container(
+          child: Text("Invalid Request"),
+        );
+      case 401:
+      case 403:
+        return Container(
+          child: Text("Unauthorized access"),
+        );
+      case 404:
+        return Container(
+          child: Text("Not found"),
+        );
+      case 500:
+        return Container(
+          child: Text("Something went wrong"),
+        );
+    }
   }
 
   Widget content() {
