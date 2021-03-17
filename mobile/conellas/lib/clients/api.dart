@@ -139,13 +139,17 @@ class User {
   }
 }
 
-class APIError extends Exception {
+class APIError implements Exception{
+  final String message;
+
+  APIError([this.message]);
+
   factory APIError.fromResponse(http.Response response) {
-    return null;
+    return APIError();
   }
 
-  dynamic title(http.Response response) {
-    switch (response.statusCode){
+  Widget title(response) {
+    switch (response.statusCode) {
       case 400:
         return Container(
           child: Text("Invalid Request"),
@@ -164,6 +168,7 @@ class APIError extends Exception {
           child: Text("Something went wrong"),
         );
     }
+    return title(response);
   }
 
   Widget content() {
