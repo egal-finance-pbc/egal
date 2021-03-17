@@ -112,7 +112,7 @@ class API {
     }
   }
 
-  Future<Payment> payments() async {
+  Future<List<Payment>> payments() async {
     var token = await FlutterSession().get('token');
     final response = await http.get(
       this.url + 'payments/',
@@ -120,7 +120,7 @@ class API {
     );
 
     if (response.statusCode == 200) {
-      return Payment.fromJson(json.decode(response.body));
+      return Payment.fromList(json.decode(response.body));
     }
     throw Exception(response.body);
   }
@@ -133,12 +133,16 @@ class Payment {
 
   Payment({this.destination, this.source, this.description});
 
-  factory Payment.fromJson(Map<String, dynamic> json) {
-    return Payment(
-      destination: json['destination'],
-      source: json['source'],
-      description: json['description'],
-    );
+  static List<Payment> fromList(List<dynamic> list) {
+    var payments = List<Payment>();
+    for (final item in list) {
+      payments.add(Payment(
+      destination: item['destination'],
+      source: item['source'],
+      description: item['description'],
+    ));
+  }
+    return payments;
   }
 }
 
