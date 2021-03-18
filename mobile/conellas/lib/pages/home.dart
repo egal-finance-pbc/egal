@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
     var futureBalance = widget.deps.api.account();
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      height: 200,
+      height: 300,
       width: double.maxFinite,
       //Balance
       child: Column(
@@ -189,6 +189,40 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget transactionsContainer() {
-    return Container();
+    var futurePayment = widget.deps.api.payments();
+    return Container(
+      child: Column(
+        children: <Widget>[
+          FutureBuilder(
+            future: futurePayment,
+            // ignore: missing_return
+            builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  separatorBuilder: (_, int index) => Divider(),
+                  itemBuilder: (BuildContext context, int index) {
+                    final item = snapshot.data[index];
+                    double amountDouble = double.parse(item.amount);
+
+                    return Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.call_made),
+                          title: Text('@${item.destination}'),
+                          subtitle: Text('${item.description}'),
+                          trailing: Text('${currency.format(amountDouble)}'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
