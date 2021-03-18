@@ -111,6 +111,41 @@ class API {
       throw Exception(response.body);
     }
   }
+
+  Future<List<Payment>> payments() async {
+    var token = await FlutterSession().get('token');
+    final response = await http.get(
+      this.url + 'payments/',
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return Payment.fromList(json.decode(response.body));
+    }
+    throw Exception(response.body);
+  }
+}
+
+class Payment {
+  final String amount;
+  final String description;
+  final User source;
+  final User destination;
+
+  Payment({this.amount, this.description, this.source, this.destination});
+
+  static List<Payment> fromList(List<dynamic> list) {
+    var payments = List<Payment>();
+    for (final item in list) {
+      payments.add(Payment(
+        amount: item['amount'],
+        description: item['description'],
+        source: User.fromJson(item['source']),
+        destination: User.fromJson(item['destination']),
+    ));
+  }
+    return payments;
+  }
 }
 
 class User {
@@ -132,6 +167,15 @@ class User {
       ));
     }
     return users;
+  }
+
+  factory User.fromJson(Map<String, dynamic> item) {
+    return User(
+      firstName: item['first_name'],
+      lastName: item['last_name'],
+      username: item['username'],
+      publicKey: item['public_key'],
+    );
   }
 
   String fullName() {
