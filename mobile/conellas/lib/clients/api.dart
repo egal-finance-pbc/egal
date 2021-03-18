@@ -127,16 +127,18 @@ class API {
 }
 
 class Payment {
+  final String amount;
   final String description;
   final User source;
   final User destination;
 
-  Payment({this.description, this.source, this.destination});
+  Payment({this.amount, this.description, this.source, this.destination});
 
   static List<Payment> fromList(List<dynamic> list) {
     var payments = List<Payment>();
     for (final item in list) {
       payments.add(Payment(
+        amount: item['amount'],
         description: item['description'],
         source: User.fromJson(item['source']),
         destination: User.fromJson(item['destination']),
