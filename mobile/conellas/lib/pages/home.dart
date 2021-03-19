@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ScrollController con;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +82,7 @@ class _HomePageState extends State<HomePage> {
     var futureBalance = widget.deps.api.account();
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      height: 300,
+      height: 200,
       width: double.maxFinite,
       //Balance
       child: Column(
@@ -189,36 +191,34 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget transactionsContainer() {
-    var futurePayment = widget.deps.api.payments();
+    var paymentFuture = widget.deps.api.payments();
     return Container(
       child: Column(
         children: <Widget>[
           FutureBuilder(
-            future: futurePayment,
-            // ignore: missing_return
+            future: paymentFuture,
             builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
               if (snapshot.hasData) {
-                return ListView.separated(
+                return ListView.builder(
+                  addAutomaticKeepAlives: true,
                   shrinkWrap: true,
                   itemCount: snapshot.data.length,
-                  separatorBuilder: (_, int index) => Divider(),
                   itemBuilder: (BuildContext context, int index) {
                     final item = snapshot.data[index];
                     double amountDouble = double.parse(item.amount);
 
-                    return Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(Icons.call_made),
-                          title: Text('@${item.destination}'),
-                          subtitle: Text('${item.description}'),
-                          trailing: Text('${currency.format(amountDouble)}'),
-                        ),
-                      ],
+                    return Card(
+                      child: ListTile(
+                        leading: Icon(Icons.call_made),
+                        title: Text('${item.destination.fullName()}'),
+                        subtitle: Text('${item.description}'),
+                        trailing: Text('${currency.format(amountDouble)}'),
+                      ),
                     );
                   },
                 );
               }
+              return null;
             },
           ),
         ],
