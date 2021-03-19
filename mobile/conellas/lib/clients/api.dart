@@ -174,7 +174,30 @@ class APIError implements Exception {
   }
 
   Widget content(response) {
-    return Container();
+    switch (response.statusCode) {
+      case 400:
+        return Container(
+          child: Text("Specific field is not filled"),
+        );
+      case 401:
+      case 403:
+        return Container(
+          child: Text(
+              "Detail: access is not authorized, authentication token is missing"),
+        );
+      case 404:
+        return Container(
+          child:
+              Text("Detail: the page you are trying to access cannot be found"),
+        );
+      case 500:
+        return Container(
+          child: Text("Detail: something went wrong"),
+        );
+      default:
+        return Container(
+            child: Text("Error During Communication : response.statusCode"));
+    }
   }
 }
 
