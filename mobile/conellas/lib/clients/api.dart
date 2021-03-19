@@ -139,7 +139,7 @@ class User {
   }
 }
 
-class APIError implements Exception{
+class APIError implements Exception {
   final String message;
 
   APIError([this.message]);
@@ -173,8 +173,7 @@ class APIError implements Exception{
         break;
       default:
         return Container(
-          child: Text("Error During Communication "+ response.statusCode +".")
-        );
+            child: Text("Error During Communication : response.statusCode"));
         break;
     }
   }
