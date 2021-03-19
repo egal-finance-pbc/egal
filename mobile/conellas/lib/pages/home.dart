@@ -1,5 +1,4 @@
 import 'package:conellas/common/deps.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ScrollController con;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
