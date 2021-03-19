@@ -154,21 +154,29 @@ class APIError implements Exception{
         return Container(
           child: Text("Invalid Request"),
         );
+        break;
       case 401:
       case 403:
         return Container(
           child: Text("Unauthorized access"),
         );
+        break;
       case 404:
         return Container(
           child: Text("Not found"),
         );
+        break;
       case 500:
         return Container(
           child: Text("Something went wrong"),
         );
+        break;
+      default:
+        return Container(
+          child: Text("Error During Communication "+ response.statusCode +".")
+        );
+        break;
     }
-    return title(response);
   }
 
   Widget content() {
