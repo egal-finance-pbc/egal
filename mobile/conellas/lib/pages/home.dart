@@ -21,12 +21,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          this.headerContainer(),
-          this.balanceContainer(),
-          this.transactionsContainer(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            this.headerContainer(),
+            this.balanceContainer(),
+            this.transactionsContainer(),
+          ],
+        ),
       ),
     );
   }
@@ -196,27 +198,28 @@ class _HomePageState extends State<HomePage> {
           FutureBuilder(
             future: paymentFuture,
             builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  addAutomaticKeepAlives: true,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final item = snapshot.data[index];
-                    double amountDouble = double.parse(item.amount);
+              if (snapshot.hasError) {
+              }
+              return ListView.builder(
+                addAutomaticKeepAlives: true,
+                shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = snapshot.data[index];
+                  double amountDouble = double.parse(item.amount);
 
-                    return Card(
-                      child: ListTile(
+                  return Column(
+                    children: <Widget>[
+                      ListTile(
                         leading: Icon(Icons.call_made),
                         title: Text('${item.destination.fullName()}'),
                         subtitle: Text('${item.description}'),
                         trailing: Text('${currency.format(amountDouble)}'),
                       ),
-                    );
-                  },
-                );
-              }
-              return null;
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],
