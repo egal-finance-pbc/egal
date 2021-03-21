@@ -1,0 +1,8 @@
+---
+- name: configure user account
+  tags: [system]
+  block:
+    - name: create group
+      group:
+        name: usandbox
+        state: present

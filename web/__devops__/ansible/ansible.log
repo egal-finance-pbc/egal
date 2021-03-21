@@ -1,0 +1,82 @@
+2021-03-20 20:13:50,093 p=13292 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 20:15:06,978 p=13458 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 20:15:41,356 p=13553 u=beni n=ansible | {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "sandbox",
+            "ungrouped"
+        ]
+    },
+    "sandbox": {
+        "hosts": [
+            "167.99.10.93"
+        ]
+    }
+}
+2021-03-20 20:16:26,548 p=13586 u=beni n=ansible | PLAY [all] ******************************************************************************************************************************************************************************************************************************************************************************************************************
+2021-03-20 20:16:26,554 p=13586 u=beni n=ansible | TASK [Gathering Facts] ******************************************************************************************************************************************************************************************************************************************************************************************************
+2021-03-20 20:16:27,377 p=13586 u=beni n=ansible | fatal: [167.99.10.93]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).", "unreachable": true}
+2021-03-20 20:16:27,379 p=13586 u=beni n=ansible | PLAY RECAP ******************************************************************************************************************************************************************************************************************************************************************************************************************
+2021-03-20 20:16:27,379 p=13586 u=beni n=ansible | 167.99.10.93               : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2021-03-20 20:29:14,047 p=16341 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 20:36:34,923 p=17426 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 20:43:42,714 p=18300 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 20:45:38,355 p=18830 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 20:57:59,360 p=20234 u=beni n=ansible | {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "sandbox",
+            "ungrouped"
+        ]
+    },
+    "sandbox": {
+        "hosts": [
+            "167.99.10.93"
+        ]
+    }
+}
+2021-03-20 20:58:23,453 p=20267 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Warning: Permanently added '167.99.10.93' (ECDSA) to the list of known hosts.\r\nroot@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 21:30:30,253 p=23145 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
+2021-03-20 21:34:50,854 p=23906 u=beni n=ansible | 167.99.10.93 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@167.99.10.93: Permission denied (publickey).",
+    "unreachable": true
+}
