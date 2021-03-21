@@ -6,3 +6,29 @@
       group:
         name: usandbox
         state: present
+
+    - name: create user
+      user:
+        name: egal
+        group: usandbox
+        groups:
+          - admin
+          - sudo
+        append: yes
+        generate_ssh_key: yes
+        shell: /bin/bash
+        state: present
+
+    - name: passwordless sudo
+      copy:
+        dest: /etc/sudoers.d/egal
+        content: egal ALL=(ALL) NOPASSWD:ALL
+        mode: 0440
+
+    - name: create ssh directory
+      file:
+        path: /home/egal/.ssh
+        group: usandbox
+        owner: egal
+        state: directory
+        mode: 0755
