@@ -12,7 +12,7 @@
   git:
     repo: git@github.com:egal-finance-pbc/egal.git
     dest: /home/egal/src/api
-    key_file: /home/beni/.ssh/id_rsa
+    key_file: /home/egal/.ssh/id_rsa
     accept_hostkey: yes
   become: yes
   become_user: egal

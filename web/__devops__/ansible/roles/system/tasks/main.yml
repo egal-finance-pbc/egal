@@ -32,3 +32,18 @@
         owner: egal
         state: directory
         mode: 0755
+    
+    - name: set authorized keys
+      copy:
+        src: authorized_keys
+        dest: /home/egal/.ssh/authorized_keys
+        group: usandbox
+        owner: egal
+        mode: 0600
+
+- name: install other packages
+  apt:
+    name:
+      - make
+    state: latest
+  tags: [system]
