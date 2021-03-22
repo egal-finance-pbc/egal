@@ -222,9 +222,10 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void showErrorDialog(BuildContext context, err) {
+    var errorAPI = APIError();
     var errorDialog = AlertDialog(
-      title: Text("Registration failed"),
-      content: Text(err.toString()),
+      title: Text(errorAPI.title(response)),
+      content: Text(errorAPI.content(response)),
       actions: [
         FlatButton(
           child: Text("Try again"),
