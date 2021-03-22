@@ -21,19 +21,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            this.headerContainer(),
-            this.balanceContainer(),
-            this.transactionsContainer(),
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          headerContainer(context),
+          balanceContainer(context),
+          transactionsContainer(context),
+        ],
       ),
     );
   }
 
-  Widget headerContainer() {
+  Widget headerContainer(BuildContext context) {
     var futureMe = widget.deps.api.me();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -41,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     ));
     return Container(
       color: Colors.blue,
-      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: FutureBuilder<Me>(
         future: futureMe,
         builder: (context, snapshot) {
@@ -78,11 +76,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget balanceContainer() {
+  Widget balanceContainer(BuildContext context) {
     var futureBalance = widget.deps.api.account();
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      height: 200,
+      padding: const EdgeInsets.fromLTRB(10, 30, 10, 35),
+      height: 400,
       width: double.maxFinite,
       //Balance
       child: Column(
@@ -190,39 +188,61 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget transactionsContainer() {
+  Widget transactionsContainer(BuildContext context) {
     var paymentFuture = widget.deps.api.payments();
+    var futureMe = widget.deps.api.me();
     return Container(
-      child: Column(
-        children: <Widget>[
-          FutureBuilder(
+      margin: const EdgeInsets.only(top: 250),
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+      height: double.infinity,
+      width: double.maxFinite,
+      child: FutureBuilder(
+        future: futureMe,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {}
+
+          var user = snapshot.data.username;
+
+          return FutureBuilder(
             future: paymentFuture,
             builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
-              if (snapshot.hasError) {
-              }
-              return ListView.builder(
-                addAutomaticKeepAlives: true,
+              if (snapshot.hasError) {}
+
+              return ListView.separated(
                 shrinkWrap: true,
                 itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (context, index) {
                   final item = snapshot.data[index];
                   double amountDouble = double.parse(item.amount);
 
-                  return Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.call_made),
-                        title: Text('${item.destination.fullName()}'),
-                        subtitle: Text('${item.description}'),
-                        trailing: Text('${currency.format(amountDouble)}'),
+                  if (user == item.destination.username) {
+                    return ListTile(
+                      leading: Icon(Icons.call_received),
+                      title: Text('${item.destination.fullName()}'),
+                      subtitle: Text('${item.description}'),
+                      trailing: Text(
+                        '+${currency.format(amountDouble)}',
+                        style: TextStyle(color: Colors.green),
                       ),
-                    ],
+                    );
+                  }
+                  return ListTile(
+                    leading: Icon(Icons.call_made),
+                    title: Text('${item.destination.fullName()}'),
+                    subtitle: Text('${item.description}'),
+                    trailing: Text(
+                      '-${currency.format(amountDouble)}',
+                      style: TextStyle(color: Colors.red),
+                    ),
                   );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(height: 12);
                 },
               );
             },
-          ),
-        ],
+          );
+        },
       ),
     );
   }
