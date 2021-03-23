@@ -27,7 +27,7 @@ class API {
     if (response.statusCode == 200) {
       return Token.fromJson(jsonDecode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<bool> signup(String firstName, lastName, username, password) async {
@@ -45,7 +45,7 @@ class API {
     );
 
     if (response.statusCode != 201) {
-      throw Exception(response.body);
+      throw APIError.fromResponse(response);
     }
     return true;
   }
@@ -60,7 +60,7 @@ class API {
     if (response.statusCode == 200) {
       return Me.fromJson(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<Account> account() async {
@@ -74,7 +74,7 @@ class API {
     if (response.statusCode == 200) {
       return Account.fromJson(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<List<User>> search(String q) async {
@@ -87,7 +87,7 @@ class API {
     if (response.statusCode == 200) {
       return User.fromList(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<void> pay(String dest, double amount, String desc) async {
@@ -108,7 +108,7 @@ class API {
       body: jsonEncode(body),
     );
     if (response.statusCode != 201) {
-      throw Exception(response.body);
+      throw APIError.fromResponse(response);
     }
   }
 }
@@ -140,16 +140,16 @@ class User {
 }
 
 class APIError implements Exception {
-  final String message;
+  final int statusCode;
 
-  APIError([this.message]);
+  APIError({this.statusCode});
 
   factory APIError.fromResponse(http.Response response) {
-    return APIError();
+    return APIError(statusCode: response.statusCode);
   }
 
-  Widget title(response) {
-    switch (response.statusCode) {
+  Widget title() {
+    switch (this.statusCode) {
       case 400:
         return Container(
           child: Text("Invalid Request"),
@@ -173,8 +173,8 @@ class APIError implements Exception {
     }
   }
 
-  Widget content(response) {
-    switch (response.statusCode) {
+  Widget content() {
+    switch (this.statusCode) {
       case 400:
         return Container(
           child: Text("Specific field is not filled"),
