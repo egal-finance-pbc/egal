@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import '../clients/api.dart';
@@ -222,10 +224,9 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void showErrorDialog(BuildContext context, err) {
-    var errorAPI = APIError();
     var errorDialog = AlertDialog(
-      title: Text(errorAPI.title(response)),
-      content: Text(errorAPI.content(response)),
+        title: err.title(),
+        content: err.content(),
       actions: [
         FlatButton(
           child: Text("Try again"),
