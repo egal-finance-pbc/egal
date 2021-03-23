@@ -214,7 +214,6 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   final item = snapshot.data[index];
                   double amountDouble = double.parse(item.amount);
-
                   if (user == item.destination.username) {
                     return ListTile(
                       leading: Icon(Icons.call_received),
