@@ -140,30 +140,31 @@ class User {
 }
 
 class APIError implements Exception {
-  final int statusCode;
+  //final int statusCode;
+  final http.Response message;
 
-  APIError({this.statusCode});
+  APIError({this.message});
 
   factory APIError.fromResponse(http.Response response) {
-    return APIError(statusCode: response.statusCode);
+    return APIError(message: response);
   }
 
   Widget title() {
-    switch (this.statusCode) {
-      case 400:
+    switch (this.message.statusCode) {
+      case HttpStatus.badRequest:
         return Container(
           child: Text("Invalid Request"),
         );
-      case 401:
-      case 403:
+      case HttpStatus.unauthorized:
+      case HttpStatus.forbidden:
         return Container(
           child: Text("Unauthorized access"),
         );
-      case 404:
+      case HttpStatus.notFound:
         return Container(
           child: Text("Not found"),
         );
-      case 500:
+      case HttpStatus.internalServerError:
         return Container(
           child: Text("Something went wrong"),
         );
@@ -174,23 +175,23 @@ class APIError implements Exception {
   }
 
   Widget content() {
-    switch (this.statusCode) {
-      case 400:
+    switch (this.message.statusCode) {
+      case HttpStatus.badRequest:
         return Container(
           child: Text("Specific field is not filled"),
         );
-      case 401:
-      case 403:
+      case HttpStatus.unauthorized:
+      case HttpStatus.forbidden:
         return Container(
           child: Text(
               "Detail: access is not authorized, authentication token is missing"),
         );
-      case 404:
+      case HttpStatus.notFound:
         return Container(
           child:
               Text("Detail: the page you are trying to access cannot be found"),
         );
-      case 500:
+      case HttpStatus.internalServerError:
         return Container(
           child: Text("Detail: something went wrong"),
         );
