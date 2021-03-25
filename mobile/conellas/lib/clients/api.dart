@@ -27,7 +27,7 @@ class API {
     if (response.statusCode == 200) {
       return Token.fromJson(jsonDecode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<bool> signup(String firstName, lastName, username, password) async {
@@ -45,7 +45,7 @@ class API {
     );
 
     if (response.statusCode != 201) {
-      throw Exception(response.body);
+      throw APIError.fromResponse(response);
     }
     return true;
   }
@@ -60,7 +60,7 @@ class API {
     if (response.statusCode == 200) {
       return Me.fromJson(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<Account> account() async {
@@ -74,7 +74,7 @@ class API {
     if (response.statusCode == 200) {
       return Account.fromJson(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<List<User>> search(String q) async {
@@ -87,7 +87,7 @@ class API {
     if (response.statusCode == 200) {
       return User.fromList(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 
   Future<void> pay(String dest, double amount, String desc) async {
@@ -108,7 +108,7 @@ class API {
       body: jsonEncode(body),
     );
     if (response.statusCode != 201) {
-      throw Exception(response.body);
+      throw APIError.fromResponse(response);
     }
   }
 
@@ -183,17 +183,66 @@ class User {
   }
 }
 
-class APIError {
+class APIError implements Exception {
+  //final int statusCode;
+  final http.Response message;
+
+  APIError({this.message});
+
   factory APIError.fromResponse(http.Response response) {
-    return null;
+    return APIError(message: response);
   }
 
   Widget title() {
-    return Container();
+    switch (this.message.statusCode) {
+      case HttpStatus.badRequest:
+        return Container(
+          child: Text("Invalid Request"),
+        );
+      case HttpStatus.unauthorized:
+      case HttpStatus.forbidden:
+        return Container(
+          child: Text("Unauthorized access"),
+        );
+      case HttpStatus.notFound:
+        return Container(
+          child: Text("Not found"),
+        );
+      case HttpStatus.internalServerError:
+        return Container(
+          child: Text("Something went wrong"),
+        );
+      default:
+        return Container(
+            child: Text("Error During Communication : response.statusCode"));
+    }
   }
 
   Widget content() {
-    return Container();
+    switch (this.message.statusCode) {
+      case HttpStatus.badRequest:
+        return Container(
+          child: Text("Specific field is not filled"),
+        );
+      case HttpStatus.unauthorized:
+      case HttpStatus.forbidden:
+        return Container(
+          child: Text(
+              "Detail: access is not authorized, authentication token is missing"),
+        );
+      case HttpStatus.notFound:
+        return Container(
+          child:
+              Text("Detail: the page you are trying to access cannot be found"),
+        );
+      case HttpStatus.internalServerError:
+        return Container(
+          child: Text("Detail: something went wrong"),
+        );
+      default:
+        return Container(
+            child: Text("Error During Communication : response.statusCode"));
+    }
   }
 }
 
