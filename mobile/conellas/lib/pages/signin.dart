@@ -147,8 +147,8 @@ class _LoginFormState extends State<LoginForm> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text("Invalid credentials"),
-                        content: Text(err.toString()),
+                          title: err.title(),
+                          content: err.content(),
                         actions: [
                           FlatButton(
                             child: Text("Try again"),
