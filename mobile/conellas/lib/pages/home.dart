@@ -199,39 +199,31 @@ class _HomePageState extends State<HomePage> {
       child: FutureBuilder(
         future: futureMe,
         builder: (context, snapshot) {
-          if (snapshot.hasError) {}
-
           var user = snapshot.data.username;
-
           return FutureBuilder(
             future: paymentFuture,
             builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
-              if (snapshot.hasError) {}
-
               return ListView.separated(
                 shrinkWrap: true,
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   final item = snapshot.data[index];
-                  double amountDouble = double.parse(item.amount);
+                  double amount = double.parse(item.amount);
+                  var color = Colors.red;
+                  var iconArrow = Icons.call_made;
+                  var action = '-';
                   if (user == item.destination.username) {
-                    return ListTile(
-                      leading: Icon(Icons.call_received),
-                      title: Text('${item.destination.fullName()}'),
-                      subtitle: Text('${item.description}'),
-                      trailing: Text(
-                        '+${currency.format(amountDouble)}',
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    );
+                    color = Colors.green;
+                    iconArrow = Icons.call_received;
+                    action = '+';
                   }
                   return ListTile(
-                    leading: Icon(Icons.call_made),
+                    leading: Icon(iconArrow),
                     title: Text('${item.destination.fullName()}'),
                     subtitle: Text('${item.description}'),
                     trailing: Text(
-                      '-${currency.format(amountDouble)}',
-                      style: TextStyle(color: Colors.red),
+                      '$action ${currency.format(amount)}',
+                      style: TextStyle(color: color),
                     ),
                   );
                 },
