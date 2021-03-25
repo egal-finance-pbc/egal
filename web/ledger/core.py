@@ -91,7 +91,7 @@ class Gateway:
     @staticmethod
     def search_payments(account: models.Account) -> List[models.Payment]:
         criteria = Q(source=account) | Q(destination=account)
-        return models.Payment.objects.filter(criteria).order_by('-id')
+        return models.Payment.objects.filter(criteria)
 
     @staticmethod
     def search_accounts(q: str) -> List[models.Account]:
