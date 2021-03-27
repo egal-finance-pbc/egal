@@ -1,23 +1,23 @@
 import 'dart:developer' as dev;
 
 class Logger {
-  void debug(String message) {
-    dev.log('This is a error', name: message);
+  void debug(message) {
+    dev.log('This is a error', name: '$debug');
   }
 
-  void info(String message) {
-    dev.log('This is a error', name: message);
+  void info(message) {
+    dev.log('This is a error', name: '$info');
   }
 
-  void warn(String message) {
-    dev.log('This is a error', name: message);
+  void warn(message) {
+    dev.log('This is a error', name: '$warn');
   }
 
-  void error(String message) {
-    dev.log('This is a error', name: message);
+  void error(message) {
+    dev.log('This is a error', name: '$error');
   }
 
-  void fatal(String message) {
-    dev.log('This is a error', name: message);
+  void fatal(message) {
+    dev.log('This is a error', name: '$fatal');
   }
 }
