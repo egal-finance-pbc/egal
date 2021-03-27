@@ -1,6 +1,7 @@
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'dart:developer' as dev;
 
 import '../clients/api.dart';
 
@@ -143,6 +144,7 @@ class _LoginFormState extends State<LoginForm> {
                   Navigator.pushNamed(context, '/home');
                 } catch (err) {
                   await FlutterSession().set('token', '');
+                  dev.log('This is a error', name: 'Err', error: err);
                   showDialog(
                     context: context,
                     builder: (context) {
