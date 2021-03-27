@@ -2,8 +2,3 @@
 - hosts: all
   roles:
     - system
-
-- hosts: sandbox
-  roles:
-    - docker
-    - api
