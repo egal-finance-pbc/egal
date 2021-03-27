@@ -1,6 +1,7 @@
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import '../clients/api.dart';
+import 'dart:developer' as dev;
 
 class SignUpPage extends StatefulWidget {
   final Dependencies deps;
@@ -189,6 +190,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   showSuccessDialog(context);
                 } catch (err) {
                   showErrorDialog(context, err);
+                  dev.log('This is a error', name: 'Err', error: err);
                 }
               },
               child: Text('Register'),
