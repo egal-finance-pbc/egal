@@ -199,38 +199,44 @@ class _HomePageState extends State<HomePage> {
       child: FutureBuilder(
         future: futureMe,
         builder: (context, snapshot) {
-          var user = snapshot.data.username;
+          var me = snapshot.data;
           return FutureBuilder(
             future: paymentFuture,
             builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
-              return ListView.separated(
-                shrinkWrap: true,
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  final item = snapshot.data[index];
-                  double amount = double.parse(item.amount);
-                  var color = Colors.red;
-                  var iconArrow = Icons.call_made;
-                  var action = '-';
-                  if (user == item.destination.username) {
-                    color = Colors.green;
-                    iconArrow = Icons.call_received;
-                    action = '+';
-                  }
-                  return ListTile(
-                    leading: Icon(iconArrow),
-                    title: Text('${item.destination.fullName()}'),
-                    subtitle: Text('${item.description}'),
-                    trailing: Text(
-                      '$action ${currency.format(amount)}',
-                      style: TextStyle(color: color),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(height: 12);
-                },
-              );
+              if (snapshot.hasData && me.username != "") {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    final item = snapshot.data[index];
+                    final amount = currency.format(double.parse(item.amount));
+
+                    var color = Colors.red;
+                    var iconArrow = Icons.call_made;
+                    var action = '-';
+
+                    if (me.username == item.destination.username) {
+                      color = Colors.green;
+                      iconArrow = Icons.call_received;
+                      action = '+';
+                    }
+
+                    return ListTile(
+                      leading: Icon(iconArrow),
+                      title: Text('${item.destination.fullName()}'),
+                      subtitle: Text('${item.description}'),
+                      trailing: Text(
+                        '$action $amount',
+                        style: TextStyle(color: color),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(height: 12);
+                  },
+                );
+              }
+              return CircularProgressIndicator();
             },
           );
         },
