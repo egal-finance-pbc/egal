@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as dev;
 
 class API {
   String url;
@@ -24,6 +25,8 @@ class API {
       }),
     );
 
+    dev.log('This is a error', name: 'Login', error: '$response');
+
     if (response.statusCode == 200) {
       return Token.fromJson(jsonDecode(response.body));
     }
@@ -44,6 +47,8 @@ class API {
       }),
     );
 
+    dev.log('This is a error', name: 'Sign Up', error: '$response');
+
     if (response.statusCode != 201) {
       throw APIError.fromResponse(response);
     }
@@ -56,6 +61,8 @@ class API {
       this.url + 'me/',
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
+
+    dev.log('This is a error', name: 'Me', error: '$response');
 
     if (response.statusCode == 200) {
       return Me.fromJson(json.decode(response.body));
@@ -71,6 +78,8 @@ class API {
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
+    dev.log('This is a error', name: 'Account', error: '$response');
+
     if (response.statusCode == 200) {
       return Account.fromJson(json.decode(response.body));
     }
@@ -84,6 +93,9 @@ class API {
       this.url + 'accounts/?' + query,
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
+
+    dev.log('This is a error', name: 'Search', error: '$response');
+
     if (response.statusCode == 200) {
       return User.fromList(json.decode(response.body));
     }
@@ -107,6 +119,9 @@ class API {
       },
       body: jsonEncode(body),
     );
+
+    dev.log('This is a error', name: 'Pay', error: '$response');
+
     if (response.statusCode != 201) {
       throw APIError.fromResponse(response);
     }
@@ -118,6 +133,8 @@ class API {
       this.url + 'payments/',
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
+
+    dev.log('This is a error', name: 'Payments', error: '$response');
 
     if (response.statusCode == 200) {
       return Payment.fromList(json.decode(response.body));
@@ -142,8 +159,8 @@ class Payment {
         description: item['description'],
         source: User.fromJson(item['source']),
         destination: User.fromJson(item['destination']),
-    ));
-  }
+      ));
+    }
     return payments;
   }
 }
@@ -184,7 +201,6 @@ class User {
 }
 
 class APIError implements Exception {
-  //final int statusCode;
   final http.Response message;
 
   APIError({this.message});
