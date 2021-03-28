@@ -1,23 +1,26 @@
 import 'dart:developer' as dev;
 
 class Logger {
-  void debug(message) {
-    dev.log(message);
+  final String name;
+  Logger({this.name});
+
+  void debug(String message) {
+    dev.log(message, level: 100, name: name);
   }
 
-  void info(message) {
-    dev.log(message);
+  void info(String message) {
+    dev.log(message, level: 200, name: name);
   }
 
-  void warn(message) {
-    dev.log(message);
+  void warn(String message) {
+    dev.log(message, level: 300,name: name);
   }
 
-  void error(message) {
-    dev.log(message);
+  void error(String message) {
+    dev.log(message, level: 400, name: name);
   }
 
-  void fatal(message) {
-    dev.log(message);
+  void fatal(String message) {
+    dev.log(message, level: 500, name: name);
   }
 }
