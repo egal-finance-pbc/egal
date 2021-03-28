@@ -1,0 +1,19 @@
+---
+- name: create base directory
+  file:
+    path: /home/omarkhd/github.com/omarkhd
+    state: directory
+  become: yes
+  become_user: omarkhd
+  tags: [egal]
+
+- name: clone egal repository
+  git:
+    repo: git@github.com:egal-finance-pbc/egal.git
+    dest: /home/omarkhd/github.com/omarkhd/egal
+    key_file: /home/omarkhd/.ssh/id_rsa
+    accept_hostkey: yes
+  become: yes
+  become_user: omarkhd
+  register: repo
+  tags: [egal]
