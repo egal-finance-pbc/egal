@@ -13,7 +13,7 @@ class Logger {
   }
 
   void warn(String message) {
-    dev.log(message, level: 300,name: name);
+    dev.log(message, level: 300, name: name);
   }
 
   void error(String message) {
