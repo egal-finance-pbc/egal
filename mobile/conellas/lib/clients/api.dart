@@ -142,8 +142,8 @@ class Payment {
         description: item['description'],
         source: User.fromJson(item['source']),
         destination: User.fromJson(item['destination']),
-    ));
-  }
+      ));
+    }
     return payments;
   }
 }
