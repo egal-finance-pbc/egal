@@ -214,16 +214,18 @@ class _HomePageState extends State<HomePage> {
                     var color = Colors.red;
                     var iconArrow = Icons.call_made;
                     var action = '-';
+                    var sender = item.destination.fullName();
 
                     if (me.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received;
                       action = '+';
+                      sender = item.source.fullName();
                     }
 
                     return ListTile(
                       leading: Icon(iconArrow),
-                      title: Text('${item.destination.fullName()}'),
+                      title: Text(sender),
                       subtitle: Text('${item.description}'),
                       trailing: Text(
                         '$action $amount',
