@@ -1,19 +1,78 @@
 ---
-- name: create base directory
-  file:
-    path: /home/omarkhd/github.com/omarkhd
-    state: directory
-  become: yes
-  become_user: omarkhd
+- name: install extra tooling
+  apt:
+    name:
+      - sqlite3
+    state: present
   tags: [egal]
+
+- name: configure egal account
+  tags: [egal]
+  block:
+    - name: create group
+      group:
+        name: "{{ system_user }}"
+        state: present
+
+    - name: create user
+      user:
+        name: "{{ system_user }}"
+        group: "{{ system_user }}"
+        groups:
+          - docker
+        append: yes
+        generate_ssh_key: no
+        create_home: yes
+        shell: /bin/bash
+        state: present
+
+    - name: create ssh directory
+      file:
+        path: /home/{{ system_user }}/.ssh
+        group: "{{ system_user }}"
+        owner: "{{ system_user }}"
+        state: directory
+        mode: 0755
+
+    - name: place deploy keys
+      copy:
+        content: "{{ item.content }}"
+        dest: /home/{{ system_user }}/.ssh/{{ item.name }}
+        group: "{{ system_user }}"
+        owner: "{{ system_user }}"
+        mode: 0600
+      with_items:
+        - name: id_rsa
+          content: "{{ deploy_rsa }}"
+        - name: id_rsa.pub
+          content: "{{ deploy_rsa_pub }}"
+      no_log: yes
 
 - name: clone egal repository
   git:
     repo: git@github.com:egal-finance-pbc/egal.git
-    dest: /home/omarkhd/github.com/omarkhd/egal
-    key_file: /home/omarkhd/.ssh/id_rsa
+    dest: /home/{{ system_user }}/egal
+    key_file: /home/{{ system_user }}/.ssh/id_rsa
     accept_hostkey: yes
   become: yes
-  become_user: omarkhd
-  register: repo
-  tags: [egal]
+  become_user: "{{ system_user }}"
+  tags: [egal, deploy]
+
+- name: docker-compose up
+  community.docker.docker_compose:
+    project_src: /home/{{ system_user }}/egal/web
+    build: yes
+  become: yes
+  become_user: "{{ system_user }}"
+  tags: [egal, deploy]
+
+- name: update database schema
+  make:
+    chdir: /home/{{ system_user }}/egal/web
+    target: "{{ item }}"
+  with_items:
+    - migrate
+    - cache
+  become: yes
+  become_user: "{{ system_user }}"
+  tags: [egal, deploy]
