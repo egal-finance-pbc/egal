@@ -184,10 +184,10 @@ class User {
 }
 
 class APIError implements Exception {
-  //final int statusCode;
   final http.Response message;
+  final String detail;
 
-  APIError({this.message});
+  APIError({this.message, this.detail});
 
   factory APIError.fromResponse(http.Response response) {
     return APIError(message: response);
@@ -214,7 +214,7 @@ class APIError implements Exception {
         );
       default:
         return Container(
-            child: Text("Error During Communication : response.statusCode"));
+            child: Text("Error occured while Communication with Server : response.statusCode"));
     }
   }
 
@@ -222,22 +222,22 @@ class APIError implements Exception {
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
         return Container(
-          child: Text("Specific field is not filled"),
+          child: Text(this.message.body),
         );
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
         return Container(
-          child: Text(
-              "Detail: access is not authorized, authentication token is missing"),
+          child: Text(this.message.body),
         );
       case HttpStatus.notFound:
         return Container(
           child:
-              Text("Detail: the page you are trying to access cannot be found"),
+              Text(this.message.body),
         );
       case HttpStatus.internalServerError:
         return Container(
-          child: Text("Detail: something went wrong"),
+          child:
+          Text(this.message.body),
         );
       default:
         return Container(
