@@ -1,10 +1,12 @@
 import 'package:conellas/common/deps.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:conellas/generated/l10n.dart';
 import '../clients/api.dart';
 
 class SignUpPage extends StatefulWidget {
   final Dependencies deps;
-
   SignUpPage(this.deps, {Key key}) : super(key: key);
 
   @override
@@ -16,28 +18,37 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text(S.of(context).simpleText, style: new TextStyle(fontFamily: 'ComfortaaBold', fontSize: 18,),),
+        backgroundColor: Color(0xff330199),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView(
+        child: Stack(
           children: <Widget>[
             Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                width: double.maxFinite,
               alignment: Alignment.center,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'ConEllas',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                ),
-              ),
+                height: 100,
+              child: Image.asset('assets/img/egalLogo.png',
+                fit: BoxFit.cover,
+              )
             ),
-            SignUpForm(widget.deps),
-          ],
+            Container(
+              margin: const EdgeInsets.only(top: 60),
+              padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+              child:ListView(
+                children: [
+                  SignUpForm(widget.deps),
+                ],
+              )
+
+
+
+                  ),
+              ]
+            ),
         ),
-      ),
     );
   }
 }
@@ -63,6 +74,12 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    RegExp regname = RegExp(r'^(?=.*?[a-z]).{4,24}$');
+    RegExp reguser = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,12}$');
+    RegExp regnum = RegExp(r'^(?=.*?[0-9]).{2,24|}$');
+    RegExp regchar = RegExp(r'^(?=.*?[!@#\$&*~]).{2,24}$');
+    RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{2,}$');
+    RegExp regpass = RegExp(r'^(?=.*?[a-z]).{12,}$');
     return Form(
       key: _formKey,
       child: Column(
@@ -71,18 +88,57 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextFormField(
               controller: firstNameController,
+              textCapitalization: TextCapitalization.words,
+              maxLength: 24,
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Missing first name';
-                } else if (value.length > 150) {
-                  return 'First name length exceeded';
+                  return S.of(context).simpleText3;
+                } else if (!regname.hasMatch(value)) {
+                  return S.of( context).simpleText4;
+                } else if (regchar.hasMatch(value) || regnum.hasMatch(value)) {
+                  return S.of(context).simpleText5;
+                }else if (!regMayus.hasMatch(value)) {
+                  return S.of(context).simpleText6;
                 }
                 return null;
               },
               decoration: InputDecoration(
                 fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                labelText: 'First Name',
+                enabledBorder : OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText7,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
                 contentPadding: const EdgeInsets.all(15),
               ),
             ),
@@ -91,18 +147,57 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextFormField(
               controller: lastNameController,
+              textCapitalization: TextCapitalization.words,
+              maxLength: 24,
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Missing last name';
-                } else if (value.length > 150) {
-                  return 'Last name length exceeded';
+                  return S.of(context).simpleText8;
+                } else if (!regname.hasMatch(value)) {
+                  return S.of(context).simpleText9;
+                } else if (regchar.hasMatch(value) || regnum.hasMatch(value)) {
+                  return S.of(context).simpleText5;
+                }else if (!regMayus.hasMatch(value)) {
+                  return S.of(context).simpleText6;
                 }
                 return null;
               },
               decoration: InputDecoration(
                 fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                labelText: 'Last Name',
+                enabledBorder : OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText10,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
                 contentPadding: const EdgeInsets.all(15),
               ),
             ),
@@ -111,38 +206,161 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: EdgeInsets.all(10),
             child: TextFormField(
               controller: usernameController,
+              maxLength: 12,
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Missing username';
-                } else if (value.length > 150) {
-                  return 'Username length exceeded';
+                  return S.of(context).simpleText11;
+                }else if(!reguser.hasMatch(value)){
+                  return S.of(context).simpleText12;
                 }
                 return null;
               },
               decoration: InputDecoration(
                 fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                labelText: 'Username',
+                enabledBorder : OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText13,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
                 contentPadding: const EdgeInsets.all(15),
               ),
             ),
+          ),
+          Container(
+              padding: EdgeInsets.all(10),
+              child: IntlPhoneField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Color(0xff330199),
+                      width: 2,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Color(0xffFF9900),
+                      width: 2,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                      width: 2,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                      width: 2,
+                    ),
+                  ),
+                  labelText: S.of(context).simpleText14,
+                  labelStyle: TextStyle(
+                    fontFamily: 'Comfortaaregular',
+                    fontSize: 20,
+                    color: Color(0xffFF9900),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  contentPadding: const EdgeInsets.all(15),
+                ),
+                initialCountryCode: 'IN',
+                onChanged: (phone) {
+                  print(phone.completeNumber);
+                  print(phone.countryCode);
+                  print(phone.number);
+                },
+              )
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
               controller: passwordController,
               keyboardType: TextInputType.text,
+              maxLength: 12,
               validator: (String value) {
                 if (value.isEmpty) {
-                  return 'Please a Enter Password';
+                  return S.of(context).simpleText15;
+                }else if(!regpass.hasMatch(value)){
+                  return S.of(context).simpleText16;
+                }else if(!regnum.hasMatch(value) && !regchar.hasMatch(value)){
+                  return S.of(context).simpleText17;
+                }else if(!regMayus.hasMatch(value)) {
+                  return S.of(context).simpleText6;
                 }
                 return null;
               },
-              obscureText: true,
+              obscureText: false,
               decoration: InputDecoration(
                 fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                labelText: 'Password',
+                enabledBorder : OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText18,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
                 contentPadding: const EdgeInsets.all(15),
               ),
             ),
@@ -154,19 +372,52 @@ class _SignUpFormState extends State<SignUpForm> {
               keyboardType: TextInputType.text,
               validator: (String value) {
                 if (value.isEmpty) {
-                  return 'Please re-enter password';
+                  return S.of(context).simpleText19;
                 }
                 if (passwordController.text != confirmPasswordController.text) {
-                  return "Passwords don't match";
+                  return S.of(context).simpleText20;
                 }
                 return null;
               },
               obscureText: true,
               decoration: InputDecoration(
                 fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                labelText: 'Confirm Password',
-                contentPadding: const EdgeInsets.all(15),
+                enabledBorder : OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText21,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                contentPadding: const EdgeInsets.all(12),
               ),
             ),
           ),
@@ -191,7 +442,25 @@ class _SignUpFormState extends State<SignUpForm> {
                   showErrorDialog(context, err);
                 }
               },
-              child: Text('Register'),
+              child: Text(S.of(context).simpleText22, style: TextStyle(fontFamily: 'ComfortaaBold', fontSize: 16),),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffFF9900),
+              ),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Text(S.of(context).simpleText23, style: TextStyle(fontFamily: 'ComfortaaRegular', )),
+                FlatButton(
+                  textColor: Colors.blue,
+                  child: Text(S.of(context).simpleText24, style: TextStyle(fontSize: 16, fontFamily: 'ComfortaaBold',)),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
           ),
         ],
@@ -201,11 +470,11 @@ class _SignUpFormState extends State<SignUpForm> {
 
   void showSuccessDialog(BuildContext context) {
     var successDialog = AlertDialog(
-      title: Text("Successful registration"),
-      content: Text("You can login now"),
+      title: Text(S.of(context).simpleText25),
+      content: Text(S.of(context).simpleText26),
       actions: [
         FlatButton(
-          child: Text("OK"),
+          child: Text(S.of(context).simpleText27),
           onPressed: () {
             Navigator.pushNamed(context, '/');
           },
@@ -227,7 +496,7 @@ class _SignUpFormState extends State<SignUpForm> {
         content: err.content(),
       actions: [
         FlatButton(
-          child: Text("Try again"),
+          child: Text(S.of(context).simpleText28 ),
           onPressed: () {
             Navigator.of(context).pop();
           },
