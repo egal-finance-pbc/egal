@@ -69,8 +69,8 @@ class _SignUpFormState extends State<SignUpForm> {
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final passcodeController = TextEditingController();
+  final confirmPasscodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -308,7 +308,7 @@ class _SignUpFormState extends State<SignUpForm> {
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
-              controller: passwordController,
+              controller: passcodeController,
               keyboardType: TextInputType.text,
               maxLength: 12,
               validator: (String value) {
@@ -368,13 +368,13 @@ class _SignUpFormState extends State<SignUpForm> {
           Container(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextFormField(
-              controller: confirmPasswordController,
+              controller: confirmPasscodeController,
               keyboardType: TextInputType.text,
               validator: (String value) {
                 if (value.isEmpty) {
                   return S.of(context).simpleText19;
                 }
-                if (passwordController.text != confirmPasswordController.text) {
+                if (passcodeController.text != confirmPasscodeController.text) {
                   return S.of(context).simpleText20;
                 }
                 return null;
@@ -435,7 +435,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     this.firstNameController.text,
                     this.lastNameController.text,
                     this.usernameController.text,
-                    this.passwordController.text,
+                    this.passcodeController.text,
                   );
                   showSuccessDialog(context);
                 } catch (err) {
