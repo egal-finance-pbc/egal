@@ -58,7 +58,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _resultsContainer() {
-    var err = APIError();
     const padding = EdgeInsets.fromLTRB(20, 15, 20, 0);
     return FutureBuilder(
       future: _usersFuture,
@@ -80,7 +79,7 @@ class _SearchPageState extends State<SearchPage> {
         if (snapshot.hasError) {
           return Padding(
             padding: padding,
-            child: err.content(),
+            child: Text('${snapshot.error}'),
           );
         }
         if (snapshot.data.isEmpty) {

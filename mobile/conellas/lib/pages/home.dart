@@ -21,17 +21,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          this.headerContainer(),
-          this.balanceContainer(),
-          this.transactionsContainer(),
+      body: Stack(
+        children: <Widget>[
+          headerContainer(context),
+          balanceContainer(context),
+          transactionsContainer(context),
         ],
       ),
     );
   }
 
-  Widget headerContainer() {
+  Widget headerContainer(BuildContext context) {
     var futureMe = widget.deps.api.me();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     ));
     return Container(
       color: Colors.blue,
-      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: FutureBuilder<Me>(
         future: futureMe,
         builder: (context, snapshot) {
@@ -76,11 +76,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget balanceContainer() {
+  Widget balanceContainer(BuildContext context) {
     var futureBalance = widget.deps.api.account();
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      height: 200,
+      padding: const EdgeInsets.fromLTRB(10, 30, 10, 35),
+      height: 400,
       width: double.maxFinite,
       //Balance
       child: Column(
@@ -188,7 +188,61 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget transactionsContainer() {
-    return Container();
+  Widget transactionsContainer(BuildContext context) {
+    var paymentFuture = widget.deps.api.payments();
+    var futureMe = widget.deps.api.me();
+    return Container(
+      margin: const EdgeInsets.only(top: 250),
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+      height: double.infinity,
+      width: double.maxFinite,
+      child: FutureBuilder(
+        future: futureMe,
+        builder: (context, snapshot) {
+          var me = snapshot.data;
+          return FutureBuilder(
+            future: paymentFuture,
+            builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
+              if (snapshot.hasData && me.username != "") {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    final item = snapshot.data[index];
+                    final amount = currency.format(double.parse(item.amount));
+
+                    var color = Colors.red;
+                    var iconArrow = Icons.call_made;
+                    var action = '-';
+                    var sender = item.destination.fullName();
+
+                    if (me.username == item.destination.username) {
+                      color = Colors.green;
+                      iconArrow = Icons.call_received;
+                      action = '+';
+                      sender = item.source.fullName();
+                    }
+
+                    return ListTile(
+                      leading: Icon(iconArrow),
+                      title: Text(sender),
+                      subtitle: Text('${item.description}'),
+                      trailing: Text(
+                        '$action $amount',
+                        style: TextStyle(color: color),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(height: 12);
+                  },
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          );
+        },
+      ),
+    );
   }
 }

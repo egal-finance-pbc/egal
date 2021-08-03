@@ -1,7 +1,7 @@
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
-
+import 'package:conellas/generated/l10n.dart';
 import '../clients/api.dart';
 
 class SignInPage extends StatefulWidget {
@@ -20,32 +20,33 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text(S.of(context).simpleText2,
+            style: new TextStyle(
+              fontFamily: 'ComfortaaBold',
+              fontSize: 18,
+            )),
+        backgroundColor: Color(0xff330199),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'ConEllas',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                ),
-              ),
-            ),
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(10),
+                child: Image.asset(
+                  'assets/img/egalLogo.png',
+                  fit: BoxFit.cover,
+                  height: 150,
+                )),
             LoginForm(widget.deps),
             Container(
               child: Row(
                 children: <Widget>[
-                  Text('Don\'t have an account?'),
+                  Text(S.of(context).simpleText30, style: TextStyle(fontFamily: 'ComfortaaRegular')),
                   FlatButton(
                     textColor: Colors.blue,
-                    child: Text('Sign up', style: TextStyle(fontSize: 16)),
+                    child: Text(S.of(context).simpleText, style: TextStyle(fontSize: 16, fontFamily: 'ComfortaaBold')),
                     onPressed: () {
                       Navigator.pushNamed(context, '/signup');
                     },
@@ -79,6 +80,12 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    RegExp regname = RegExp(r'^(?=.*?[a-z]).{4,24}$');
+    RegExp reguser = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,12}$');
+    RegExp regnum = RegExp(r'^(?=.*?[0-9]).{2,24|}$');
+    RegExp regchar = RegExp(r'^(?=.*?[!@#\$&*~]).{2,24}$');
+    RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{2,}$');
+    RegExp regpass = RegExp(r'^(?=.*?[a-z]).{12,}$');
     return Form(
       key: _formKey,
       child: Column(
@@ -89,15 +96,49 @@ class _LoginFormState extends State<LoginForm> {
               controller: this.usernameController,
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Missing username';
-                } else if (value.length > 150) {
-                  return 'Username length exceeded';
+                  return S.of(context).simpleText11;
+                }else if(!reguser.hasMatch(value)){
+                  return S.of(context).simpleText12;
                 }
                 return null;
               },
               decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText13,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
                 contentPadding: const EdgeInsets.all(15),
               ),
             ),
@@ -108,14 +149,54 @@ class _LoginFormState extends State<LoginForm> {
               controller: this.passwordController,
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Missing password';
+                  return S.of(context).simpleText15;
+                }else if(!regpass.hasMatch(value)){
+                  return S.of(context).simpleText16;
+                }else if(!regnum.hasMatch(value) && !regchar.hasMatch(value)){
+                  return S.of(context).simpleText17;
+                }else if(!regMayus.hasMatch(value)) {
+                  return S.of(context).simpleText6;
                 }
                 return null;
               },
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xff330199),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Color(0xffFF9900),
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                    width: 2,
+                  ),
+                ),
+                labelText: S.of(context).simpleText18,
+                labelStyle: TextStyle(
+                  fontFamily: 'Comfortaaregular',
+                  fontSize: 20,
+                  color: Color(0xffFF9900),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
                 contentPadding: const EdgeInsets.all(15),
               ),
             ),
@@ -147,11 +228,11 @@ class _LoginFormState extends State<LoginForm> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                          title: err.title(),
-                          content: err.content(),
+                        title: err.title(),
+                        content: err.content(),
                         actions: [
                           FlatButton(
-                            child: Text("Try again"),
+                            child: Text(S.of(context).simpleText28),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -163,7 +244,12 @@ class _LoginFormState extends State<LoginForm> {
                   );
                 }
               },
-              child: Text('Login'),
+              child: Text(S.of(context).simpleText29,
+                style: TextStyle(fontFamily: 'ComfortaaBold', fontSize: 16),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffFF9900),
+              ),
             ),
           ),
         ],

@@ -12,7 +12,7 @@ class API {
     this.url = 'http://10.0.2.2:5000/api/v1/';
   }
 
-  Future<Token> login(String username, password) async {
+  Future<Token> login(String username, passcode) async {
     final response = await http.post(
       this.url + 'tokens/',
       headers: <String, String>{
@@ -20,7 +20,7 @@ class API {
       },
       body: jsonEncode(<String, String>{
         'username': username,
-        'password': password,
+        'password': passcode,
       }),
     );
 
@@ -30,17 +30,16 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> signup(String firstName, lastName, username, password) async {
+  Future<bool> signup(String phoneNumber, username, passcode) async {
     final response = await http.post(
       this.url + 'accounts/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
-        'first_name': firstName,
-        'last_name': lastName,
+        'phone_number': phoneNumber,
         'username': username,
-        'password': password,
+        'passcode': passcode,
       }),
     );
 
@@ -142,8 +141,8 @@ class Payment {
         description: item['description'],
         source: User.fromJson(item['source']),
         destination: User.fromJson(item['destination']),
-    ));
-  }
+      ));
+    }
     return payments;
   }
 }
@@ -184,10 +183,10 @@ class User {
 }
 
 class APIError implements Exception {
+  //final int statusCode;
   final http.Response message;
-  final String detail;
 
-  APIError({this.message, this.detail});
+  APIError({this.message});
 
   factory APIError.fromResponse(http.Response response) {
     return APIError(message: response);
@@ -214,7 +213,7 @@ class APIError implements Exception {
         );
       default:
         return Container(
-            child: Text("Error occured while Communication with Server : response.statusCode"));
+            child: Text("Error During Communication : response.statusCode"));
     }
   }
 
@@ -222,22 +221,22 @@ class APIError implements Exception {
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
         return Container(
-          child: Text(this.message.body),
+          child: Text("Specific field is not filled"),
         );
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
         return Container(
-          child: Text(this.message.body),
+          child: Text(
+              "Detail: access is not authorized, authentication token is missing"),
         );
       case HttpStatus.notFound:
         return Container(
           child:
-              Text(this.message.body),
+              Text("Detail: the page you are trying to access cannot be found"),
         );
       case HttpStatus.internalServerError:
         return Container(
-          child:
-          Text(this.message.body),
+          child: Text("Detail: something went wrong"),
         );
       default:
         return Container(

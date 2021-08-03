@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'common/deps.dart';
 import 'pages/home.dart';
 import 'pages/search.dart';
 import 'pages/send.dart';
 import 'pages/signin.dart';
 import 'pages/signup.dart';
+import 'generated/l10n.dart';
 
 void main() {
   runApp(ConEllasApp());
@@ -26,6 +27,13 @@ class ConEllasApp extends StatelessWidget {
         '/search': (context) => SearchPage(deps),
         '/send': (context) => SendPage(deps),
       },
+      localizationsDelegates: [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+      S.delegate,
+    ],
+      supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
