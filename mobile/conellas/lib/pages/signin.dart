@@ -76,7 +76,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final passcodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +146,7 @@ class _LoginFormState extends State<LoginForm> {
           Container(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
             child: TextFormField(
-              controller: this.passwordController,
+              controller: this.passcodeController,
               validator: (value) {
                 if (value.isEmpty) {
                   return S.of(context).simpleText15;
@@ -213,7 +213,7 @@ class _LoginFormState extends State<LoginForm> {
                 try {
                   var token = await widget.deps.api.login(
                     this.usernameController.text,
-                    this.passwordController.text,
+                    this.passcodeController.text,
                   );
                   var sessionStorage = widget.deps.session;
                   await sessionStorage.set('token', token.token);

@@ -63,7 +63,7 @@ class Accounts(APIView):
                 last_name=payload.validated_data['last_name'],
                 username=payload.validated_data['username'],
                 phone_number=payload.validated_data['phone_number']
-                passwcode=payload.validated_data['passcode'],
+                passcode=payload.validated_data['passcode'],
             )
             return Response(status=status.HTTP_201_CREATED)
 
