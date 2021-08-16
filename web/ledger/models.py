@@ -6,7 +6,7 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     public_key = models.CharField(max_length=56, unique=True)
     secret = models.CharField(max_length=56)
-    phone = models.CharField(min_length=10, max_length=15)
+    phone = models.CharField(max_length=15, default='')
 
 
 class Payment(models.Model):
