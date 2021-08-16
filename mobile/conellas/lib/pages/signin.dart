@@ -366,7 +366,7 @@ class _LoginFormState extends State<LoginForm> {
                 }
               },
               child: Text(
-                'Login',
+                'Sign In',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
