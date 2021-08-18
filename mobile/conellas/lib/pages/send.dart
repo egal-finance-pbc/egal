@@ -147,16 +147,18 @@ class _SendPageState extends State<SendPage> {
       barrierDismissible: false,
       builder: (BuildContext _) {
         return AlertDialog(
-          title: Text('That\'s it!'),
-          content: Text('Your payment has completed successfully'),
+          title: Text('That\'s it!', style: TextStyle(color: Colors.white)),
+          content: Text('Your payment has completed successfully', style: TextStyle(color: Colors.white)),
           actions: [
             FlatButton(
-              child: Text('Got it'),
+              child: Text('Got it', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.pushNamed(context, '/home');
               },
+              color: Color(0xff3b2f8f),
             ),
           ],
+          backgroundColor: Color(0xffF8991C),
         );
       },
     );

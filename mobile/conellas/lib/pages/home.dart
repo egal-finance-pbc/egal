@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       statusBarBrightness: Brightness.light,
     ));
     return Container(
-      color: Colors.blue,
+      color: Color(0xffF8991C),
       padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: FutureBuilder<Me>(
         future: futureMe,
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             return ListTile(
               leading: IconButton(
-                color: Colors.white,
+                color: Color(0xff3b2f8f),
                 icon: Icon(Icons.qr_code_rounded),
                 iconSize: 35,
                 onPressed: () {},
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
-              color: Colors.blue,
+              color: Color(0xff3b2f8f),
             ),
           ),
           Row(
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 45,
-                        color: Colors.blue,
+                        color: Color(0xff3b2f8f),
                       ),
                     );
                   } else if (snapshot.hasError) {
@@ -133,18 +133,19 @@ class _HomePageState extends State<HomePage> {
                   'Send',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.blue,
+                    color: Colors.white,
                   ),
                 ),
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                    color: Colors.blue,
+                    color: Color(0xff3b2f8f),
                     width: 3,
                     style: BorderStyle.solid,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 minWidth: 150,
+                color: Color(0xff3b2f8f),
               ),
               SizedBox(
                 width: 35,
@@ -156,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                     Icon(
                       Icons.qr_code_scanner_rounded,
                       size: 28,
-                      color: Colors.white,
+                      color: Color(0xff3b2f8f),
                     ),
                     SizedBox(
                       width: 5,
@@ -165,21 +166,20 @@ class _HomePageState extends State<HomePage> {
                       'Search',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
+                        color: Color(0xff3b2f8f),
                       ),
                     ),
                   ],
                 ),
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                    color: Colors.blue,
+                    color: Color(0xff3b2f8f),
                     width: 3,
                     style: BorderStyle.solid,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 minWidth: 150,
-                color: Colors.blue,
               ),
             ],
           ),
@@ -212,25 +212,28 @@ class _HomePageState extends State<HomePage> {
                     final amount = currency.format(double.parse(item.amount));
 
                     var color = Colors.red;
-                    var iconArrow = Icons.call_made;
+                    var iconArrow = Icons.call_made_rounded;
                     var action = '-';
                     var sender = item.destination.fullName();
+                    var backcolor = Color.fromRGBO(255, 153, 0, 0.20);
 
                     if (me.username == item.destination.username) {
                       color = Colors.green;
-                      iconArrow = Icons.call_received;
+                      iconArrow = Icons.call_received_rounded;
                       action = '+';
                       sender = item.source.fullName();
+
                     }
 
                     return ListTile(
-                      leading: Icon(iconArrow),
+                      leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
                       title: Text(sender),
                       subtitle: Text('${item.description}'),
                       trailing: Text(
                         '$action $amount',
                         style: TextStyle(color: color),
                       ),
+                      tileColor: backcolor,
                     );
                   },
                   separatorBuilder: (context, index) {
