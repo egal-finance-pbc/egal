@@ -1,6 +1,8 @@
 import 'package:conellas/common/deps.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../clients/api.dart';
 
@@ -18,40 +20,147 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color(0xffF8991C),
       appBar: AppBar(
-        title: Text('Sign In'),
+        backgroundColor: Color(0xff3B2F8F),
+        elevation: 0,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: ListView(
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
           children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'ConEllas',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                ),
-              ),
-            ),
-            LoginForm(widget.deps),
-            Container(
-              child: Row(
+            SizedBox(
+              height: size.height,
+              child: Stack(
                 children: <Widget>[
-                  Text('Don\'t have an account?'),
-                  FlatButton(
-                    textColor: Colors.blue,
-                    child: Text('Sign up', style: TextStyle(fontSize: 16)),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
-                    },
-                  )
+                  Container(
+                    margin: EdgeInsets.only(bottom: size.height * 0.5),
+                    //height: 320,
+                    decoration: BoxDecoration(
+                        color: Color(0xff3B2F8F),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
+                        )),
+                  ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: size.height * 0.88),
+                      child: Image.asset('assets/Logo.png',
+                          height: size.height * 0.9,
+                          alignment: Alignment.center),
+                    ),
+                  ),
+                  LoginForm(widget.deps),
+                  Container(
+                    margin: EdgeInsets.only(top: size.height * 0.15),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        FlatButton(
+                          textColor: Color(0xffF8991C),
+                          child:
+                              Text('Sign up', style: TextStyle(fontSize: 16)),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: size.height * 0.7),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          height: 2.0,
+                          width: 130.0,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Contac Egal',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.black),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          height: 2.0,
+                          width: 130.0,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: size.height * 0.74),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () async {
+                            const _url = 'https://egal.app';
+                            await canLaunch(_url)
+                                ? await launch(_url)
+                                : throw 'Could not launch $_url';
+                          },
+                          child: Icon(
+                            IconData(59101, fontFamily: 'MaterialIcons'),
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          color: Color(0xff3B2F8F),
+                          shape: CircleBorder(),
+                          height: 50,
+                        ),
+                        FlatButton(
+                          onPressed: () {},
+                          child: Icon(
+                            IconData(63281, fontFamily: 'MaterialIcons'),
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          color: Color(0xff3B2F8F),
+                          shape: CircleBorder(),
+                          height: 50,
+                        ),
+                        FlatButton(
+                          onPressed: () {},
+                          child: Icon(
+                            IconData(57683, fontFamily: 'MaterialIcons'),
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          color: Color(0xff3B2F8F),
+                          shape: CircleBorder(),
+                          height: 50,
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            showAlertDialog(context);
+                          },
+                          child: Icon(
+                            IconData(58615, fontFamily: 'MaterialIcons'),
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          color: Color(0xff3B2F8F),
+                          shape: CircleBorder(),
+                          height: 50,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-                mainAxisAlignment: MainAxisAlignment.center,
               ),
             ),
           ],
@@ -59,6 +168,39 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = Center(
+    child: FlatButton(
+      color: Color(0xff3B2F8F),
+      child: Text(
+        "OK",
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    ),
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Invitation QR", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+    content: Image.asset('assets/PruebaApp1.png'),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+    actions: [
+      okButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
 
 class LoginForm extends StatefulWidget {
@@ -73,18 +215,21 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool isChecked = false;
   final _formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            margin: EdgeInsets.only(top: size.height * 0.19),
+            padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
             child: TextFormField(
               controller: this.usernameController,
               validator: (value) {
@@ -96,14 +241,26 @@ class _LoginFormState extends State<LoginForm> {
                 return null;
               },
               decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-                contentPadding: const EdgeInsets.all(15),
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Phone #',
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+                hintText: 'Phone #',
+                hintTextDirection: TextDirection.rtl,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.all(20),
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
             child: TextFormField(
               controller: this.passwordController,
               validator: (value) {
@@ -114,17 +271,62 @@ class _LoginFormState extends State<LoginForm> {
               },
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-                contentPadding: const EdgeInsets.all(15),
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Passcode',
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+                hintText: 'passcode',
+                hintTextDirection: TextDirection.rtl,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.all(20),
               ),
             ),
           ),
+          Row(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(30, 10, 5, 10),
+                child: Transform.scale(
+                  scale: 1.3,
+                  child: Checkbox(
+                    activeColor: Color(0xffF8991C),
+                    checkColor: Colors.white,
+                    value: isChecked,
+                    onChanged: (bool value) {
+                      setState(() {
+                        isChecked = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Text(
+                'Keep me signed in',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
           Container(
-            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+            margin: EdgeInsets.only(top: size.height * 0.10),
+            padding: EdgeInsets.fromLTRB(60, 10, 60, 10),
             width: double.infinity,
-            height: 60,
+            height: 70,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xff3B2F8F),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+              ),
               onPressed: () async {
                 if (!_formKey.currentState.validate()) {
                   return;
@@ -147,8 +349,8 @@ class _LoginFormState extends State<LoginForm> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                          title: err.title(),
-                          content: err.content(),
+                        title: err.title(),
+                        content: err.content(),
                         actions: [
                           FlatButton(
                             child: Text("Try again"),
@@ -163,7 +365,10 @@ class _LoginFormState extends State<LoginForm> {
                   );
                 }
               },
-              child: Text('Login'),
+              child: Text(
+                'Sign In',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
