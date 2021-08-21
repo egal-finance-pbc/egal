@@ -30,15 +30,14 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> signup(String firstName, lastName, username, password) async {
+  Future<bool> signup(String phone, username, password) async {
     final response = await http.post(
       this.url + 'accounts/',
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
-        'first_name': firstName,
-        'last_name': lastName,
+        'phone': phone,
         'username': username,
         'password': password,
       }),
@@ -129,10 +128,11 @@ class API {
 class Payment {
   final String amount;
   final String description;
+  final String date;
   final User source;
   final User destination;
 
-  Payment({this.amount, this.description, this.source, this.destination});
+  Payment({this.amount, this.description, this.date, this.source, this.destination});
 
   static List<Payment> fromList(List<dynamic> list) {
     var payments = List<Payment>();
@@ -140,6 +140,7 @@ class Payment {
       payments.add(Payment(
         amount: item['amount'],
         description: item['description'],
+        date: item['date'],
         source: User.fromJson(item['source']),
         destination: User.fromJson(item['destination']),
       ));
