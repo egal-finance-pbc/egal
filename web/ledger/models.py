@@ -14,4 +14,5 @@ class Payment(models.Model):
     destination = models.ForeignKey(Account, on_delete=models.DO_NOTHING, related_name='received_payments')
     description = models.CharField(max_length=1024, null=True)
     amount = models.DecimalField(max_digits=20, decimal_places=2)
+    date = models.DateField(auto_now_add=True)
     transaction_url = models.TextField(null=True)
