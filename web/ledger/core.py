@@ -21,7 +21,7 @@ class Gateway:
         self.server = stellar.Server(horizon_url=settings.STELLAR_HORIZON_URL)
 
     @transaction.atomic
-    def create_account(self, username, password, first_name, last_name) -> models.Account:
+    def create_account(self, username, phone, password) -> models.Account:
         if User.objects.filter(username=username).exists():
             raise LedgerError('account already exists')
         kp = self.create_keypair()
@@ -32,8 +32,8 @@ class Gateway:
         if r.status_code != 200:
             logger.error('Failed to fund stellar account', addr=kp.public_key, error=r.text)
             raise LedgerError('account creation failed', r.text)
-        user = User.objects.create_user(username, password=password, first_name=first_name, last_name=last_name)
-        return models.Account.objects.create(user=user, public_key=kp.public_key, secret=kp.secret)
+        user = User.objects.create_user(username, password=password)
+        return models.Account.objects.create(user=user, public_key=kp.public_key, secret=kp.secret, phone=phone)
 
     @staticmethod
     def create_keypair() -> stellar.Keypair:

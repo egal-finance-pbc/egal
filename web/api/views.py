@@ -59,10 +59,9 @@ class Accounts(APIView):
 
         try:
             account = self.ledger.create_account(
-                first_name=payload.validated_data['first_name'],
-                last_name=payload.validated_data['last_name'],
                 username=payload.validated_data['username'],
                 password=payload.validated_data['password'],
+                phone=payload.validated_data['phone'],
             )
             return Response(status=status.HTTP_201_CREATED)
 
@@ -135,6 +134,7 @@ class Payments(APIView):
         return Response(data=[{
             'amount': str(p.amount),
             'description': p.description,
+            'date': p.date,
             'source': {
                 'username': p.source.user.username,
                 'first_name': p.source.user.first_name,

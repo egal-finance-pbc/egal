@@ -2,10 +2,9 @@ from rest_framework import serializers
 
 
 class SignUp(serializers.Serializer):
-    first_name = serializers.CharField(max_length=150)
-    last_name = serializers.CharField(max_length=150)
-    username = serializers.CharField(max_length=150)
-    password = serializers.CharField(min_length=8)
+    username = serializers.CharField(min_length=6, max_length=12)
+    password = serializers.CharField(min_length=8, max_length=12)
+    phone = serializers.CharField(min_length=10, max_length=15)
 
     def create(self, validated_data):
         pass
