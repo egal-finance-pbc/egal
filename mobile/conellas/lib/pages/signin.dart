@@ -36,7 +36,7 @@ class _SignInPageState extends State<SignInPage> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: size.height * 0.5),
+                    height: size.height * 0.53,
                     //height: 320,
                     decoration: BoxDecoration(
                         color: Color(0xff3B2F8F),
@@ -82,7 +82,7 @@ class _SignInPageState extends State<SignInPage> {
                         Container(
                           margin: EdgeInsets.all(10),
                           height: 2.0,
-                          width: 130.0,
+                          width: size.width * 0.3,
                           color: Colors.white,
                         ),
                         Text(
@@ -95,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
                         Container(
                           margin: EdgeInsets.all(10),
                           height: 2.0,
-                          width: 130.0,
+                          width: size.width * 0.3,
                           color: Colors.white,
                         ),
                       ],
@@ -104,7 +104,7 @@ class _SignInPageState extends State<SignInPage> {
                   Container(
                     margin: EdgeInsets.only(top: size.height * 0.74),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         FlatButton(
                           onPressed: () async {
@@ -187,7 +187,10 @@ showAlertDialog(BuildContext context) {
   );
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Invitation QR", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+    title: Text(
+      "Invitation QR",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
     content: Image.asset('assets/PruebaApp1.png'),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
     actions: [
@@ -225,153 +228,166 @@ class _LoginFormState extends State<LoginForm> {
     Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.19),
-            padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-            child: TextFormField(
-              controller: this.usernameController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Missing username';
-                } else if (value.length > 150) {
-                  return 'Username length exceeded';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                labelText: 'Phone #',
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-                hintText: 'Phone #',
-                hintTextDirection: TextDirection.rtl,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.all(20),
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-            child: TextFormField(
-              controller: this.passwordController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Missing password';
-                }
-                return null;
-              },
-              obscureText: true,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                labelText: 'Passcode',
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-                hintText: 'passcode',
-                hintTextDirection: TextDirection.rtl,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.all(20),
-              ),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.fromLTRB(30, 10, 5, 10),
-                child: Transform.scale(
-                  scale: 1.3,
-                  child: Checkbox(
-                    activeColor: Color(0xffF8991C),
-                    checkColor: Colors.white,
-                    value: isChecked,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isChecked = value;
-                      });
-                    },
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: size.height,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.22, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: TextFormField(
+                      controller: this.usernameController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (value.length > 150) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Phone #',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Phone #',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Text(
-                'Keep me signed in',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.10),
-            padding: EdgeInsets.fromLTRB(60, 10, 60, 10),
-            width: double.infinity,
-            height: 70,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xff3B2F8F),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-              ),
-              onPressed: () async {
-                if (!_formKey.currentState.validate()) {
-                  return;
-                }
-                try {
-                  var token = await widget.deps.api.login(
-                    this.usernameController.text,
-                    this.passwordController.text,
-                  );
-                  var sessionStorage = widget.deps.session;
-                  await sessionStorage.set('token', token.token);
-
-                  var me = await widget.deps.api.me();
-                  await sessionStorage.set('publicKey', me.publicKey);
-
-                  Navigator.pushNamed(context, '/home');
-                } catch (err) {
-                  await FlutterSession().set('token', '');
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: err.title(),
-                        content: err.content(),
-                        actions: [
-                          FlatButton(
-                            child: Text("Try again"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.33, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: TextFormField(
+                      controller: this.passwordController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Missing password';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Passcode',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'passcode',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, size.height*0.43, 0, size.height*0.43),
+                        padding: EdgeInsets.fromLTRB(30, 0, 5, 0),
+                        child: Transform.scale(
+                          scale: 1.3,
+                          child: Checkbox(
+                            activeColor: Color(0xffF8991C),
+                            checkColor: Colors.white,
+                            value: isChecked,
+                            onChanged: (bool value) {
+                              setState(() {
+                                isChecked = value;
+                              });
                             },
                           ),
-                        ],
-                      );
-                    },
-                    barrierDismissible: false,
-                  );
-                }
-              },
-              child: Text(
-                'Sign In',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        'Keep me signed in',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.59, 0, 0),
+                    padding: EdgeInsets.fromLTRB(60, 0, 60, 0),
+                    width: double.infinity,
+                    height: size.height * 0.06,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xff3B2F8F),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
+                      ),
+                      onPressed: () async {
+                        if (!_formKey.currentState.validate()) {
+                          return;
+                        }
+                        try {
+                          var token = await widget.deps.api.login(
+                            this.usernameController.text,
+                            this.passwordController.text,
+                          );
+                          var sessionStorage = widget.deps.session;
+                          await sessionStorage.set('token', token.token);
+
+                          var me = await widget.deps.api.me();
+                          await sessionStorage.set('publicKey', me.publicKey);
+
+                          Navigator.pushNamed(context, '/navigatorBar');
+                        } catch (err) {
+                          await FlutterSession().set('token', '');
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: err.title(),
+                                content: err.content(),
+                                actions: [
+                                  FlatButton(
+                                    child: Text("Try again"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                            barrierDismissible: false,
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
