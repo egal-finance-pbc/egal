@@ -1,3 +1,4 @@
+import 'package:conellas/pages/navigatorBar.dart';
 import 'package:flutter/material.dart';
 
 import 'common/deps.dart';
@@ -25,6 +26,8 @@ class ConEllasApp extends StatelessWidget {
         '/home': (context) => HomePage(deps),
         '/search': (context) => SearchPage(deps),
         '/send': (context) => SendPage(deps),
+        '/navigatorBar': (context) => BottomNavBar(deps),
+
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

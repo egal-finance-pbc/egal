@@ -10,10 +10,12 @@ class SignUpPage extends StatefulWidget {
   SignUpPage(this.deps, {Key key}) : super(key: key);
 
   @override
-  _SignUpPageState createState() => new _SignUpPageState();
+  _SignUpPageState createState() => new _SignUpPageState(deps);
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  _SignUpPageState(Dependencies deps);
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: size.height * 0.47),
+                    margin: EdgeInsets.only(bottom: size.height * 0.45),
                     //height: 320,
                     decoration: BoxDecoration(
                         color: Color(0xff3B2F8F),
@@ -41,27 +43,19 @@ class _SignUpPageState extends State<SignUpPage> {
                           bottomRight: Radius.circular(40),
                         )),
                   ),
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: size.height * 0.93),
-                      child: Image.asset('assets/Logo.png',
-                          height: size.height * 0.9,
-                          alignment: Alignment.center),
-                    ),
-                  ),
                   SignUpForm(widget.deps),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.06),
+                    margin: EdgeInsets.only(top: size.height * 0),
                     child: Row(
                       children: <Widget>[
                         Text(
-                          'Don\'t have an account?',
+                          'Already an user?',
                           style: TextStyle(color: Colors.white),
                         ),
                         FlatButton(
                           textColor: Color(0xffF8991C),
                           child:
-                              Text('Sign up', style: TextStyle(fontSize: 16)),
+                              Text('Sign In', style: TextStyle(fontSize: 16)),
                           onPressed: () {
                             Navigator.pushNamed(context, '/signup');
                           },
@@ -71,14 +65,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.7),
+                    margin: EdgeInsets.only(top: size.height *  0.75),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.all(10),
                           height: 2.0,
-                          width: 130.0,
+                          width: size.width * 0.3,
                           color: Colors.white,
                         ),
                         Text(
@@ -91,14 +85,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         Container(
                           margin: EdgeInsets.all(10),
                           height: 2.0,
-                          width: 130.0,
+                          width: size.width * 0.3,
                           color: Colors.white,
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.74),
+                    margin: EdgeInsets.only(top: size.height * 0.79),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -226,240 +220,237 @@ class _SignUpFormState extends State<SignUpForm> {
     Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  margin: EdgeInsets.only(top: size.height * 0.10),
-                  padding: EdgeInsets.fromLTRB(30, 10, 5, 10),
-                  child: TextFormField(
-                    maxLength: 12,
-                    controller: firstNameController,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Missing first name';
-                      } else if (value.length > 150) {
-                        return 'First name length exceeded';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      helperStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: size.height,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.05, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                    child: TextFormField(
+                      controller: firstNameController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Missing first name';
+                        } else if (value.length > 150) {
+                          return 'First name length exceeded';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        helperStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Firts name',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Firts name',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
                       ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Firts name',
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                      hintText: 'Firts name',
-                      hintTextDirection: TextDirection.rtl,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.all(20),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(top: size.height * 0.10),
-                  padding: EdgeInsets.fromLTRB(5, 5, 30, 0),
-                  child: TextFormField(
-                    maxLength: 12,
-                    controller: lastNameController,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Missing last name';
-                      } else if (value.length > 150) {
-                        return 'Last name length exceeded';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      helperStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.14, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 10, 30,  0),
+                    child: TextFormField(
+                      controller: lastNameController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Missing last name';
+                        } else if (value.length > 150) {
+                          return 'Last name length exceeded';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        helperStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Last name',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Last name',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
                       ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Last name',
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                      hintText: 'Last name',
-                      hintTextDirection: TextDirection.rtl,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.all(20),
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.01),
-            padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
-            child: TextFormField(
-              maxLength: 12,
-              controller: usernameController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Missing username';
-                } else if (value.length > 150) {
-                  return 'Username length exceeded';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                helperStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                labelText: 'Username',
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-                hintText: 'Username',
-                hintTextDirection: TextDirection.rtl,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.all(20),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.24, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    child: TextFormField(
+                      controller: usernameController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (value.length > 150) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        helperStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Username',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Username',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.34, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    child: TextFormField(
+                      controller: passwordController,
+                      keyboardType: TextInputType.text,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Please a Enter Password';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        helperStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Passcode',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Passcode',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height*0.44, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    child: TextFormField(
+                        controller: confirmPasswordController,
+                      keyboardType: TextInputType.text,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Please re-enter password';
+                        }
+                        if (passwordController.text !=
+                            confirmPasswordController.text) {
+                          return "Passwords don't match";
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        helperStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Confirm Passcode',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Confirm Passcode',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: size.height * 0.63),
+                    padding: EdgeInsets.fromLTRB(60, 10, 60, 10),
+                    width: double.infinity,
+                    height: 70,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xff3B2F8F),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
+                      ),
+                      onPressed: () async {
+                        if (!_formKey.currentState.validate()) {
+                          return;
+                        }
+                        try {
+                          await widget.deps.api.signup(
+                            this.firstNameController.text,
+                            this.lastNameController.text,
+                            this.usernameController.text,
+                            this.passwordController.text,
+                          );
+                          showSuccessDialog(context);
+                        } catch (err) {
+                          showErrorDialog(context, err);
+                        }
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.01),
-            padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-            child: TextFormField(
-              maxLength: 12,
-              controller: passwordController,
-              keyboardType: TextInputType.text,
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please a Enter Password';
-                }
-                return null;
-              },
-              obscureText: true,
-              decoration: InputDecoration(
-                helperStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                labelText: 'Passcode',
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-                hintText: 'Passcode',
-                hintTextDirection: TextDirection.rtl,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.all(20),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.01),
-            padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-            child: TextFormField(
-              maxLength: 12,
-              controller: confirmPasswordController,
-              keyboardType: TextInputType.text,
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please re-enter password';
-                }
-                if (passwordController.text != confirmPasswordController.text) {
-                  return "Passwords don't match";
-                }
-                return null;
-              },
-              obscureText: true,
-              decoration: InputDecoration(
-                helperStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                labelText: 'Confirm Passcode',
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-                hintText: 'Confirm Passcode',
-                hintTextDirection: TextDirection.rtl,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.all(20),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.08),
-            padding: EdgeInsets.fromLTRB(60, 10, 60, 10),
-            width: double.infinity,
-            height: 70,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xff3B2F8F),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-              ),
-              onPressed: () async {
-                if (!_formKey.currentState.validate()) {
-                  return;
-                }
-                try {
-                  await widget.deps.api.signup(
-                    this.firstNameController.text,
-                    this.lastNameController.text,
-                    this.usernameController.text,
-                    this.passwordController.text,
-                  );
-                  showSuccessDialog(context);
-                } catch (err) {
-                  showErrorDialog(context, err);
-                }
-              },
-              child: Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
