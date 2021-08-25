@@ -22,8 +22,8 @@ class Gateway:
 
     @transaction.atomic
     def create_account(self, username, phone, password) -> models.Account:
-        if User.objects.filter(username=username).exists():
-            raise LedgerError('account already exists')
+        if User.objects.filter(Q(username=username) | Q(account__phone=phone)).exists():
+            raise LedgerError('An account already exists for this phone and username combination!')
         kp = self.create_keypair()
         # Funding the account with Friendbot.
         r = requests.get(settings.STELLAR_FRIENDBOT_URL, params={
