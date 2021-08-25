@@ -121,7 +121,7 @@ class API {
     if (response.statusCode == 200) {
       return Payment.fromList(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 }
 
@@ -219,6 +219,7 @@ class APIError implements Exception {
   }
 
   Widget content() {
+    final Map<String, dynamic> detail = jsonDecode(message.body);
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
         return Container(
@@ -227,17 +228,15 @@ class APIError implements Exception {
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
         return Container(
-          child: Text(this.message.body),
+          child: Text(detail['detail']),
         );
       case HttpStatus.notFound:
         return Container(
-          child:
-          Text(this.message.body),
+          child: Text(detail['detail']),
         );
       case HttpStatus.internalServerError:
         return Container(
-          child:
-          Text(this.message.body),
+          child: Text(detail['detail']),
         );
       default:
         return Container(
