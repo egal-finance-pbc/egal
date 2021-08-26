@@ -34,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: size.height * 0.45),
+                    margin: EdgeInsets.only(bottom: size.height * 0.44),
                     //height: 320,
                     decoration: BoxDecoration(
                         color: Color(0xff3B2F8F),
@@ -43,9 +43,17 @@ class _SignUpPageState extends State<SignUpPage> {
                           bottomRight: Radius.circular(40),
                         )),
                   ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: size.height * 0.90),
+                      child: Image.asset('assets/Logo.png',
+                          height: size.height * 0.9,
+                          alignment: Alignment.center),
+                    ),
+                  ),
                   SignUpForm(widget.deps),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0),
+                    margin: EdgeInsets.only(top: size.height * 0.10),
                     child: Row(
                       children: <Widget>[
                         Text(
@@ -65,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: size.height *  0.75),
+                    margin: EdgeInsets.only(top: size.height * 0.75),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -209,9 +217,8 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
+  final phoneController = TextEditingController();
   final usernameController = TextEditingController();
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
@@ -229,15 +236,15 @@ class _SignUpFormState extends State<SignUpForm> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.05, 0, 0),
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.14, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
-                      controller: firstNameController,
+                      controller: phoneController,
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Missing first name';
+                          return 'Missing phone';
                         } else if (value.length > 150) {
-                          return 'First name length exceeded';
+                          return 'Username length exceeded';
                         }
                         return null;
                       },
@@ -248,13 +255,13 @@ class _SignUpFormState extends State<SignUpForm> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'Firts name',
+                        labelText: 'Phone#',
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         labelStyle: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
-                        hintText: 'Firts name',
+                        hintText: 'Phone#',
                         hintTextDirection: TextDirection.rtl,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -265,43 +272,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.14, 0, 0),
-                    padding: EdgeInsets.fromLTRB(30, 10, 30,  0),
-                    child: TextFormField(
-                      controller: lastNameController,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Missing last name';
-                        } else if (value.length > 150) {
-                          return 'Last name length exceeded';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        helperStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText: 'Last name',
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Last name',
-                        hintTextDirection: TextDirection.rtl,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.24, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.24, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
                       controller: usernameController,
@@ -337,12 +308,12 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.34, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.34, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
                       controller: passwordController,
                       keyboardType: TextInputType.text,
-                      validator: (String value) {
+                      validator: (value) {
                         if (value.isEmpty) {
                           return 'Please a Enter Password';
                         }
@@ -373,10 +344,10 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.44, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.44, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
-                        controller: confirmPasswordController,
+                      controller: confirmPasswordController,
                       keyboardType: TextInputType.text,
                       validator: (String value) {
                         if (value.isEmpty) {
@@ -429,8 +400,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         }
                         try {
                           await widget.deps.api.signup(
-                            this.firstNameController.text,
-                            this.lastNameController.text,
+                            this.phoneController.text,
                             this.usernameController.text,
                             this.passwordController.text,
                           );
@@ -456,15 +426,30 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void showSuccessDialog(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     var successDialog = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      contentPadding: const EdgeInsets.all(20),
+      actionsPadding: const EdgeInsets.only(top: 60),
+      titlePadding: const EdgeInsets.all(20),
       title: Text("Successful registration"),
       content: Text("You can login now"),
       actions: [
-        FlatButton(
-          child: Text("OK"),
-          onPressed: () {
-            Navigator.pushNamed(context, '/');
-          },
+        Center(
+          child: Container(
+            width: size.width * 0.50,
+            height: size.height * 0.06,
+            child: FlatButton(
+              color: Color(0xff3B2F8F),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
+            ),
+          ),
         ),
       ],
     );
@@ -478,15 +463,26 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void showErrorDialog(BuildContext context, err) {
+    Size size = MediaQuery.of(context).size;
     var errorDialog = AlertDialog(
       title: err.title(),
       content: err.content(),
       actions: [
-        FlatButton(
-          child: Text("Try again"),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        Center(
+          child: Container(
+            width: size.width * 0.50,
+            height: size.height * 0.06,
+            child: FlatButton(
+              color: Color(0xff3B2F8F),
+              child: Text("Try again"),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
         ),
       ],
     );

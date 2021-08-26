@@ -1,7 +1,9 @@
 import 'package:conellas/common/deps.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
+import 'package:conellas/pages/search.dart';
 import 'package:intl/intl.dart';
 
 final currency = new NumberFormat.simpleCurrency();
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           SizedBox(
             height: size.height,
-            child:  Stack(
+            child: Stack(
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.fromLTRB(0, size.height * 0.04, 0, 0),
@@ -91,10 +93,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-
-
-
-
                 Container(
                   margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, 0),
                   child: Row(
@@ -106,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                           if (snapshot.hasData) {
                             // TODO: use tryParse as recommended and handle error.
                             double balanceDouble =
-                            double.parse(snapshot.data.balance);
+                                double.parse(snapshot.data.balance);
                             return Text(
                               currency.format(balanceDouble),
                               textAlign: TextAlign.center,
@@ -135,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
                         child: FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/search');
+                            Navigator.push(context, CupertinoPageRoute(builder: (context)=> SearchPage(widget.deps)));
                           },
                           child: Text(
                             'Send',
@@ -154,7 +152,9 @@ class _HomePageState extends State<HomePage> {
                         height: size.height * 0.05,
                         padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
                         child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/scan_qr');
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
@@ -219,34 +219,64 @@ class _HomePageState extends State<HomePage> {
                     var color = Colors.red;
                     var iconArrow = Icons.call_made_rounded;
                     var action = '-';
-                    var sender = item.destination.fullName();
+                    var sender = item.destination.username;
                     var backcolor = Color.fromRGBO(255, 153, 0, 0.20);
                     var descrip = item.description;
+                    var dates = item.date;
+                    DateTime now = new DateTime.now();
+                    var datenow = new DateTime(now.year, now.month, now.day);
 
                     if (me.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received_rounded;
                       action = '+';
-                      sender = item.source.fullName();
+                      sender = item.source.username;
                     }
 
-                    if(item.description == null){
+                    if (item.description == null) {
                       descrip = ' ';
                     }
 
-                    return ListTile(
-                      leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
-                      title: Text(sender),
-                      subtitle: Text(descrip),
-                      trailing: Text(
-                        '$action $amount',
-                        style: TextStyle(color: color),
-                      ),
-                      tileColor: backcolor,
+                    if(item.date == datenow){
+                      return ListTile(
+                        leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
+                        title: Text(sender),
+                        subtitle: Text(descrip),
+                        trailing: Text(
+                          '$action $amount',
+                          style: TextStyle(color: color),
+                        ),
+                        tileColor: backcolor,
+                      );
+                    }
+
+                    return Column(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.center,
+                          width: double.maxFinite,
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(width: 3.0, color: Color(0xff3b2f8f)),
+                            ),
+                          ),
+                          child: Text(dates),
+                        ),
+                        ListTile(
+                          leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
+                          title: Text(sender),
+                          subtitle: Text(descrip),
+                          trailing: Text(
+                            '$action $amount',
+                            style: TextStyle(color: color),
+                          ),
+                          tileColor: backcolor,
+                        ),
+                      ],
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return Divider(height: 10,color: Colors.white,thickness: 2,);
+                    return Divider(height: 0,color: Colors.transparent,thickness: 2,);
                   },
                 );
               }
@@ -285,7 +315,7 @@ class _State extends State<Name> {
       future: futureMe,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Text('${snapshot.data.firstName} ${snapshot.data.lastName}');
+          return Text('${snapshot.data.username}');
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }

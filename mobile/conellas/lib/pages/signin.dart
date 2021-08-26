@@ -252,13 +252,13 @@ class _LoginFormState extends State<LoginForm> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'Phone #',
+                        labelText: 'Username',
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         labelStyle: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
-                        hintText: 'Phone #',
+                        hintText: 'Username',
                         hintTextDirection: TextDirection.rtl,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -360,15 +360,29 @@ class _LoginFormState extends State<LoginForm> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                contentPadding: const EdgeInsets.all(20),
+                                actionsPadding: const EdgeInsets.only(top: 60),
+                                titlePadding: const EdgeInsets.all(20),
                                 title: err.title(),
                                 content: err.content(),
                                 actions: [
-                                  FlatButton(
-                                    child: Text("Try again"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
+                                  Center(
+                                    child: Container(
+                                      width: size.width*0.50,
+                                      height: size.height * 0.06,
+                                      child: FlatButton(
+                                        color: Color(0xff3B2F8F),
+                                        child: Text("Try again"),
+                                        textColor: Colors.white,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ),
                                   ),
+
                                 ],
                               );
                             },
