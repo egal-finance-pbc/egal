@@ -121,7 +121,7 @@ class API {
     if (response.statusCode == 200) {
       return Payment.fromList(json.decode(response.body));
     }
-    throw Exception(response.body);
+    throw APIError.fromResponse(response);
   }
 }
 
@@ -185,7 +185,6 @@ class User {
 }
 
 class APIError implements Exception {
-  //final int statusCode;
   final http.Response message;
 
   APIError({this.message});
@@ -220,25 +219,24 @@ class APIError implements Exception {
   }
 
   Widget content() {
+    final Map<String, dynamic> detail = jsonDecode(message.body);
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
         return Container(
-          child: Text("Specific field is not filled"),
+          child: Text(this.message.body),
         );
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
         return Container(
-          child: Text(
-              "Detail: access is not authorized, authentication token is missing"),
+          child: Text(detail['detail']),
         );
       case HttpStatus.notFound:
         return Container(
-          child:
-              Text("Detail: the page you are trying to access cannot be found"),
+          child: Text(detail['detail']),
         );
       case HttpStatus.internalServerError:
         return Container(
-          child: Text("Detail: something went wrong"),
+          child: Text(detail['detail']),
         );
       default:
         return Container(
