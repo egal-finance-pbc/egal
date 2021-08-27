@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../clients/api.dart';
+import 'package:international_phone_input/international_phone_input.dart';
 
 class SignUpPage extends StatefulWidget {
   final Dependencies deps;
@@ -219,11 +220,19 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final phoneController = TextEditingController();
+  String phone;
+  //final phoneController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isHidden = false;
+
+  void onPhoneNumberChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
+    setState(() {
+      phone = internationalizedPhoneNumber;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -245,24 +254,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                    child: TextFormField(
-                      controller: phoneController,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        RegExp regNum = RegExp(r'^(?=.*?[0-9]).{10,15}$');
-                        if (value.isEmpty) {
-                          return 'Missing phone';
-                        } else if (!regNum.hasMatch(value)) {
-                          return '10 characters minimum, 15 maximum';
-                        } else if (regMayus.hasMatch(value) ||
-                            regChar.hasMatch(value) ||
-                            regMinus.hasMatch(value)) {
-                          return 'no alphabetic and special characters';
-                        } else if (value.length > 12) {
-                          return 'phone length exceeded';
-                        }
-                        return null;
-                      },
+                    child: InternationalPhoneInput(
+                      errorText: 'no alphabetic and special characters',
+                      errorMaxLines: 15,
                       decoration: InputDecoration(
                         errorStyle:
                             TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
@@ -286,6 +280,10 @@ class _SignUpFormState extends State<SignUpForm> {
                         ),
                         contentPadding: const EdgeInsets.all(20),
                       ),
+                        onPhoneNumberChange: onPhoneNumberChange,
+                        initialPhoneNumber: phone,
+                        initialSelection: 'MX',
+                        showCountryCodes: true
                     ),
                   ),
                   Container(
@@ -456,7 +454,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         }
                         try {
                           await widget.deps.api.signup(
-                            this.phoneController.text,
+                            this.phone,
                             this.usernameController.text,
                             this.passwordController.text,
                           );
