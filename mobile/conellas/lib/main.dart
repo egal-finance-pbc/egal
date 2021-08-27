@@ -1,3 +1,4 @@
+import 'package:conellas/pages/QRscan.dart';
 import 'package:conellas/pages/navigatorBar.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,8 @@ class ConEllasApp extends StatelessWidget {
         '/search': (context) => SearchPage(deps),
         '/send': (context) => SendPage(deps),
         '/navigatorBar': (context) => BottomNavBar(deps),
+        '/scanners': (context) => QRViewExample(),
+
 
       },
       theme: ThemeData(

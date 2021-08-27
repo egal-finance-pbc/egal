@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/pages/QRscan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
@@ -153,8 +154,7 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
                         child: FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/scan_qr');
-                          },
+                            Navigator.push(context, CupertinoPageRoute(builder: (context)=> QRViewExample()));                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
