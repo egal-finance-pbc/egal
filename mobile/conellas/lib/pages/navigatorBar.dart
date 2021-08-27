@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
 
+import 'QRscan.dart';
+
 class BottomNavBar extends StatefulWidget {
   final Dependencies deps;
 
@@ -27,7 +29,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
     List<Widget> _children() => [
           HomePage(widget.deps),
           SearchPage(widget.deps),
-          Text('4'),
         ];
     return  CupertinoTabScaffold(
         tabBar: CupertinoTabBar(

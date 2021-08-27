@@ -45,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: size.height * 0.90),
+                      margin: EdgeInsets.only(bottom: size.height * 0.94),
                       child: Image.asset('assets/Logo.png',
                           height: size.height * 0.9,
                           alignment: Alignment.center),
@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SignUpForm(widget.deps),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.10),
+                    margin: EdgeInsets.only(top: size.height * 0.06),
                     child: Row(
                       children: <Widget>[
                         Text(
@@ -65,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           child:
                               Text('Sign In', style: TextStyle(fontSize: 16)),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/signup');
+                            Navigator.pushNamed(context, '/');
                           },
                         )
                       ],
@@ -132,7 +132,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/scanners');
+                          },
                           child: Icon(
                             IconData(57683, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
@@ -221,9 +223,14 @@ class _SignUpFormState extends State<SignUpForm> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  bool _isHidden = false;
 
   @override
   Widget build(BuildContext context) {
+    RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+    RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+    RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+    RegExp regChar = RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
     Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
@@ -236,22 +243,32 @@ class _SignUpFormState extends State<SignUpForm> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.14, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
                       controller: phoneController,
+                      keyboardType: TextInputType.number,
                       validator: (value) {
+                        RegExp regNum = RegExp(r'^(?=.*?[0-9]).{10,15}$');
                         if (value.isEmpty) {
                           return 'Missing phone';
-                        } else if (value.length > 150) {
-                          return 'Username length exceeded';
+                        } else if (!regNum.hasMatch(value)) {
+                          return '10 characters minimum, 15 maximum';
+                        } else if (regMayus.hasMatch(value) ||
+                            regChar.hasMatch(value) ||
+                            regMinus.hasMatch(value)) {
+                          return 'no alphabetic and special characters';
+                        } else if (value.length > 12) {
+                          return 'phone length exceeded';
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                        helperStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
@@ -272,22 +289,37 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.24, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
                       controller: usernameController,
                       validator: (value) {
+                        RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+                        RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+                        RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                        RegExp regUser = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
                         if (value.isEmpty) {
                           return 'Missing username';
-                        } else if (value.length > 150) {
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regUser.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
                           return 'Username length exceeded';
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                        helperStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
@@ -308,27 +340,49 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.34, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.32, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
                       controller: passwordController,
                       keyboardType: TextInputType.text,
                       validator: (value) {
+                        RegExp regPass = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,12}');
                         if (value.isEmpty) {
                           return 'Please a Enter Password';
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regChar.hasMatch(value)) {
+                          return 'at least 1 special character';
+                        } else if (!regPass.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
+                          return 'Username length exceeded';
                         }
                         return null;
                       },
-                      obscureText: true,
+                      obscureText: _isHidden,
                       decoration: InputDecoration(
-                        helperStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
                         labelText: 'Passcode',
                         floatingLabelBehavior: FloatingLabelBehavior.never,
+                        suffixIcon: InkWell(
+                          onTap: _togglePasswordView,
+                          child: Icon( _isHidden
+                              ? Icons.visibility
+                              : Icons.visibility_off, color: Color(0xffF8991C),),
+                        ),
                         labelStyle: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
@@ -344,7 +398,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.44, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.43, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
                     child: TextFormField(
                       controller: confirmPasswordController,
@@ -361,9 +415,11 @@ class _SignUpFormState extends State<SignUpForm> {
                       },
                       obscureText: true,
                       decoration: InputDecoration(
-                        helperStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
@@ -424,7 +480,11 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
-
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
   void showSuccessDialog(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var successDialog = AlertDialog(
