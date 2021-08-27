@@ -33,6 +33,7 @@ dependencies:
   url_launcher: ^6.0.5
   curved_navigation_bar: ^1.0.1
   qr_code_scanner: ^0.5.2
+  international_phone_input: ^1.0.4
 
 
 
