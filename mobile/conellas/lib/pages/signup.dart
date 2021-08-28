@@ -2,6 +2,7 @@ import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:international_phone_input/international_phone_input.dart';
 import '../clients/api.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -121,7 +122,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/phones');
+                          },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
@@ -219,11 +222,19 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final phoneController = TextEditingController();
+  String phone;
+  //final phoneController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isHidden = false;
+
+  void onPhoneNumberChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
+    setState(() {
+      phone = internationalizedPhoneNumber;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,50 +254,43 @@ class _SignUpFormState extends State<SignUpForm> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
-                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                    child: TextFormField(
-                      controller: phoneController,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        RegExp regNum = RegExp(r'^(?=.*?[0-9]).{10,15}$');
-                        if (value.isEmpty) {
-                          return 'Missing phone';
-                        } else if (!regNum.hasMatch(value)) {
-                          return '10 characters minimum, 15 maximum';
-                        } else if (regMayus.hasMatch(value) ||
-                            regChar.hasMatch(value) ||
-                            regMinus.hasMatch(value)) {
-                          return 'no alphabetic and special characters';
-                        } else if (value.length > 12) {
-                          return 'phone length exceeded';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        errorStyle:
-                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: new BorderSide(
-                              color: Color(0xffF8991C), width: 2),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText: 'Phone#',
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Phone#',
-                        hintTextDirection: TextDirection.rtl,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
-                      ),
+                    margin: EdgeInsets.fromLTRB(30, size.height * 0.11, 30, 0),
+                    padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
+                    child: InternationalPhoneInput(
+                        enabledCountries: ['+91', '+1','+52'],
+                        errorText: 'no alphabetic and special characters',
+                        errorMaxLines: 15,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              fontSize: 14.0, color: Color(0xffF8991C)),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(
+                                color: Color(0xffF8991C), width: 2),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'Phone#',
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                          hintText: 'Phone#',
+                          hintTextDirection: TextDirection.rtl,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.all(20),
+                        ),
+                        onPhoneNumberChange: onPhoneNumberChange,
+                        initialPhoneNumber: phone,
+                        initialSelection: 'MX',
+                        showCountryCodes: true),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
@@ -379,9 +383,10 @@ class _SignUpFormState extends State<SignUpForm> {
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: InkWell(
                           onTap: _togglePasswordView,
-                          child: Icon( _isHidden
-                              ? Icons.visibility
-                              : Icons.visibility_off, color: Color(0xffF8991C),),
+                          child: Icon(
+                            _isHidden ? Icons.visibility : Icons.visibility_off,
+                            color: Color(0xffF8991C),
+                          ),
                         ),
                         labelStyle: TextStyle(
                             color: Colors.black,
@@ -456,7 +461,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         }
                         try {
                           await widget.deps.api.signup(
-                            this.phoneController.text,
+                            this.phone,
                             this.usernameController.text,
                             this.passwordController.text,
                           );
@@ -480,11 +485,13 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
+
   void _togglePasswordView() {
     setState(() {
       _isHidden = !_isHidden;
     });
   }
+
   void showSuccessDialog(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var successDialog = AlertDialog(
