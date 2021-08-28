@@ -1,6 +1,7 @@
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../clients/api.dart';
 
@@ -121,7 +122,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/phone');
+                          },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
@@ -224,7 +227,17 @@ class _SignUpFormState extends State<SignUpForm> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isHidden = false;
+  String initialCountry = 'MX';
+  PhoneNumber number = PhoneNumber(isoCode: 'MX');
 
+  void getPhoneNumber(String phoneNumber) async {
+    PhoneNumber number =
+    await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'US');
+
+    setState(() {
+      this.number = number;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
@@ -245,25 +258,8 @@ class _SignUpFormState extends State<SignUpForm> {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                    child: TextFormField(
-                      controller: phoneController,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        RegExp regNum = RegExp(r'^(?=.*?[0-9]).{10,15}$');
-                        if (value.isEmpty) {
-                          return 'Missing phone';
-                        } else if (!regNum.hasMatch(value)) {
-                          return '10 characters minimum, 15 maximum';
-                        } else if (regMayus.hasMatch(value) ||
-                            regChar.hasMatch(value) ||
-                            regMinus.hasMatch(value)) {
-                          return 'no alphabetic and special characters';
-                        } else if (value.length > 12) {
-                          return 'phone length exceeded';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
+                    child: InternationalPhoneNumberInput(
+                      inputDecoration: InputDecoration(
                         errorStyle:
                             TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
                         errorBorder: OutlineInputBorder(
@@ -286,6 +282,27 @@ class _SignUpFormState extends State<SignUpForm> {
                         ),
                         contentPadding: const EdgeInsets.all(20),
                       ),
+                      onInputChanged: (PhoneNumber number) {
+                        print(number.phoneNumber);
+                      },
+                      onInputValidated: (bool value) {
+                        print(value);
+                      },
+                      selectorConfig: SelectorConfig(
+                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      ),
+                      ignoreBlank: false,
+                      autoValidateMode: AutovalidateMode.disabled,
+                      selectorTextStyle: TextStyle(color: Colors.black),
+                      initialValue: number,
+                      textFieldController: phoneController,
+                      formatInput: false,
+                      keyboardType: TextInputType.numberWithOptions(
+                          signed: true, decimal: true),
+                      inputBorder: OutlineInputBorder(),
+                      onSaved: (PhoneNumber number) {
+                        print('On Saved: $number');
+                      },
                     ),
                   ),
                   Container(
@@ -379,9 +396,10 @@ class _SignUpFormState extends State<SignUpForm> {
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: InkWell(
                           onTap: _togglePasswordView,
-                          child: Icon( _isHidden
-                              ? Icons.visibility
-                              : Icons.visibility_off, color: Color(0xffF8991C),),
+                          child: Icon(
+                            _isHidden ? Icons.visibility : Icons.visibility_off,
+                            color: Color(0xffF8991C),
+                          ),
                         ),
                         labelStyle: TextStyle(
                             color: Colors.black,
@@ -480,11 +498,13 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
+
   void _togglePasswordView() {
     setState(() {
       _isHidden = !_isHidden;
     });
   }
+
   void showSuccessDialog(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var successDialog = AlertDialog(
