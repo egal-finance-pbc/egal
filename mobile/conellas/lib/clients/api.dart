@@ -223,7 +223,7 @@ class APIError implements Exception {
     final username = detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
     final password = detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
     final non_field_errors = detail['non_field_errors'].toString().replaceAll("[", "").replaceAll("]", "");
-    
+
     getError(){
       if(username != 'null' && password == 'null'){
         return Text(username);
