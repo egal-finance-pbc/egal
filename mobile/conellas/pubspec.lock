@@ -57,13 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.6"
   fake_async:
     dependency: transitive
     description:
@@ -121,6 +114,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
+  international_phone_input:
+    dependency: "direct main"
+    description:
+      name: international_phone_input
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   intl:
     dependency: "direct main"
     description:
@@ -128,13 +128,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
-  intl_phone_number_input:
-    dependency: "direct main"
-    description:
-      name: intl_phone_number_input
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0"
   js:
     dependency: transitive
     description:
@@ -149,27 +142,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  libphonenumber_platform_interface:
-    dependency: transitive
-    description:
-      name: libphonenumber_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
-  libphonenumber_plugin:
-    dependency: transitive
-    description:
-      name: libphonenumber_plugin
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
-  libphonenumber_web:
-    dependency: transitive
-    description:
-      name: libphonenumber_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   matcher:
     dependency: transitive
     description:

@@ -1,8 +1,8 @@
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:international_phone_input/international_phone_input.dart';
 import '../clients/api.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -123,7 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/phone');
+                            Navigator.pushNamed(context, '/phones');
                           },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
@@ -222,22 +222,20 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final phoneController = TextEditingController();
+  String phone;
+  //final phoneController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isHidden = false;
-  String initialCountry = 'MX';
-  PhoneNumber number = PhoneNumber(isoCode: 'MX');
 
-  void getPhoneNumber(String phoneNumber) async {
-    PhoneNumber number =
-    await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'US');
-
+  void onPhoneNumberChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
     setState(() {
-      this.number = number;
+      phone = internationalizedPhoneNumber;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
@@ -256,54 +254,43 @@ class _SignUpFormState extends State<SignUpForm> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
-                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                    child: InternationalPhoneNumberInput(
-                      inputDecoration: InputDecoration(
-                        errorStyle:
-                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: new BorderSide(
-                              color: Color(0xffF8991C), width: 2),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText: 'Phone#',
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Phone#',
-                        hintTextDirection: TextDirection.rtl,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
-                      ),
-                      onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
-                      },
-                      onInputValidated: (bool value) {
-                        print(value);
-                      },
-                      selectorConfig: SelectorConfig(
-                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                      ),
-                      ignoreBlank: false,
-                      autoValidateMode: AutovalidateMode.disabled,
-                      selectorTextStyle: TextStyle(color: Colors.black),
-                      initialValue: number,
-                      textFieldController: phoneController,
-                      formatInput: false,
-                      keyboardType: TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
-                      inputBorder: OutlineInputBorder(),
-                      onSaved: (PhoneNumber number) {
-                        print('On Saved: $number');
-                      },
+                    margin: EdgeInsets.fromLTRB(30, size.height * 0.11, 30, 0),
+                    padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
+                    child: InternationalPhoneInput(
+                        enabledCountries: ['+91', '+1','+52'],
+                        errorText: 'no alphabetic and special characters',
+                        errorMaxLines: 15,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              fontSize: 14.0, color: Color(0xffF8991C)),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(
+                                color: Color(0xffF8991C), width: 2),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'Phone#',
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                          hintText: 'Phone#',
+                          hintTextDirection: TextDirection.rtl,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.all(20),
+                        ),
+                        onPhoneNumberChange: onPhoneNumberChange,
+                        initialPhoneNumber: phone,
+                        initialSelection: 'MX',
+                        showCountryCodes: true),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
@@ -474,7 +461,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         }
                         try {
                           await widget.deps.api.signup(
-                            this.phoneController.text,
+                            this.phone,
                             this.usernameController.text,
                             this.passwordController.text,
                           );
