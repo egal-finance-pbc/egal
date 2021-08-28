@@ -220,10 +220,27 @@ class APIError implements Exception {
 
   Widget content() {
     final Map<String, dynamic> detail = jsonDecode(message.body);
+    final username = detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
+    final password = detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
+    final non_field_errors = detail['non_field_errors'].toString().replaceAll("[", "").replaceAll("]", "");
+
+    getError(){
+      if(username != 'null' && password == 'null'){
+        return Text(username);
+      }else
+          if(password != 'null' && username == 'null'){
+            return Text(password);
+          }else
+            if(username != 'null' && password != 'null'){
+              return Text(username+' '+password);
+            }else
+              return Text(non_field_errors);
+    }
+
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
         return Container(
-          child: Text(this.message.body),
+          child: getError()
         );
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
