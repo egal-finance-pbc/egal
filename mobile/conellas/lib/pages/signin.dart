@@ -124,7 +124,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-
+                            Navigator.pushNamed(context, '/faces');
                           },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
@@ -323,7 +323,7 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                       Text(
-                        'Keep me signed in',
+                        'Remember',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
