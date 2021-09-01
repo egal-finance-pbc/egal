@@ -37,6 +37,7 @@ dependencies:
   camera: any
   path_provider: any
   path: any
+  local_auth: ^1.1.6
 
 
 dev_dependencies:
