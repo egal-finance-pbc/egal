@@ -123,7 +123,9 @@ class _SignInPageState extends State<SignInPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+
+                          },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
@@ -134,7 +136,9 @@ class _SignInPageState extends State<SignInPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/fingers');
+                          },
                           child: Icon(
                             IconData(57683, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
