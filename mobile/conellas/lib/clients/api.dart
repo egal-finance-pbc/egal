@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
   String url;
@@ -240,7 +243,7 @@ class APIError implements Exception {
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
         return Container(
-          child: getError()
+          child: getError(),
         );
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
@@ -297,5 +300,53 @@ class Token {
 
   factory Token.fromJson(Map<String, dynamic> json) {
     return Token(token: json['token']);
+  }
+}
+
+
+class LocalAuthApi {
+  static final _auth = LocalAuthentication();
+
+  static Future<bool> checkBiometrics() async {
+    try {
+      return await _auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      return false;
+    }
+  }
+
+  /*static Future<List<BiometricType>> getBiometrics() async {
+    try {
+      return await _auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      return <BiometricType>[];
+    }
+  }*/
+
+  static Future<bool> authenticate() async {
+    final isAvailable = await checkBiometrics();
+    if (!isAvailable) return false;
+
+    try {
+      return await _auth.authenticateWithBiometrics(
+        localizedReason: 'Scan Fingerprint to Authenticate',
+        useErrorDialogs: true,
+        stickyAuth: true,
+      );
+    } on PlatformException catch (e) {
+      return false;
+    }
+  }
+
+  static Future<void> loginWithBiometrics(BuildContext context) async {
+    try {
+      var authenticateWithBiometrics = await authenticate();
+
+      if(authenticateWithBiometrics){
+        Navigator.pushNamed(context, '/navigatorBar');
+      }
+    }catch (e) {
+      print('Uuups Something went wrong');
+    }
   }
 }

@@ -134,7 +134,9 @@ class _SignInPageState extends State<SignInPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            LocalAuthApi.loginWithBiometrics(context);
+                          },
                           child: Icon(
                             IconData(57683, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
@@ -352,6 +354,9 @@ class _LoginFormState extends State<LoginForm> {
 
                           var me = await widget.deps.api.me();
                           await sessionStorage.set('publicKey', me.publicKey);
+
+                          await FlutterSession().set('username', this.usernameController.text);
+                          await FlutterSession().set('password', this.passwordController.text);
 
                           Navigator.pushNamed(context, '/navigatorBar');
                         } catch (err) {
