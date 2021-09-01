@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Name(widget.deps),
-        leading: Icon(Icons.supervised_user_circle),
+        leading: Icon(Icons.face, size: 28,),
         actions: <Widget>[
           IconButton(
               onPressed: () {},

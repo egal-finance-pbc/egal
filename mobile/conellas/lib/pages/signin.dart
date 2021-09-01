@@ -123,7 +123,9 @@ class _SignInPageState extends State<SignInPage> {
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/faces');
+                          },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
@@ -135,7 +137,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            LocalAuthApi.loginWithBiometrics(context);
+                            Navigator.pushNamed(context, '/fingers');
                           },
                           child: Icon(
                             IconData(57683, fontFamily: 'MaterialIcons'),
@@ -321,7 +323,7 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                       Text(
-                        'Keep me signed in',
+                        'Remember',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,

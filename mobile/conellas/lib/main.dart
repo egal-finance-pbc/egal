@@ -3,6 +3,9 @@ import 'package:conellas/pages/navigatorBar.dart';
 import 'package:flutter/material.dart';
 
 import 'common/deps.dart';
+import 'instructionsPage/faceID.dart';
+import 'instructionsPage/fingerprint.dart';
+import 'instructionsPage/takePicture.dart';
 import 'pages/home.dart';
 import 'pages/search.dart';
 import 'pages/send.dart';
@@ -29,6 +32,10 @@ class ConEllasApp extends StatelessWidget {
         '/send': (context) => SendPage(deps),
         '/navigatorBar': (context) => BottomNavBar(deps),
         '/scanners': (context) => QRViewExample(),
+        '/photos': (context) => Photos(),
+        '/fingers': (context) => fingerAuto(),
+        '/faces': (context) => faceIdAuto(),
+
 
 
       },
