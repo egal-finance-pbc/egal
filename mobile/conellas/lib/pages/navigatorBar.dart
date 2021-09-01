@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/instructionsPage/takePicture.dart';
 import 'package:conellas/pages/home.dart';
 import 'package:conellas/pages/search.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -28,8 +29,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     List<Widget> _children() => [
           HomePage(widget.deps),
-          SearchPage(widget.deps),
-        ];
+          Photos(),
+    ];
     return  CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           backgroundColor: Color(0xff3B2F8F),
@@ -58,19 +59,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   child: HomePage(widget.deps),
                 );
               });
+              break;
             case 1:
               return CupertinoTabView(builder: (context){
                 return CupertinoPageScaffold(
-                  child: Text('hola'),
+                  child: Photos(),
                 );
               });
-
+              break;
             default:
               return CupertinoTabView(builder: (context){
                 return CupertinoPageScaffold(
-                  child: HomePage(widget.deps),
+                  child: BottomNavBar(widget.deps),
                 );
               });
+              break;
+
           }
         }
     );

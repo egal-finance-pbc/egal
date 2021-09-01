@@ -29,6 +29,10 @@ class _QRViewExampleState extends State<QRViewExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xff3B2F8F),
+        elevation: 0,
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
