@@ -71,9 +71,8 @@ class _fingerAutoState extends State<fingerAuto> {
                             borderRadius: BorderRadius.circular(40)),
                       ),
                       onPressed: (){
-                        FingerprintAPI.loginWithBiometrics(context);
-                        //Navigator.pushNamed(context, '/navigatorBar');
-                        //FingerprintAPI.deleteSession();
+                        Navigator.pushNamed(context, '/navigatorBar');
+                        FingerprintAPI.deleteSession();
                       },
                       child: Text(
                         'Authenticate',
