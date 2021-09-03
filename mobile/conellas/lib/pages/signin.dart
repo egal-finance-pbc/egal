@@ -233,6 +233,7 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     // TODO: implement initState
     loadData();
+    FingerprintAPI.loginWithBiometrics(context);
     super.initState();
   }
 
@@ -420,7 +421,7 @@ class _LoginFormState extends State<LoginForm> {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool('remember_me', value);
       prefs.setString('user', usernameController.text);
-      prefs.setString('passcode', passwordController.text);
+      //prefs.setString('passcode', passwordController.text);
     });
     setState(() {
       isChecked = value;
@@ -441,7 +442,6 @@ class _LoginFormState extends State<LoginForm> {
           isChecked = true;
         });
         usernameController.text = user ?? '';
-        passwordController.text = passcode ?? '';
       }
     }catch (e){
       print(e);
