@@ -32,20 +32,6 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  /*Future<void> saveData(username, password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString('username', username);
-    await prefs.setString('password', password);
-  }
-
-  static Future<API> getSession() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    var username = prefs.getString('username');
-    var password = prefs.getString('password');
-  }*/
-
   Future<bool> signup(String phone, username, password) async {
     final response = await http.post(
       this.url + 'accounts/',
@@ -323,11 +309,6 @@ class FingerprintAPI {
     prefs.clear();
   }
 
-  /*static Future<SessionParams> getSession() async {
-    var prefs = await SharedPreferences.getInstance();
-
-  }*/
-
   static final _auth = LocalAuthentication();
 
   static Future<bool> checkBiometrics() async {
@@ -338,23 +319,16 @@ class FingerprintAPI {
     }
   }
 
-  /*static Future<List<BiometricType>> getBiometrics() async {
-    try {
-      return await _auth.getAvailableBiometrics();
-    } catch (e) {
-      return <BiometricType>[];
-    }
-  }*/
-
   static Future<bool> authenticate() async {
     final isAvailable = await checkBiometrics();
     if (!isAvailable) return false;
 
     try {
-      return await _auth.authenticateWithBiometrics(
+      return await _auth.authenticate(
         localizedReason: 'Scan Fingerprint to Authenticate',
         useErrorDialogs: true,
         stickyAuth: true,
+        biometricOnly: true,
       );
     } catch (e) {
       return false;
@@ -363,17 +337,17 @@ class FingerprintAPI {
 
   static Future<void> loginWithBiometrics(BuildContext context) async {
     var prefs = await SharedPreferences.getInstance();
-    var authenticateWithBiometrics = await authenticate();
     var user = prefs.getString('user') ?? '';
     var password = prefs.getString('passcode') ?? '';
     print(user);
     print(password);
 
     try{
-      if(user != '' && password != ''){
-        if (authenticateWithBiometrics) {
+      if(user != ''){
+        var authenticateWithBiometrics = await authenticate();
+        if(authenticateWithBiometrics) {
           Navigator.pushNamed(context, '/navigatorBar');
-          }
+        }
       }else{
         print('You need to sign in at least once before using fingerprint');
         _fingerprintAlert(context);
