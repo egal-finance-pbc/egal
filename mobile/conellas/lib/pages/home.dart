@@ -219,7 +219,7 @@ class _HomePageState extends State<HomePage> {
           return FutureBuilder(
             future: paymentFuture,
             builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
-              if (snapshot.hasData && me.username != "") {
+              if (snapshot.hasData) {
                 return ListView.separated(
                   shrinkWrap: true,
                   itemCount: snapshot.data.length,

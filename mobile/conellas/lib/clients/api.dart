@@ -279,8 +279,9 @@ class Me {
   final String lastName;
   final String username;
   final String publicKey;
+  final String phone;
 
-  Me({this.firstName, this.lastName, this.username, this.publicKey});
+  Me({this.firstName, this.lastName, this.username, this.publicKey, this.phone});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
@@ -288,6 +289,7 @@ class Me {
       lastName: json['last_name'],
       username: json['username'],
       publicKey: json['public_key'],
+      phone: json['phone'],
     );
   }
 }
