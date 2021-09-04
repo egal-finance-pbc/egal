@@ -1,3 +1,4 @@
+import 'package:conellas/clients/api.dart';
 import 'package:flutter/material.dart';
 
 class fingerAuto extends StatefulWidget {
@@ -70,7 +71,8 @@ class _fingerAutoState extends State<fingerAuto> {
                             borderRadius: BorderRadius.circular(40)),
                       ),
                       onPressed: (){
-
+                        Navigator.pushNamed(context, '/navigatorBar');
+                        FingerprintAPI.deleteSession();
                       },
                       child: Text(
                         'Authenticate',
