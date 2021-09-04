@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
   String url;
@@ -299,3 +301,87 @@ class Token {
     return Token(token: json['token']);
   }
 }
+
+class FingerprintAPI {
+
+  static Future<void> deleteSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
+  static final _auth = LocalAuthentication();
+
+  static Future<bool> checkBiometrics() async {
+    try {
+      return await _auth.canCheckBiometrics;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> authenticate() async {
+    final isAvailable = await checkBiometrics();
+    if (!isAvailable) return false;
+
+    try {
+      return await _auth.authenticate(
+        localizedReason: 'Scan Fingerprint to Authenticate',
+        useErrorDialogs: true,
+        stickyAuth: true,
+        biometricOnly: true,
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<void> loginWithBiometrics(BuildContext context) async {
+    var prefs = await SharedPreferences.getInstance();
+    var user = prefs.getString('user') ?? '';
+    var password = prefs.getString('passcode') ?? '';
+    print(user);
+    print(password);
+
+    try{
+      if(user != ''){
+        var authenticateWithBiometrics = await authenticate();
+        if(authenticateWithBiometrics) {
+          Navigator.pushNamed(context, '/navigatorBar');
+        }
+      }else{
+        print('You need to sign in at least once before using fingerprint');
+        _fingerprintAlert(context);
+      }
+    }catch (e) {
+      print('something went wrong');
+    }
+  }
+
+  static _fingerprintAlert(BuildContext context){
+    showDialog(
+        context: context,
+        builder: (context)
+        {
+          return AlertDialog(
+            title: Text('Fingerprint Authentication'),
+            content: Text('You need to sign in at least once before using fingerprint'),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    },
+                  child: Text('Ok')
+              ),
+            ],
+            elevation: 24.0,
+            backgroundColor: Color(0xFFFFFFFF),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(7.0)
+            ),
+          );
+        },
+    );
+  }
+
+}
+

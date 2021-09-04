@@ -38,9 +38,13 @@ dependencies:
   path_provider: any
   path: any
   local_auth: ^1.1.6
+<<<<<<< HEAD
   custom_navigator:
     git:
       url: https://github.com/kjawadDeveloper/Custom-navigator.git
+=======
+  shared_preferences: ^0.5.12+4
+>>>>>>> e70ccb23cb39fae706d0e57fa47a71274be0421a
 
 
 dev_dependencies:

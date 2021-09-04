@@ -2,6 +2,7 @@ import 'package:conellas/common/deps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../clients/api.dart';
@@ -138,6 +139,7 @@ class _SignInPageState extends State<SignInPage> {
                         FlatButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/fingers');
+                            //SessionParams.deleteSession();
                           },
                           child: Icon(
                             IconData(57683, fontFamily: 'MaterialIcons'),
@@ -224,8 +226,16 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool isChecked = false;
   final _formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadData();
+    FingerprintAPI.loginWithBiometrics(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,11 +324,7 @@ class _LoginFormState extends State<LoginForm> {
                             activeColor: Color(0xffF8991C),
                             checkColor: Colors.white,
                             value: isChecked,
-                            onChanged: (bool value) {
-                              setState(() {
-                                isChecked = value;
-                              });
-                            },
+                            onChanged: rememberme,
                           ),
                         ),
                       ),
@@ -356,7 +362,7 @@ class _LoginFormState extends State<LoginForm> {
 
                           var me = await widget.deps.api.me();
                           await sessionStorage.set('publicKey', me.publicKey);
-
+                          rememberme(isChecked);
                           Navigator.pushNamed(context, '/navigatorBar');
                         } catch (err) {
                           await FlutterSession().set('token', '');
@@ -408,5 +414,37 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+
+  void rememberme(bool value) {
+    isChecked = value;
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool('remember_me', value);
+      prefs.setString('user', usernameController.text);
+      //prefs.setString('passcode', passwordController.text);
+    });
+    setState(() {
+      isChecked = value;
+    });
+  }
+
+  void loadData() async{
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = prefs.getString('user') ?? '';
+      var passcode = prefs.getString('passcode') ?? '';
+      var remember_me = prefs.getBool('remember_me') ?? false;
+      print(remember_me);
+      print(user);
+      print(passcode);
+      if(remember_me) {
+        setState(() {
+          isChecked = true;
+        });
+        usernameController.text = user ?? '';
+      }
+    }catch (e){
+      print(e);
+    }
   }
 }
