@@ -29,7 +29,10 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Name(widget.deps),
-        leading: Icon(Icons.face, size: 28,),
+        leading: Icon(
+          Icons.face,
+          size: 28,
+        ),
         actions: <Widget>[
           IconButton(
               onPressed: () {},
@@ -134,7 +137,11 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
                         child: FlatButton(
                           onPressed: () {
-                            Navigator.push(context, CupertinoPageRoute(builder: (context)=> SearchPage(widget.deps)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SearchPage(widget.deps)));
                           },
                           child: Text(
                             'Send',
@@ -154,7 +161,11 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
                         child: FlatButton(
                           onPressed: () {
-                            Navigator.push(context, CupertinoPageRoute(builder: (context)=> QRViewExample()));                          },
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => QRViewExample()));
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
@@ -237,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                       descrip = ' ';
                     }
 
-                    if(item.date == datenow){
+                    if (item.date == datenow) {
                       return ListTile(
                         leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
                         title: Text(sender),
@@ -257,7 +268,8 @@ class _HomePageState extends State<HomePage> {
                           width: double.maxFinite,
                           decoration: const BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(width: 3.0, color: Color(0xff3b2f8f)),
+                              bottom: BorderSide(
+                                  width: 3.0, color: Color(0xff3b2f8f)),
                             ),
                           ),
                           child: Text(dates),
@@ -276,7 +288,11 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return Divider(height: 0,color: Colors.transparent,thickness: 2,);
+                    return Divider(
+                      height: 0,
+                      color: Colors.transparent,
+                      thickness: 2,
+                    );
                   },
                 );
               }

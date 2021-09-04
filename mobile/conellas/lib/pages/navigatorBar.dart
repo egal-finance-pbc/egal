@@ -1,8 +1,7 @@
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/instructionsPage/takePicture.dart';
 import 'package:conellas/pages/home.dart';
-import 'package:conellas/pages/search.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
@@ -22,61 +21,33 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _page = 0;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  // Custom navigator takes a global key if you want to access the
+  // navigator from outside it's widget tree subtree
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _children() => [
-          HomePage(widget.deps),
-          Photos(),
-    ];
-    return  CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          backgroundColor: Color(0xff3B2F8F),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.call_made,
-                size: 30,
-                color: Colors.white,
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.call_received, size: 30, color: Colors.white),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.supervised_user_circle,
-                  size: 30, color: Colors.white),
-            )
-          ],
+    return CustomScaffold(
+      scaffold: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home), title: Text('home')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.event), title: Text('events')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.save_alt), title: Text('downloads')),
+            ],
+            backgroundColor: Color(0xff3B2F8F),
+            selectedItemColor: Color(0xffF8991C),
+            unselectedItemColor: Colors.white,
+          ),
         ),
-        tabBuilder: (context, index) {
-          switch(index){
-            case 0:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child: HomePage(widget.deps),
-                );
-              });
-              break;
-            case 1:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child: Photos(),
-                );
-              });
-              break;
-            default:
-              return CupertinoTabView(builder: (context){
-                return CupertinoPageScaffold(
-                  child: BottomNavBar(widget.deps),
-                );
-              });
-              break;
-
-          }
-        }
+      children: <Widget>[
+        HomePage(widget.deps),
+        HomePage(widget.deps),
+        HomePage(widget.deps),
+      ],
     );
   }
 }

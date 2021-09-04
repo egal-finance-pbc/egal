@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../common/deps.dart';
 import '../clients/api.dart';
+import 'home.dart';
 
 class SendPage extends StatefulWidget {
   final Dependencies deps;
@@ -153,8 +154,12 @@ class _SendPageState extends State<SendPage> {
             FlatButton(
               child: Text('Got it', style: TextStyle(color: Colors.white)),
               onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            HomePage(widget.deps)));
+                },
               color: Color(0xff3b2f8f),
             ),
           ],
@@ -163,6 +168,7 @@ class _SendPageState extends State<SendPage> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

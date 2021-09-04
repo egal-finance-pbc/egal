@@ -1,3 +1,4 @@
+import 'package:conellas/pages/send.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -118,6 +119,8 @@ class _SearchPageState extends State<SearchPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
+                            color: Colors.white,
+
                           ),
                         ),
                       ),
@@ -129,7 +132,7 @@ class _SearchPageState extends State<SearchPage> {
                         child: Text(
                           '@${item.username}',
                           style: TextStyle(
-                            color: Colors.black45,
+                            color: Color(0xffF8991C),
                             fontSize: 12,
                           ),
                         ),
@@ -138,7 +141,11 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/send', arguments: item);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              SendPage(widget.deps),settings:  RouteSettings(arguments: item)));
                 },
               );
             },
