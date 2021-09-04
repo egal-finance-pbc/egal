@@ -1,5 +1,7 @@
 import 'package:conellas/pages/QRscan.dart';
 import 'package:conellas/pages/navigatorBar.dart';
+import 'package:conellas/pages/profile.dart';
+import 'package:conellas/pages/profileEdit.dart';
 import 'package:flutter/material.dart';
 
 import 'common/deps.dart';
@@ -23,6 +25,7 @@ class ConEllasApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Con Ellas',
+
       initialRoute: '/',
       routes: {
         '/': (context) => SignInPage(deps),
@@ -35,6 +38,9 @@ class ConEllasApp extends StatelessWidget {
         '/photos': (context) => Photos(),
         '/fingers': (context) => fingerAuto(),
         '/faces': (context) => faceIdAuto(),
+        '/profileView': (context) => profileView(deps),
+        '/profileEdit': (context) => profileEdit(deps),
+
 
 
 
