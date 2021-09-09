@@ -50,12 +50,28 @@ class _SearchPageState extends State<SearchPage> {
   Widget _fieldContainer() {
     Size size = MediaQuery.of(context).size;
 
-  return Container(
+    return Container(
       margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
-
+      height: double.infinity,
+      width: double.maxFinite,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
         child: TextField(
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                  width: 2,
+                )),
+            suffixIcon: Icon(Icons.search, color: Colors.white,),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white,
+                width: 2.0,
+              ),
+            ),
+          ),
           autofocus: true,
           textInputAction: TextInputAction.search,
           controller: _inputCtrl,
@@ -79,7 +95,10 @@ class _SearchPageState extends State<SearchPage> {
             // Search operation has not started yet
             return Padding(
               padding: padding,
-              child: Text('Type at least 3 letters and press enter'),
+              child: Text(
+                'Type at least 3 letters and press enter',
+                style: TextStyle(color: Colors.white),
+              ),
             );
           }
           if (snapshot.connectionState != ConnectionState.done) {
@@ -104,7 +123,9 @@ class _SearchPageState extends State<SearchPage> {
           return ListView.separated(
             shrinkWrap: true,
             itemCount: snapshot.data.length,
-            separatorBuilder: (_, int index) => Divider(),
+            separatorBuilder: (_, int index) => Divider(
+              color: Colors.white,
+            ),
             itemBuilder: (BuildContext context, int index) {
               final item = snapshot.data[index];
               return TextButton(
@@ -115,12 +136,11 @@ class _SearchPageState extends State<SearchPage> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                         child: Text(
-                          '${item.fullName()}',
+                          '${item.username}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                             color: Colors.white,
-
                           ),
                         ),
                       ),
@@ -130,7 +150,7 @@ class _SearchPageState extends State<SearchPage> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: Text(
-                          '@${item.username}',
+                          '${item.fullName()}',
                           style: TextStyle(
                             color: Color(0xffF8991C),
                             fontSize: 12,
@@ -145,7 +165,8 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              SendPage(widget.deps),settings:  RouteSettings(arguments: item)));
+                              SendPage(widget.deps),
+                          settings: RouteSettings(arguments: item)));
                 },
               );
             },
@@ -159,7 +180,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8991C),
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Name(widget.deps),
@@ -179,6 +200,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
+
 class Name extends StatefulWidget {
   final Dependencies deps;
 

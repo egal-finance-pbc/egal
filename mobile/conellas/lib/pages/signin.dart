@@ -138,7 +138,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/fingers');
+                            Navigator.pushNamed(context, '/loader');
                             //SessionParams.deleteSession();
                           },
                           child: Icon(

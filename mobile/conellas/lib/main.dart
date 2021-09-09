@@ -1,3 +1,4 @@
+import 'package:conellas/instructionsPage/LoadScreen.dart';
 import 'package:conellas/pages/QRscan.dart';
 import 'package:conellas/pages/navigatorBar.dart';
 import 'package:conellas/pages/profile.dart';
@@ -8,6 +9,7 @@ import 'common/deps.dart';
 import 'instructionsPage/faceID.dart';
 import 'instructionsPage/fingerprint.dart';
 import 'instructionsPage/takePicture.dart';
+import 'instructionsPage/verificationCode.dart';
 import 'pages/home.dart';
 import 'pages/search.dart';
 import 'pages/send.dart';
@@ -26,6 +28,7 @@ class ConEllasApp extends StatelessWidget {
     return MaterialApp(
       title: 'Con Ellas',
 
+
       initialRoute: '/',
       routes: {
         '/': (context) => SignInPage(deps),
@@ -40,6 +43,10 @@ class ConEllasApp extends StatelessWidget {
         '/faces': (context) => faceIdAuto(),
         '/profileView': (context) => profileView(deps),
         '/profileEdit': (context) => profileEdit(deps),
+        '/verificationCode': (context) => verificationCode(),
+        '/loader': (context) => Loader(),
+
+
 
 
 

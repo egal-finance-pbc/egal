@@ -227,7 +227,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  bool _isHidden = false;
+  bool _isHidden = true;
 
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
@@ -261,7 +261,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
                     child: InternationalPhoneInput(
-                        enabledCountries: ['+91', '+1','+52'],
+                        enabledCountries: ['+91', '+1', '+52'],
                         errorText: 'no alphabetic and special characters',
                         errorMaxLines: 15,
                         decoration: InputDecoration(
@@ -499,8 +499,9 @@ class _SignUpFormState extends State<SignUpForm> {
       contentPadding: const EdgeInsets.all(20),
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
-      title: Text("Successful registration"),
-      content: Text("You can login now"),
+      title: Text("Check your messages"),
+      content:
+          Text("We have sent you a text message with the verification code"),
       actions: [
         Center(
           child: Container(
@@ -513,7 +514,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/verificationCode');
               },
             ),
           ),
