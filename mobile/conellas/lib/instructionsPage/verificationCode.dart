@@ -1,15 +1,36 @@
+import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:twilio_phone_verify/twilio_phone_verify.dart';
 
 class verificationCode extends StatefulWidget {
-  const verificationCode({Key key}) : super(key: key);
+    final Dependencies deps;
+
+  const verificationCode(this.deps, {Key key}) : super(key: key);
 
   @override
   _verificationCodeState createState() => _verificationCodeState();
 }
 
 class _verificationCodeState extends State<verificationCode> {
+  
+  TwilioPhoneVerify _twilioPhoneVerify;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _twilioPhoneVerify = TwilioPhoneVerify(
+        accountSid: 'AC376189fed235dd2e7707b95f86b34c5a',
+        serviceSid: 'VAb970c90d7a8937ee765360afebfe42f5',
+        authToken: 'e30fa3d0b55d10c84832cfae1a2edc0d');
+  }
+
   @override
   Widget build(BuildContext context) {
+    Map data = ModalRoute.of(context).settings.arguments;
+    String smsCode = '';
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xffF8991C),
@@ -69,433 +90,46 @@ class _verificationCodeState extends State<verificationCode> {
                     padding: EdgeInsets.fromLTRB(30, 20, 30, 0),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: Container(
-                        child: Form(
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    height: size.height * 0.07,
-                                    width: size.height * 0.07,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: Color(0xffF8991C),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                        child: TextFormField(
-                                            keyboardType: TextInputType.number,
-                                            style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                      textAlign: TextAlign.center,
-                                      validator: (value) {
-                                        RegExp regMayus =
-                                            RegExp(r'^(?=.*?[A-Z]).{1,}');
-                                        RegExp regMinus =
-                                            RegExp(r'^(?=.*?[a-z]).{1,}');
-                                        RegExp regNum2 =
-                                            RegExp(r'^(?=.*?[0-9]).{1,}$');
-                                        RegExp regUser = RegExp(
-                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                                        if (value.isEmpty) {
-                                          return 'Missing username';
-                                        } else if (!regMayus.hasMatch(value)) {
-                                          return 'at least 1 uppercase';
-                                        } else if (!regNum2.hasMatch(value)) {
-                                          return 'at least 1 number';
-                                        } else if (!regMinus.hasMatch(value)) {
-                                          return 'at least 1 lowercase';
-                                        } else if (!regUser.hasMatch(value)) {
-                                          return '6 characters minimum, 12 maximum';
-                                        } else if (value.length > 12) {
-                                          return 'Username length exceeded';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        errorStyle: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffF8991C)),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Color(0xffF8991C),
-                                              width: 2),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                15, 30, 10, 0),
-                                      ),
-                                    )),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    height: size.height * 0.07,
-                                    width: size.height * 0.07,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: Color(0xffF8991C),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                      textAlign: TextAlign.center,
-                                      validator: (value) {
-                                        RegExp regMayus =
-                                            RegExp(r'^(?=.*?[A-Z]).{1,}');
-                                        RegExp regMinus =
-                                            RegExp(r'^(?=.*?[a-z]).{1,}');
-                                        RegExp regNum2 =
-                                            RegExp(r'^(?=.*?[0-9]).{1,}$');
-                                        RegExp regUser = RegExp(
-                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                                        if (value.isEmpty) {
-                                          return 'Missing username';
-                                        } else if (!regMayus.hasMatch(value)) {
-                                          return 'at least 1 uppercase';
-                                        } else if (!regNum2.hasMatch(value)) {
-                                          return 'at least 1 number';
-                                        } else if (!regMinus.hasMatch(value)) {
-                                          return 'at least 1 lowercase';
-                                        } else if (!regUser.hasMatch(value)) {
-                                          return '6 characters minimum, 12 maximum';
-                                        } else if (value.length > 12) {
-                                          return 'Username length exceeded';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        errorStyle: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffF8991C)),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Color(0xffF8991C),
-                                              width: 2),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding:
-                                        const EdgeInsets.fromLTRB(
-                                            15, 30, 10, 0),
-                                      ),
-                                    )),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    height: size.height * 0.07,
-                                    width: size.height * 0.07,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: Color(0xffF8991C),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                      textAlign: TextAlign.center,
-                                      validator: (value) {
-                                        RegExp regMayus =
-                                            RegExp(r'^(?=.*?[A-Z]).{1,}');
-                                        RegExp regMinus =
-                                            RegExp(r'^(?=.*?[a-z]).{1,}');
-                                        RegExp regNum2 =
-                                            RegExp(r'^(?=.*?[0-9]).{1,}$');
-                                        RegExp regUser = RegExp(
-                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                                        if (value.isEmpty) {
-                                          return 'Missing username';
-                                        } else if (!regMayus.hasMatch(value)) {
-                                          return 'at least 1 uppercase';
-                                        } else if (!regNum2.hasMatch(value)) {
-                                          return 'at least 1 number';
-                                        } else if (!regMinus.hasMatch(value)) {
-                                          return 'at least 1 lowercase';
-                                        } else if (!regUser.hasMatch(value)) {
-                                          return '6 characters minimum, 12 maximum';
-                                        } else if (value.length > 12) {
-                                          return 'Username length exceeded';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        errorStyle: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffF8991C)),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Color(0xffF8991C),
-                                              width: 2),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding:
-                                        const EdgeInsets.fromLTRB(
-                                            15, 30, 10, 0),
-                                      ),
-                                    )),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    height: size.height * 0.07,
-                                    width: size.height * 0.07,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: Color(0xffF8991C),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                      textAlign: TextAlign.center,
-                                      validator: (value) {
-                                        RegExp regMayus =
-                                            RegExp(r'^(?=.*?[A-Z]).{1,}');
-                                        RegExp regMinus =
-                                            RegExp(r'^(?=.*?[a-z]).{1,}');
-                                        RegExp regNum2 =
-                                            RegExp(r'^(?=.*?[0-9]).{1,}$');
-                                        RegExp regUser = RegExp(
-                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                                        if (value.isEmpty) {
-                                          return 'Missing username';
-                                        } else if (!regMayus.hasMatch(value)) {
-                                          return 'at least 1 uppercase';
-                                        } else if (!regNum2.hasMatch(value)) {
-                                          return 'at least 1 number';
-                                        } else if (!regMinus.hasMatch(value)) {
-                                          return 'at least 1 lowercase';
-                                        } else if (!regUser.hasMatch(value)) {
-                                          return '6 characters minimum, 12 maximum';
-                                        } else if (value.length > 12) {
-                                          return 'Username length exceeded';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        errorStyle: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffF8991C)),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Color(0xffF8991C),
-                                              width: 2),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding:
-                                        const EdgeInsets.fromLTRB(
-                                            15, 30, 10, 0),
-                                      ),
-                                    )),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
+                      child: OtpTextField(
+                          numberOfFields: 6,
+                          enabledBorderColor: Colors.orange,
+                          focusedBorderColor: Colors.white,
+                          cursorColor: Colors.black,
+                          filled: true,
+                          fillColor: Colors.white,
+                          borderWidth: 2.0,
+                          showFieldAsBox: true,
+                          borderRadius: BorderRadius.circular(20),
+                          onCodeChanged: (String value){},
+                          onSubmit: (smsCode) async {
 
-                              //Segunda serie de botones
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(0, size.height * 0.02, 0, 0),
-                                    height: size.height * 0.07,
-                                    width: size.height * 0.07,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: Color(0xffF8991C),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                          textAlign: TextAlign.center,
-                                          validator: (value) {
-                                            RegExp regMayus =
-                                            RegExp(r'^(?=.*?[A-Z]).{1,}');
-                                            RegExp regMinus =
-                                            RegExp(r'^(?=.*?[a-z]).{1,}');
-                                            RegExp regNum2 =
-                                            RegExp(r'^(?=.*?[0-9]).{1,}$');
-                                            RegExp regUser = RegExp(
-                                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                                            if (value.isEmpty) {
-                                              return 'Missing username';
-                                            } else if (!regMayus.hasMatch(value)) {
-                                              return 'at least 1 uppercase';
-                                            } else if (!regNum2.hasMatch(value)) {
-                                              return 'at least 1 number';
-                                            } else if (!regMinus.hasMatch(value)) {
-                                              return 'at least 1 lowercase';
-                                            } else if (!regUser.hasMatch(value)) {
-                                              return '6 characters minimum, 12 maximum';
-                                            } else if (value.length > 12) {
-                                              return 'Username length exceeded';
-                                            }
-                                            return null;
-                                          },
-                                          decoration: InputDecoration(
-                                            errorStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffF8991C)),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: new BorderSide(
-                                                  color: Color(0xffF8991C),
-                                                  width: 2),
-                                            ),
-                                            filled: true,
-                                            fillColor: Colors.white,
-                                            floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(5),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                            contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                15, 30, 10, 0),
-                                          ),
-                                        )),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(0, size.height * 0.02, 0, 0),
-                                    height: size.height * 0.07,
-                                    width: size.height * 0.07,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3,
-                                        color: Color(0xffF8991C),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                          textAlign: TextAlign.center,
-                                          validator: (value) {
-                                            RegExp regMayus =
-                                            RegExp(r'^(?=.*?[A-Z]).{1,}');
-                                            RegExp regMinus =
-                                            RegExp(r'^(?=.*?[a-z]).{1,}');
-                                            RegExp regNum2 =
-                                            RegExp(r'^(?=.*?[0-9]).{1,}$');
-                                            RegExp regUser = RegExp(
-                                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                                            if (value.isEmpty) {
-                                              return 'Missing username';
-                                            } else if (!regMayus.hasMatch(value)) {
-                                              return 'at least 1 uppercase';
-                                            } else if (!regNum2.hasMatch(value)) {
-                                              return 'at least 1 number';
-                                            } else if (!regMinus.hasMatch(value)) {
-                                              return 'at least 1 lowercase';
-                                            } else if (!regUser.hasMatch(value)) {
-                                              return '6 characters minimum, 12 maximum';
-                                            } else if (value.length > 12) {
-                                              return 'Username length exceeded';
-                                            }
-                                            return null;
-                                          },
-                                          decoration: InputDecoration(
-                                            errorStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffF8991C)),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: new BorderSide(
-                                                  color: Color(0xffF8991C),
-                                                  width: 2),
-                                            ),
-                                            filled: true,
-                                            fillColor: Colors.white,
-                                            floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(5),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                            contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                15, 30, 10, 0),
-                                          ),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            String cellphone = data['phone'];
+                            String user = data['username'];
+                            String passcode = data['password'];
+
+                            if (cellphone.isEmpty && smsCode.isEmpty) return;
+                            TwilioResponse twilioResponse = await _twilioPhoneVerify.verifySmsCode(phone: cellphone, code: smsCode);
+                            if (twilioResponse.successful) {
+                              if (twilioResponse.verification.status == VerificationStatus.approved) {
+                                print('Phone number is approved');
+                                try {
+                                  await widget.deps.api.signup(
+                                    cellphone,
+                                    user,
+                                    passcode,
+                                  );
+                                    showSuccessDialog(context);
+                                }catch (e){
+                                  print(e);
+                                }
+                              } else {
+                                print('Invalid code');
+                              }
+                            } else {
+                              print(twilioResponse.errorMessage);
+                            }
+                          },
+                        ), 
                     ),
                   ),
                   Container(
@@ -503,8 +137,8 @@ class _verificationCodeState extends State<verificationCode> {
                     padding: EdgeInsets.fromLTRB(60, 0, 60, 0),
                     width: double.infinity,
                     height: size.height * 0.06,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
                         primary: Color(0xff3B2F8F),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40)),
@@ -525,7 +159,37 @@ class _verificationCodeState extends State<verificationCode> {
       ),
     );
   }
+
+  /*void verifyCode() async {
+    Map data = ModalRoute.of(context).settings.arguments;
+    String cellphone = data['phone'];
+    String user = data['username'];
+    String passcode = data['password'];
+
+    if (cellphone.isEmpty && smsCode.isEmpty) return;
+    TwilioResponse twilioResponse = await _twilioPhoneVerify.verifySmsCode(phone: cellphone, code: smsCodeController.text);
+    if (twilioResponse.successful) {
+      if (twilioResponse.verification.status == VerificationStatus.approved) {
+        print('Phone number is approved');
+        try {
+          await widget.deps.api.signup(
+            cellphone,
+            user,
+            passcode,
+          );
+          showSuccessDialog(context);
+        }catch (e){
+          print(e);
+        }
+      } else {
+        print('Invalid code');
+      }
+    } else {
+      print(twilioResponse.errorMessage);
+    }
+  }*/
 }
+
 
 void showSuccessDialog(BuildContext context) {
   Size size = MediaQuery.of(context).size;
