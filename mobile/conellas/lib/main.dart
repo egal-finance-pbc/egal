@@ -43,7 +43,7 @@ class ConEllasApp extends StatelessWidget {
         '/faces': (context) => faceIdAuto(),
         '/profileView': (context) => profileView(deps),
         '/profileEdit': (context) => profileEdit(deps),
-        '/verificationCode': (context) => verificationCode(),
+        '/verificationCode': (context) => verificationCode(deps),
         '/loader': (context) => Loader(),
 
 
