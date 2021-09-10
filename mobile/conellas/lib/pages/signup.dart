@@ -1,9 +1,9 @@
 import 'package:conellas/common/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:twilio_phone_verify/twilio_phone_verify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:international_phone_input/international_phone_input.dart';
-import '../clients/api.dart';
 
 class SignUpPage extends StatefulWidget {
   final Dependencies deps;
@@ -222,12 +222,25 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
+
+  TwilioPhoneVerify _twilioPhoneVerify;
+
   String phone;
   //final phoneController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isHidden = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _twilioPhoneVerify = TwilioPhoneVerify(
+        accountSid: 'AC376189fed235dd2e7707b95f86b34c5a',
+        serviceSid: 'VAb970c90d7a8937ee765360afebfe42f5',
+        authToken: 'e30fa3d0b55d10c84832cfae1a2edc0d');
+  }
 
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
@@ -460,12 +473,7 @@ class _SignUpFormState extends State<SignUpForm> {
                           return;
                         }
                         try {
-                          await widget.deps.api.signup(
-                            this.phone,
-                            this.usernameController.text,
-                            this.passwordController.text,
-                          );
-                          showSuccessDialog(context);
+                          sendCode();
                         } catch (err) {
                           showErrorDialog(context, err);
                         }
@@ -499,7 +507,7 @@ class _SignUpFormState extends State<SignUpForm> {
       contentPadding: const EdgeInsets.all(20),
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
-      title: Text("Check your messages"),
+      title: Text("Code sent, please check your messages"),
       content:
           Text("We have sent you a text message with the verification code"),
       actions: [
@@ -514,7 +522,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pushNamed(context, '/verificationCode');
+                Navigator.pushNamed(context, '/verificationCode', arguments: {'phone' : phone, 'username' : usernameController.text, 'password' : passwordController.text});
               },
             ),
           ),
@@ -561,5 +569,15 @@ class _SignUpFormState extends State<SignUpForm> {
         return errorDialog;
       },
     );
+  }
+
+  void sendCode() async {
+    if(phone.isEmpty) return;
+    TwilioResponse twilioResponse = await _twilioPhoneVerify.sendSmsCode(phone);
+    if(twilioResponse.successful) {
+      print('Code sent to ${phone}');
+      await Future.delayed(Duration(seconds: 1));
+      showSuccessDialog(context);
+    }
   }
 }
