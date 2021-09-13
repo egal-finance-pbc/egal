@@ -10,9 +10,7 @@ from conellas.logging import get_logger
 from ledger.core import Gateway, LedgerError
 from . import serializers
 
-
 SIGNUP_THROTTLE_SCOPE = 'signup'
-
 
 logger = get_logger(__name__)
 
@@ -99,6 +97,41 @@ class Account(APIView):
         except LedgerError as e:
             raise APIException(detail=e.message)
 
+    def put(self, request, pubkey=None):
+        if request.user.is_anonymous:
+            raise PermissionDenied()
+
+        user_payload = serializers.UserSerializer(data=request.data)
+        account_payload = serializers.AccountUpdateSerializer(data=request.data)
+        if not account_payload.is_valid():
+            raise ParseError(account_payload.errors)
+        elif not user_payload.is_valid():
+            raise ParseError(user_payload.errors)
+
+        try:
+            account = self.ledger.get_account(pubkey)
+            if account is None:
+                raise NotFound()
+
+            if account.user.id != request.user.id:
+                raise PermissionDenied()
+
+            account = self.ledger.update_account(
+                pubkey,
+                first_name=user_payload.validated_data['first_name'],
+                last_name=user_payload.validated_data['last_name'],
+                username=user_payload.validated_data['username'],
+                phone=account_payload.validated_data['phone'],
+                photo=account_payload.validated_data['photo'],
+                country=account_payload.validated_data['country'],
+                city=account_payload.validated_data['city'],
+            )
+            print(account)
+            return Response(status=status.HTTP_200_OK)
+
+        except LedgerError as e:
+            raise APIException(detail=e.message, code=status.HTTP_400_BAD_REQUEST)
+
 
 class Me(APIView):
     """View to inspect user information."""
@@ -117,6 +150,9 @@ class Me(APIView):
             'last_name': request.user.last_name,
             'public_key': account.public_key,
             'phone': account.phone,
+            'country': account.country,
+            'city': account.city,
+            'photo': account.photo_url,
         })
 
 
