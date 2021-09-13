@@ -7,6 +7,19 @@ class Account(models.Model):
     public_key = models.CharField(max_length=56, unique=True)
     secret = models.CharField(max_length=56)
     phone = models.CharField(max_length=15, default='')
+    city = models.CharField(max_length=60, default='')
+    country = models.CharField(max_length=50, default='')
+    photo = models.ImageField(upload_to='uploads/photos/', null=True, blank=True)
+
+    @property
+    def photo_url(self):
+        """
+        Return self.photo.url if self.photo is not None,
+        'url' exist and has a value, else, return None.
+        """
+        if self.photo:
+            return getattr(self.photo, 'url', None)
+        return None
 
 
 class Payment(models.Model):
