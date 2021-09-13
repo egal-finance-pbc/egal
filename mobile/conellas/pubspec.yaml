@@ -45,6 +45,7 @@ dependencies:
   lottie: ^1.1.0
   twilio_phone_verify: ^1.0.0
   flutter_otp_text_field: ^1.0.0
+  progress_indicators: ^1.0.0
 
 
 
@@ -76,7 +77,9 @@ flutter:
   assets:
     - assets/Logo.png
     - assets/PruebaApp1.png
-    - assets/lottie/
+    - assets/icon.png
+    - assets/logo1.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

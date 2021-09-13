@@ -1,10 +1,11 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/common/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
 
 class verificationCode extends StatefulWidget {
-    final Dependencies deps;
+  final Dependencies deps;
 
   const verificationCode(this.deps, {Key key}) : super(key: key);
 
@@ -13,7 +14,6 @@ class verificationCode extends StatefulWidget {
 }
 
 class _verificationCodeState extends State<verificationCode> {
-  
   TwilioPhoneVerify _twilioPhoneVerify;
 
   @override
@@ -91,45 +91,50 @@ class _verificationCodeState extends State<verificationCode> {
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: OtpTextField(
-                          numberOfFields: 6,
-                          enabledBorderColor: Colors.orange,
-                          focusedBorderColor: Colors.white,
-                          cursorColor: Colors.black,
-                          filled: true,
-                          fillColor: Colors.white,
-                          borderWidth: 2.0,
-                          showFieldAsBox: true,
-                          borderRadius: BorderRadius.circular(20),
-                          onCodeChanged: (String value){},
-                          onSubmit: (smsCode) async {
+                        numberOfFields: 6,
+                        enabledBorderColor: Colors.orange,
+                        focusedBorderColor: Colors.white,
+                        cursorColor: Colors.black,
+                        filled: true,
+                        fillColor: Colors.white,
+                        borderWidth: 2.0,
+                        showFieldAsBox: true,
+                        borderRadius: BorderRadius.circular(20),
+                        onCodeChanged: (String value) {},
+                        onSubmit: (smsCode) async {
+                          String cellphone = data['phone'];
+                          String user = data['username'];
+                          String passcode = data['password'];
 
-                            String cellphone = data['phone'];
-                            String user = data['username'];
-                            String passcode = data['password'];
-
-                            if (cellphone.isEmpty && smsCode.isEmpty) return;
-                            TwilioResponse twilioResponse = await _twilioPhoneVerify.verifySmsCode(phone: cellphone, code: smsCode);
-                            if (twilioResponse.successful) {
-                              if (twilioResponse.verification.status == VerificationStatus.approved) {
-                                print('Phone number is approved');
-                                try {
-                                  await widget.deps.api.signup(
-                                    cellphone,
-                                    user,
-                                    passcode,
-                                  );
-                                    showSuccessDialog(context);
-                                }catch (e){
-                                  print(e);
-                                }
-                              } else {
-                                print('Invalid code');
+                          if (cellphone.isEmpty && smsCode.isEmpty) return;
+                          TwilioResponse twilioResponse =
+                              await _twilioPhoneVerify.verifySmsCode(
+                                  phone: cellphone, code: smsCode);
+                          if (twilioResponse.successful) {
+                            if (twilioResponse.verification.status ==
+                                VerificationStatus.approved) {
+                              print('Phone number is approved');
+                              try {
+                                ProgressDialog progressDialog =
+                                    ProgressDialog(context);
+                                progressDialog.show();
+                                await widget.deps.api.signup(
+                                  cellphone,
+                                  user,
+                                  passcode,
+                                );
+                                showSuccessDialog(context);
+                              } catch (e) {
+                                print(e);
                               }
                             } else {
-                              print(twilioResponse.errorMessage);
+                              print('Invalid code');
                             }
-                          },
-                        ), 
+                          } else {
+                            print(twilioResponse.errorMessage);
+                          }
+                        },
+                      ),
                     ),
                   ),
                   Container(
@@ -137,8 +142,8 @@ class _verificationCodeState extends State<verificationCode> {
                     padding: EdgeInsets.fromLTRB(60, 0, 60, 0),
                     width: double.infinity,
                     height: size.height * 0.06,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
                         primary: Color(0xff3B2F8F),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40)),
@@ -189,7 +194,6 @@ class _verificationCodeState extends State<verificationCode> {
     }
   }*/
 }
-
 
 void showSuccessDialog(BuildContext context) {
   Size size = MediaQuery.of(context).size;
