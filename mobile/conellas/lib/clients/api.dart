@@ -156,8 +156,9 @@ class User {
   final String lastName;
   final String username;
   final String publicKey;
+  final String phone;
 
-  User({this.firstName, this.lastName, this.username, this.publicKey});
+  User({this.firstName, this.lastName, this.username, this.publicKey, this.phone});
 
   static List<User> fromList(List<dynamic> list) {
     var users = List<User>();
@@ -167,6 +168,8 @@ class User {
         lastName: item['last_name'],
         username: item['username'],
         publicKey: item['public_key'],
+        phone: item['phone'],
+
       ));
     }
     return users;
@@ -178,6 +181,8 @@ class User {
       lastName: item['last_name'],
       username: item['username'],
       publicKey: item['public_key'],
+      phone: item['phone'],
+
     );
   }
 
