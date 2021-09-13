@@ -53,6 +53,24 @@ class Gateway:
         else:
             raise LedgerError('account missing balance')
 
+    @staticmethod
+    def update_account(pubkey: str, first_name, last_name, username, phone, city, country, photo) -> models.Account:
+        account = Gateway.get_account(pubkey)
+        if account is None:
+            raise LedgerError('account not found')
+
+        user = account.user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.save()
+        account.phone = phone
+        account.city = city
+        account.country = country
+        account.photo = photo
+        account.save()
+        return account
+
     @transaction.atomic
     def make_payment(self, src: models.Account, dst: str, amount: Decimal, desc=None) -> models.Payment:
         try:
