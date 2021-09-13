@@ -1,5 +1,4 @@
 import 'package:conellas/common/deps.dart';
-import 'package:conellas/common/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
@@ -231,7 +230,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  bool _isHidden = false;
+  bool _isHidden = true;
 
   @override
   void initState() {
@@ -470,14 +469,11 @@ class _SignUpFormState extends State<SignUpForm> {
                             borderRadius: BorderRadius.circular(40)),
                       ),
                       onPressed: () async {
-                        ProgressDialog progressDialog = ProgressDialog(context);
-                        progressDialog.show();
                         if (!_formKey.currentState.validate()) {
                           return;
                         }
                         try {
                           sendCode();
-                          progressDialog.dismiss();
                         } catch (err) {
                           showErrorDialog(context, err);
                         }

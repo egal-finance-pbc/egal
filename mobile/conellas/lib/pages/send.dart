@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:conellas/common/dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,67 +52,67 @@ class _SendPageState extends State<SendPage> {
     var futureBalance = widget.deps.api.account();
     return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: size.height,
-            child: Container(
-              margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              height: double.infinity,
-              width: double.maxFinite,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Available Money',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          height: size.height,
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            height: double.infinity,
+            width: double.maxFinite,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Available Money',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.03, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FutureBuilder<Account>(
-                          future: futureBalance,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              // TODO: use tryParse as recommended and handle error.
-                              double balanceDouble =
-                                  double.parse(snapshot.data.balance);
-                              return Text(
-                                currency.format(balanceDouble),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 45,
-                                  color: Colors.white,
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            }
-                            // By default, show a loading spinner.
-                            return CircularProgressIndicator();
-                          },
-                        ),
-                      ],
-                    ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, size.height * 0.03, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FutureBuilder<Account>(
+                        future: futureBalance,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            // TODO: use tryParse as recommended and handle error.
+                            double balanceDouble =
+                                double.parse(snapshot.data.balance);
+                            return Text(
+                              currency.format(balanceDouble),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 45,
+                                color: Colors.white,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          // By default, show a loading spinner.
+                          return CircularProgressIndicator();
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
+    ),
     );
   }
 
@@ -244,7 +243,7 @@ class _SendPageState extends State<SendPage> {
                                   color: Colors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              helperText: 'Last Name',
+                              helperText: 'First Name',
                               helperStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -278,7 +277,7 @@ class _SendPageState extends State<SendPage> {
                                   color: Colors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              helperText: 'Username',
+                              helperText: 'First Name',
                               helperStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -301,12 +300,12 @@ class _SendPageState extends State<SendPage> {
                         child: TextField(
                           enabled: false,
                           decoration: InputDecoration(
-                              labelText: '${_destUser.phone}',
+                              labelText: '${_destUser.lastName}',
                               labelStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              helperText: 'Phone #',
+                              helperText: 'First Name',
                               helperStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -390,33 +389,27 @@ class _SendPageState extends State<SendPage> {
   void _send() {
     var howMuch = double.parse(_howMuchCtrl.text.trim());
     setState(() {
-      ProgressDialog progressDialog = ProgressDialog(context);
-      progressDialog.show();
       _futurePayment = widget.deps.api.pay(
         _destUser.publicKey,
         howMuch,
         _descriptionCtrl.text.trim(),
       );
       _futurePayment.then(_done);
-    }
-    );
+    });
   }
 
   void _done(_) {
-    ProgressDialog progressDialog = ProgressDialog(context);
-    progressDialog.dismissHome();
-
     Timer _timer;
     Size size = MediaQuery.of(context).size;
     showDialog(
       context: context,
-      builder: (BuildContext _) {
-        _timer = Timer(Duration(seconds: 5), () async {
-          Navigator.pop(context);
-          await Navigator.of(context, rootNavigator: true).push(new MaterialPageRoute(
-              builder: (context) => HomePage(widget.deps)));
-          setState(() {});
-        });
+        builder: (BuildContext _) {
+          _timer = Timer(Duration(seconds: 5), () async {
+            Navigator.pop(context);
+            await Navigator.of(context)
+                .push(new MaterialPageRoute(builder: (context) => HomePage(widget.deps)));
+            setState((){});
+          });
         return AlertDialog(
           title: Text('That\'s it!', style: TextStyle(color: Colors.black)),
           content: Text('Your payment has completed successfully',
@@ -433,8 +426,10 @@ class _SendPageState extends State<SendPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40)),
                   onPressed: () {
-                    Navigator.of(context, rootNavigator: true).push(new MaterialPageRoute(
-                        builder: (context) => HomePage(widget.deps)));
+                    Navigator.of(context).pop(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                HomePage(widget.deps)));
                   },
                 ),
               ),

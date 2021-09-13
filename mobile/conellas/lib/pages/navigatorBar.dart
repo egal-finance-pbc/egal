@@ -1,5 +1,4 @@
 import 'package:conellas/common/deps.dart';
-import 'package:conellas/common/dialog.dart';
 import 'package:conellas/instructionsPage/takePicture.dart';
 import 'package:conellas/pages/home.dart';
 import 'package:conellas/pages/profile.dart';
