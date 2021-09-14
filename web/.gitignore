@@ -1,4 +1,4 @@
 .idea
 *.pyc
-media/
+/media/*
 db.sqlite3
