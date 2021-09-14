@@ -44,6 +44,7 @@ class Accounts(APIView):
             'first_name': a.user.first_name,
             'last_name': a.user.last_name,
             'public_key': a.public_key,
+            'phone': a.phone,
 
         } for a in accounts])
 
