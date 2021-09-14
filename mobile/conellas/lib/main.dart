@@ -44,6 +44,8 @@ class ConEllasApp extends StatelessWidget {
         '/profileView': (context) => profileView(deps),
         '/profileEdit': (context) => profileEdit(deps),
         '/verificationCode': (context) => verificationCode(deps),
+        '/loader': (context) => Loader(),
+
 
 
 
