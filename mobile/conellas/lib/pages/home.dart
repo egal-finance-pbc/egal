@@ -234,8 +234,7 @@ class _HomePageState extends State<HomePage> {
                     var backcolor = Color.fromRGBO(255, 153, 0, 0.20);
                     var descrip = item.description;
                     var dates = item.date;
-                    DateTime now = new DateTime.now();
-                    var datenow = new DateTime(now.year, now.month, now.day);
+
 
                     if (me.username == item.destination.username) {
                       color = Colors.green;
@@ -246,19 +245,6 @@ class _HomePageState extends State<HomePage> {
 
                     if (item.description == null) {
                       descrip = ' ';
-                    }
-
-                    if (item.date == datenow) {
-                      return ListTile(
-                        leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
-                        title: Text(sender),
-                        subtitle: Text(descrip),
-                        trailing: Text(
-                          '$action $amount',
-                          style: TextStyle(color: color),
-                        ),
-                        tileColor: backcolor,
-                      );
                     }
 
                     return Column(
@@ -272,18 +258,18 @@ class _HomePageState extends State<HomePage> {
                                   width: 3.0, color: Color(0xff3b2f8f)),
                             ),
                           ),
-                          child: Text(dates),
-                        ),
-                        ListTile(
-                          leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
-                          title: Text(sender),
-                          subtitle: Text(descrip),
-                          trailing: Text(
-                            '$action $amount',
-                            style: TextStyle(color: color),
+                          child:  ListTile(
+                            leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
+                            title: Text(sender),
+                            subtitle: Text(descrip),
+                            trailing: Text(
+                              '$action $amount',
+                              style: TextStyle(color: color),
+                            ),
+                            tileColor: backcolor,
                           ),
-                          tileColor: backcolor,
                         ),
+                        Text(dates),
                       ],
                     );
                   },
