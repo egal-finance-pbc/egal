@@ -235,7 +235,6 @@ class _HomePageState extends State<HomePage> {
                     var descrip = item.description;
                     var dates = item.date;
 
-
                     if (me.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received_rounded;
@@ -247,31 +246,16 @@ class _HomePageState extends State<HomePage> {
                       descrip = ' ';
                     }
 
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.center,
-                          width: double.maxFinite,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 3.0, color: Color(0xff3b2f8f)),
-                            ),
+                        return ListTile(
+                          leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
+                          title: Text(sender),
+                          subtitle: Text(descrip),
+                          trailing: Text(
+                            '$action $amount',
+                            style: TextStyle(color: color),
                           ),
-                          child:  ListTile(
-                            leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
-                            title: Text(sender),
-                            subtitle: Text(descrip),
-                            trailing: Text(
-                              '$action $amount',
-                              style: TextStyle(color: color),
-                            ),
-                            tileColor: backcolor,
-                          ),
-                        ),
-                        Text(dates),
-                      ],
-                    );
+                          tileColor: backcolor,
+                        );
                   },
                   separatorBuilder: (context, index) {
                     return Divider(

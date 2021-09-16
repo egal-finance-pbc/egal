@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/common/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
@@ -469,11 +470,14 @@ class _SignUpFormState extends State<SignUpForm> {
                             borderRadius: BorderRadius.circular(40)),
                       ),
                       onPressed: () async {
+                        ProgressDialog progressDialog = ProgressDialog(context);
+                        progressDialog.show();
                         if (!_formKey.currentState.validate()) {
                           return;
                         }
                         try {
                           sendCode();
+                          progressDialog.dismissHome();
                         } catch (err) {
                           showErrorDialog(context, err);
                         }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:conellas/common/dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -389,6 +390,8 @@ class _SendPageState extends State<SendPage> {
   void _send() {
     var howMuch = double.parse(_howMuchCtrl.text.trim());
     setState(() {
+      ProgressDialog progressDialog = ProgressDialog(context);
+      progressDialog.show();
       _futurePayment = widget.deps.api.pay(
         _destUser.publicKey,
         howMuch,
@@ -399,17 +402,12 @@ class _SendPageState extends State<SendPage> {
   }
 
   void _done(_) {
-    Timer _timer;
+    ProgressDialog progressDialog = ProgressDialog(context);
+    progressDialog.dismissHome();
     Size size = MediaQuery.of(context).size;
     showDialog(
       context: context,
         builder: (BuildContext _) {
-          _timer = Timer(Duration(seconds: 5), () async {
-            Navigator.pop(context);
-            await Navigator.of(context)
-                .push(new MaterialPageRoute(builder: (context) => HomePage(widget.deps)));
-            setState((){});
-          });
         return AlertDialog(
           title: Text('That\'s it!', style: TextStyle(color: Colors.black)),
           content: Text('Your payment has completed successfully',
@@ -438,11 +436,7 @@ class _SendPageState extends State<SendPage> {
           backgroundColor: Colors.white,
         );
       },
-    ).then((val) {
-      if (_timer.isActive) {
-        _timer.cancel();
-      }
-    });
+    );
   }
 
   @override
