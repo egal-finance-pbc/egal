@@ -1,19 +1,20 @@
+
 import 'package:conellas/clients/api.dart';
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/profileEdit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class profileView extends StatefulWidget {
+class ProfileView extends StatefulWidget {
   final Dependencies deps;
 
-  const profileView(this.deps, {Key key}) : super(key: key);
+  ProfileView(this.deps, {Key key}) : super(key: key);
 
   @override
-  _profileViewState createState() => _profileViewState();
+  _ProfileViewState createState() => _ProfileViewState();
 }
 
-class _profileViewState extends State<profileView> {
+class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,6 +44,7 @@ class _profileViewState extends State<profileView> {
   }
 
   Widget backgroudProfile(BuildContext context) {
+    var futureMe = widget.deps.api.me();
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
@@ -75,13 +77,24 @@ class _profileViewState extends State<profileView> {
                       ),
                       shape: BoxShape.circle,
                     ),
-                    child: ClipOval(
-                      child: Icon(
-                        Icons.face,
-                        color: Colors.white,
-                        size: 60,
-                      ),
-                    ),
+                    child: FutureBuilder<Me>(
+                        future: futureMe,
+                        builder: (context, snapshot) {
+                          return Container(
+                            child: snapshot.hasData ? CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:8000'+snapshot.data.photo,)) 
+                            : CircleAvatar(backgroundImage: AssetImage('assets/proicon.png')),
+                          );
+                          /*if(snapshot.hasData) {
+                            print(snapshot.data.photo);
+                            return ClipOval(
+                              child: Image.network('http://10.0.2.2:8000'+snapshot.data.photo),
+                            );
+                          }else if(snapshot.hasError){
+                            return Text("${snapshot.error}");
+                          }*/
+                          //return CircularProgressIndicator();
+                        }
+                      )
                   ),
                 ),
                 Align(
@@ -103,7 +116,7 @@ class _profileViewState extends State<profileView> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    profileEdit(widget.deps)));
+                                    ProfileEdit(widget.deps)));
                       },
                     ),
                   ),
@@ -124,7 +137,6 @@ class _profileViewState extends State<profileView> {
       padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
       height: double.infinity,
       width: double.maxFinite,
-      child: Form(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -145,7 +157,7 @@ class _profileViewState extends State<profileView> {
                                     textAlign: TextAlign.center,
                                     enabled: false,
                                     decoration: InputDecoration(
-                                        labelText: '${snapshot.data.username}',
+                                        labelText: '${snapshot.data.firstName}',
                                         labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
@@ -185,7 +197,7 @@ class _profileViewState extends State<profileView> {
                                     textAlign: TextAlign.center,
                                     enabled: false,
                                     decoration: InputDecoration(
-                                        labelText: '${snapshot.data.username}',
+                                        labelText: '${snapshot.data.lastName}',
                                         labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
@@ -274,7 +286,7 @@ class _profileViewState extends State<profileView> {
                                 textAlign: TextAlign.center,
                                 enabled: false,
                                 decoration: InputDecoration(
-                                    labelText: '${snapshot.data.username}',
+                                    labelText: '${snapshot.data.country}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15,
@@ -321,7 +333,7 @@ class _profileViewState extends State<profileView> {
                                 textAlign: TextAlign.center,
                                 enabled: false,
                                 decoration: InputDecoration(
-                                    labelText: '${snapshot.data.username}',
+                                    labelText: '${snapshot.data.city}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15,
@@ -396,7 +408,6 @@ class _profileViewState extends State<profileView> {
             ],
           ),
         ),
-      ),
     );
   }
 }
