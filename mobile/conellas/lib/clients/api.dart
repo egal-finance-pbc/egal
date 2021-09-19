@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +13,7 @@ class API {
 
   API() {
     // TODO: Make base URL address:port dynamic.
-    this.url = 'http://10.0.2.2:5000/api/v1/';
+    this.url = 'http://10.0.2.2:8000/api/v1/';
   }
 
   Future<Token> login(String username, password) async {
@@ -58,10 +60,44 @@ class API {
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
+    var body = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
-      return Me.fromJson(json.decode(response.body));
+      return Me.fromJson(json.decode(body));
     }
     throw APIError.fromResponse(response);
+  }
+
+  Future<Update> updateAccount(String firstName, String lastName, String username, String country, String city, String phone, File photo) async {
+    var token = await FlutterSession().get('token');
+    var me = await FlutterSession().get('publicKey');
+    final response = await http.MultipartRequest('PUT',
+      Uri.parse(this.url + 'accounts/$me/update/'),);
+
+      Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
+
+      response.fields['first_name'] = firstName;
+      response.fields['last_name'] = lastName;
+      response.fields['username'] = username;
+      response.fields['phone'] = phone;
+      response.fields['city'] = city;
+      response.fields['country'] = country;
+      response.headers.addAll(headers);
+      response.files.add(await http.MultipartFile.fromBytes(
+        'photo', await photo.readAsBytesSync(),
+        filename: photo.path.split('/').last,
+        contentType: new MediaType('png', 'jpeg')));
+
+      var request = await response.send();
+
+
+      if (request.statusCode == 200) print('Uploaded!');
+
+    print(request.statusCode);
+
+    if (request.statusCode != 200){
+      print('failed');
+      //throw APIError.fromResponse(response);
+    }
   }
 
   Future<Account> account() async {
@@ -85,8 +121,9 @@ class API {
       this.url + 'accounts/?' + query,
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
+    var body = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
-      return User.fromList(json.decode(response.body));
+      return User.fromList(json.decode(body));
     }
     throw APIError.fromResponse(response);
   }
@@ -280,8 +317,11 @@ class Me {
   final String username;
   final String publicKey;
   final String phone;
+  final String country;
+  final String city;
+  final String photo;
 
-  Me({this.firstName, this.lastName, this.username, this.publicKey, this.phone});
+  Me({this.firstName, this.lastName, this.username, this.publicKey, this.phone, this.country, this.city, this.photo});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
@@ -290,9 +330,60 @@ class Me {
       username: json['username'],
       publicKey: json['public_key'],
       phone: json['phone'],
+      country: json['country'],
+      city: json['city'],
+      photo: json['photo'],
     );
   }
 }
+
+Update updateFromJson(String str) => Update.fromJson(json.decode(str));
+
+String updateToJson(Update data) => json.encode(data.toJson());
+class Update {
+    Update({
+        this.username,
+        this.firstName,
+        this.lastName,
+        this.publicKey,
+        this.phone,
+        this.country,
+        this.city,
+        this.photo,
+    });
+
+    final String username;
+    final String firstName;
+    final String lastName;
+    final String publicKey;
+    final String phone;
+    final String country;
+    final String city;
+    final String photo;
+
+    factory Update.fromJson(Map<String, dynamic> json) => Update(
+        username: json["username"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        publicKey: json["public_key"],
+        phone: json["phone"],
+        country: json["country"],
+        city: json["city"],
+        photo: json["photo"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "username": username,
+        "first_name": firstName,
+        "last_name": lastName,
+        "public_key": publicKey,
+        "phone": phone,
+        "country": country,
+        "city": city,
+        "photo": photo,
+    };
+}
+
 
 class Token {
   final String token;
@@ -324,7 +415,6 @@ class FingerprintAPI {
   static Future<bool> authenticate() async {
     final isAvailable = await checkBiometrics();
     if (!isAvailable) return false;
-
     try {
       return await _auth.authenticate(
         localizedReason: 'Scan Fingerprint to Authenticate',
