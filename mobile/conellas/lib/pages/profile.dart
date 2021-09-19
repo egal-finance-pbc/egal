@@ -23,10 +23,7 @@ class _profileViewState extends State<profileView> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Text('Profile'),
-        leading: Icon(
-          Icons.face,
-          size: 28,
-        ),
+        leading: Image.asset('assets/proicon.png', scale: 8,),
         actions: <Widget>[
           IconButton(
               onPressed: () {},
@@ -76,11 +73,7 @@ class _profileViewState extends State<profileView> {
                       shape: BoxShape.circle,
                     ),
                     child: ClipOval(
-                      child: Icon(
-                        Icons.face,
-                        color: Colors.white,
-                        size: 60,
-                      ),
+                      child: Image.asset('assets/proicon.png', scale: 0.2,),
                     ),
                   ),
                 ),

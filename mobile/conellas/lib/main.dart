@@ -1,8 +1,5 @@
 import 'package:conellas/instructionsPage/LoadScreen.dart';
 import 'package:conellas/pages/QRscan.dart';
-import 'package:conellas/pages/navigatorBar.dart';
-import 'package:conellas/pages/profile.dart';
-import 'package:conellas/pages/profileEdit.dart';
 import 'package:flutter/material.dart';
 
 import 'common/deps.dart';
@@ -15,6 +12,10 @@ import 'pages/search.dart';
 import 'pages/send.dart';
 import 'pages/signin.dart';
 import 'pages/signup.dart';
+import 'pages/receive.dart';
+import 'pages/profile.dart';
+import 'pages/profileEdit.dart';
+import 'pages/navigatorBar.dart';
 
 void main() {
   runApp(ConEllasApp());
@@ -45,6 +46,7 @@ class ConEllasApp extends StatelessWidget {
         '/profileEdit': (context) => profileEdit(deps),
         '/verificationCode': (context) => verificationCode(deps),
         '/loader': (context) => Loader(),
+        '/receive': (context) => ReceivePage(deps),
 
 
 

@@ -2,6 +2,7 @@ import 'package:conellas/common/deps.dart';
 import 'package:conellas/instructionsPage/takePicture.dart';
 import 'package:conellas/pages/home.dart';
 import 'package:conellas/pages/profile.dart';
+import 'package:conellas/pages/receive.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ),
       children: <Widget>[
         HomePage(widget.deps),
-        HomePage(widget.deps),
+        ReceivePage(widget.deps),
         profileView(widget.deps),
       ],
     );
