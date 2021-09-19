@@ -49,7 +49,7 @@ class UserSerializer(serializers.Serializer):
 
 class AccountUpdateSerializer(serializers.Serializer):
     phone = serializers.CharField(min_length=10, max_length=15)
-    photo = serializers.ImageField(max_length=254)
+    photo = serializers.ImageField(max_length=254, required=False)
     city = serializers.CharField(max_length=60)
     country = serializers.CharField(max_length=50)
 
