@@ -11,6 +11,7 @@ import 'instructionsPage/fingerprint.dart';
 import 'instructionsPage/takePicture.dart';
 import 'instructionsPage/verificationCode.dart';
 import 'pages/home.dart';
+import 'pages/receive.dart';
 import 'pages/search.dart';
 import 'pages/send.dart';
 import 'pages/signin.dart';
@@ -45,6 +46,7 @@ class ConEllasApp extends StatelessWidget {
         '/profileEdit': (context) => ProfileEdit(deps),
         '/verificationCode': (context) => verificationCode(deps),
         '/loader': (context) => Loader(),
+        '/receive': (context) => ReceivePage(deps),
 
 
 

@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/common/dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -125,7 +126,6 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/faces');
                           },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
@@ -138,7 +138,6 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/loader');
                             //SessionParams.deleteSession();
                           },
                           child: Icon(
@@ -152,7 +151,6 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            showAlertDialog(context);
                           },
                           child: Icon(
                             IconData(58615, fontFamily: 'MaterialIcons'),
@@ -353,6 +351,8 @@ class _LoginFormState extends State<LoginForm> {
                           return;
                         }
                         try {
+                          ProgressDialog progressDialog = ProgressDialog(context);
+                          progressDialog.show();
                           var token = await widget.deps.api.login(
                             this.usernameController.text,
                             this.passwordController.text,
@@ -363,9 +363,12 @@ class _LoginFormState extends State<LoginForm> {
                           var me = await widget.deps.api.me();
                           await sessionStorage.set('publicKey', me.publicKey);
                           rememberme(isChecked);
+                          progressDialog.dismiss();
                           Navigator.pushNamed(context, '/navigatorBar');
                         } catch (err) {
                           await FlutterSession().set('token', '');
+                          ProgressDialog progressDialog = ProgressDialog(context);
+                          progressDialog.dismiss();
                           showDialog(
                             context: context,
                             builder: (context) {

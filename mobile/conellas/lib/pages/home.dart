@@ -23,15 +23,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    var futureMe = widget.deps.api.me();
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xffF8991C),
       appBar: AppBar(
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Name(widget.deps),
-        leading: Icon(
-          Icons.face,
-          size: 28,
+        leading:  Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
+            margin: EdgeInsets.fromLTRB(0, size.height * 0.01, 0, 0),
+            child: FutureBuilder<Me>(
+                future: futureMe,
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    if(snapshot.data.photo == null){
+                      return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
+                    }else{
+                      return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                    }
+                  }else if(snapshot.hasError){
+                    return Text("${snapshot.error}");
+                  }
+                  return CircularProgressIndicator();
+                }
+            )
         ),
         actions: <Widget>[
           IconButton(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:conellas/clients/api.dart';
 import 'package:conellas/common/deps.dart';
@@ -17,25 +18,24 @@ class ProfileEdit extends StatefulWidget {
 }
 
 class _ProfileEditState extends State<ProfileEdit> {
-
   File image;
   Future pickImage(ImageSource source) async {
-  try{
-    final image = await ImagePicker.pickImage(source: source);
-    //final camera = await ImagePicker.pickImage(source: ImageSource.camera);
+    try {
+      final image = await ImagePicker.pickImage(source: source);
+      //final camera = await ImagePicker.pickImage(source: ImageSource.camera);
 
-    if (image == null) return;
-    //if (camera == null) return;
+      if (image == null) return;
+      //if (camera == null) return;
 
-    final imageTemporary = File(image.path);
-    setState(() => this.image = imageTemporary);
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
 
-    /*final cameraTemporary = File(camera.path);
+      /*final cameraTemporary = File(camera.path);
     setState(() => this.camera = cameraTemporary);*/
-  }catch(e){
+    } catch (e) {
       print('Failed to pick image $e');
+    }
   }
-}
 
   final _formKey = GlobalKey<FormState>();
 
@@ -48,6 +48,11 @@ class _ProfileEditState extends State<ProfileEdit> {
   //var photo = 'http://192.168.0.103:5000//media/uploads/photos/descarga.jpg';
 
   @override
+  void initState() {
+    super.initState();
+    Timer.run(() => showWarning(context));
+  }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -108,12 +113,89 @@ class _ProfileEditState extends State<ProfileEdit> {
                     child: FutureBuilder<Me>(
                         future: futureMe,
                         builder: (context, snapshot) {
-                          return Container(
-                            child: snapshot.hasData ? CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:8000'+snapshot.data.photo,)) 
-                            : CircleAvatar(backgroundImage: AssetImage('assets/proicon.png')),
+                          if (snapshot.hasData) {
+                            if (snapshot.data.photo == null) {
+                              return CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/proicon.png'));
+                            } else {
+                              return CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                'http://10.0.2.2:5000' + snapshot.data.photo,
+                              ));
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          return CircularProgressIndicator();
+                        }),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(
+                      size.height * 0.19, size.height * 0.31, 0, 0),
+                  height: size.height * 0.07,
+                  width: size.height * 0.07,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF8991C),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.edit),
+                    onPressed: () => _optionsDialogBox(),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(
+                        size.height * 0.29, size.height * 0.40, 0, 0),
+                    height: size.height * 0.07,
+                    width: size.height * 0.07,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF8991C),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.save),
+                      onPressed: () async {
+                        print(this.firstname);
+                        print(this.lastname);
+                        print(this.username);
+                        print(this.country);
+                        print(this.city);
+                        print(this.phone);
+                        print(this.image);
+
+                        try {
+                          if (!_formKey.currentState.validate()) return;
+                          _formKey.currentState.save();
+
+                          await widget.deps.api.updateAccount(
+                            this.firstname,
+                            this.lastname,
+                            this.username,
+                            this.country,
+                            this.city,
+                            this.phone,
+                            this.image,
                           );
+                          showSuccessDialog(context);
+                        } catch (e) {
+                          print(widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.username,
+                              this.country,
+                              this.city,
+                              this.phone,
+                              this.image));
+                          showErrorDialog(context, e);
                         }
-                      ),
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -151,32 +233,34 @@ class _ProfileEditState extends State<ProfileEdit> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return TextFormField(
-                                    initialValue: firstname = snapshot.data.firstName,
+                                    initialValue: firstname =
+                                        snapshot.data.firstName,
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
-                                        suffixIcon: Icon(Icons.edit),
-                                        labelText: '${snapshot.data.firstName}',
-                                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                                        labelStyle: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                        helperText: 'First Name',
-                                        helperStyle: TextStyle(
-                                          color: Colors.white,
+                                      suffixIcon: Icon(Icons.edit),
+                                      labelText: '${snapshot.data.firstName}',
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold),
+                                      helperText: 'First Name',
+                                      helperStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
+                                      disabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: 2,
                                         ),
-                                        contentPadding: const EdgeInsets.fromLTRB(
-                                            20, 0, 20, 0),
-                                        disabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.white,
-                                              width: 2,
-                                            ),
-                                          ),
-                                        ),
-                                        onSaved: (value) => firstname = value,
+                                      ),
+                                    ),
+                                    onSaved: (value) => firstname = value,
                                   );
                                 } else if (snapshot.hasError) {
                                   return Text("${snapshot.error}");
@@ -196,10 +280,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return TextFormField(
-                                    initialValue: lastname = snapshot.data.lastName,
+                                    initialValue: lastname =
+                                        snapshot.data.lastName,
                                     decoration: InputDecoration(
                                         suffixIcon: Icon(Icons.edit),
-                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
                                         labelText: '${snapshot.data.lastName}',
                                         labelStyle: TextStyle(
                                             color: Colors.black,
@@ -211,14 +297,15 @@ class _ProfileEditState extends State<ProfileEdit> {
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        contentPadding: const EdgeInsets.fromLTRB(
-                                            20, 0, 20, 0),
+                                        contentPadding:
+                                            const EdgeInsets.fromLTRB(
+                                                20, 0, 20, 0),
                                         disabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: Colors.white,
-                                              width: 2,
-                                            ))),
-                                            onSaved: (value) => lastname = value,
+                                          color: Colors.white,
+                                          width: 2,
+                                        ))),
+                                    onSaved: (value) => lastname = value,
                                   );
                                 } else if (snapshot.hasError) {
                                   return Text("${snapshot.error}");
@@ -234,7 +321,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                   ),
                   // primer ROW
 
-
                   //Segundo ROW
                   Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
@@ -247,10 +333,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return TextFormField(
-                                  initialValue: username = snapshot.data.username,
+                                  initialValue: username =
+                                      snapshot.data.username,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
                                       labelText: '${snapshot.data.username}',
                                       labelStyle: TextStyle(
                                           color: Colors.black,
@@ -262,14 +350,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
                                       disabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Colors.white,
-                                            width: 2,
-                                          ))),
-                                          onSaved: (value) => username = value,
+                                        color: Colors.white,
+                                        width: 2,
+                                      ))),
+                                  onSaved: (value) => username = value,
                                 );
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
@@ -292,7 +380,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   initialValue: country = snapshot.data.country,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
                                       labelText: '${snapshot.data.country}',
                                       labelStyle: TextStyle(
                                           color: Colors.black,
@@ -304,14 +393,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
                                       disabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Colors.white,
-                                            width: 2,
-                                          ))),
-                                          onSaved: (value) => country = value,
+                                        color: Colors.white,
+                                        width: 2,
+                                      ))),
+                                  onSaved: (value) => country = value,
                                 );
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
@@ -324,7 +413,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                       ],
                     ),
                   ),
-
 
                   //Tercer ROW
                   Container(
@@ -341,7 +429,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   initialValue: city = snapshot.data.city,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
                                       labelText: '${snapshot.data.city}',
                                       labelStyle: TextStyle(
                                           color: Colors.black,
@@ -353,14 +442,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
                                       disabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Colors.white,
-                                            width: 2,
-                                          ))),
-                                          onSaved: (value) => city = value,
+                                        color: Colors.white,
+                                        width: 2,
+                                      ))),
+                                  onSaved: (value) => city = value,
                                 );
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
@@ -383,7 +472,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   initialValue: phone = snapshot.data.phone,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
                                       labelText: '${snapshot.data.phone}',
                                       labelStyle: TextStyle(
                                           color: Colors.black,
@@ -395,14 +485,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
                                       disabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Colors.white,
-                                            width: 2,
-                                          ))),
-                                          onSaved: (value) => phone = value,
+                                        color: Colors.white,
+                                        width: 2,
+                                      ))),
+                                  onSaved: (value) => phone = value,
                                 );
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
@@ -415,69 +505,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.topCenter,
-                    margin: EdgeInsets.fromLTRB(
-                        size.height * 0.10, size.height * 0.33, 0, 0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xff3B2F8F),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40)),
-                      ),
-                      onPressed: () => _optionsDialogBox(),
-                      child: Text(
-                        'Pick Gallery or Camera',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ),
-                  Container(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(
-                        size.height * 0.29, size.height * 0.40, 0, 0),
-                    height: size.height * 0.07,
-                    width: size.height * 0.07,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF8991C),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.save),
-                      onPressed: () async {
-                        print(this.firstname);
-                        print(this.lastname);
-                        print(this.username);
-                        print(this.country);
-                        print(this.city);
-                        print(this.phone);
-                        print(this.image);
-
-                        try {
-                          if (!_formKey.currentState.validate()) return;
-                          _formKey.currentState.save();
-
-                          await widget.deps.api.updateAccount(
-                            this.firstname, 
-                            this.lastname,  
-                            this.username, 
-                            this.country,  
-                            this.city, 
-                            this.phone,  
-                            this.image,
-                          );
-                          showSuccessDialog(context);
-                        }catch (e) {
-                          print(widget.deps.api.updateAccount(this.firstname, this.lastname, this.username, this.country, this.city, this.phone, this.image));
-                          showErrorDialog(context, e);
-                        }
-                      },
-                    ),
-                  ),
-                ),
                 ],
               ),
             ],
@@ -500,7 +527,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                     onTap: () => pickImage(ImageSource.camera),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(0.0),
+                    child: Divider(
+                      height: 20,
+                    ),
                   ),
                   GestureDetector(
                     child: new Text('Gallery'),
@@ -509,11 +539,40 @@ class _ProfileEditState extends State<ProfileEdit> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                   ),
+                  FlatButton(
+                    color: Color(0xff3B2F8F),
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40)),
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                      showImg(context);
+                    },
+                  ),
                 ],
               ),
             ),
           );
         });
+  }
+
+  void showImg(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    var selectorImg = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      contentPadding: const EdgeInsets.all(20),
+      actionsPadding: const EdgeInsets.only(top: 60),
+      titlePadding: const EdgeInsets.all(20),
+      title: Text("The image has been uploaded"),
+      content: Text("You will see it when you save the changes"),
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext _) {
+        return selectorImg;
+      },
+    );
   }
 
   void showSuccessDialog(BuildContext context) {
@@ -524,8 +583,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
       title: Text("Update Successfully"),
-      content:
-          Text("Now, you would see the changes"),
+      content: Text("Now, you would see the changes"),
       actions: [
         Center(
           child: Container(
@@ -538,11 +596,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ProfileView(widget.deps)));
+                Navigator.pop(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            ProfileView(widget.deps)));
               },
             ),
           ),
@@ -575,8 +633,7 @@ class _ProfileEditState extends State<ProfileEdit> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40)),
               onPressed: () {
-                Navigator.of(context).pop();
-              },
+                Navigator.of(context, rootNavigator: true).pop();              },
             ),
           ),
         ),
@@ -590,4 +647,37 @@ class _ProfileEditState extends State<ProfileEdit> {
       },
     );
   }
+}
+
+void showWarning(BuildContext context) {
+  Size size = MediaQuery.of(context).size;
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      contentPadding: const EdgeInsets.all(20),
+      actionsPadding: const EdgeInsets.only(top: 60),
+      titlePadding: const EdgeInsets.all(20),
+      title: Text('Warning'),
+      content: Text('Always update your photo, every time you save a change.'),
+      actions: [
+        Center(
+          child: Container(
+            width: size.width * 0.50,
+            height: size.height * 0.06,
+            child: FlatButton(
+              color: Color(0xff3B2F8F),
+              child: Text("OK"),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();              },
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

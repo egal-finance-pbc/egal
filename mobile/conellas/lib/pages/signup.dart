@@ -123,7 +123,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/phones');
                           },
                           child: Icon(
                             IconData(63281, fontFamily: 'MaterialIcons'),
@@ -136,7 +135,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/scanners');
                           },
                           child: Icon(
                             IconData(57683, fontFamily: 'MaterialIcons'),
@@ -149,7 +147,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         FlatButton(
                           onPressed: () {
-                            showAlertDialog(context);
                           },
                           child: Icon(
                             IconData(58615, fontFamily: 'MaterialIcons'),

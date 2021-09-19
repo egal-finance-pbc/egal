@@ -17,6 +17,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
+    var futureMe = widget.deps.api.me();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xffF8991C),
@@ -24,9 +25,24 @@ class _ProfileViewState extends State<ProfileView> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Text('Profile'),
-        leading: Icon(
-          Icons.face,
-          size: 28,
+        leading: Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
+            margin: EdgeInsets.fromLTRB(0, size.height * 0.01, 0, 0),
+            child: FutureBuilder<Me>(
+                future: futureMe,
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    if(snapshot.data.photo == null){
+                      return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
+                    }else{
+                      return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                    }
+                  }else if(snapshot.hasError){
+                    return Text("${snapshot.error}");
+                  }
+                  return CircularProgressIndicator();
+                }
+            )
         ),
         actions: <Widget>[
           IconButton(
@@ -80,8 +96,19 @@ class _ProfileViewState extends State<ProfileView> {
                     child: FutureBuilder<Me>(
                         future: futureMe,
                         builder: (context, snapshot) {
+                          if(snapshot.hasData){
+                            if(snapshot.data.photo == null){
+                              return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
+                            }else{
+                              return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                            }
+                          }else if(snapshot.hasError){
+                            return Text("${snapshot.error}");
+                          }
+                          return CircularProgressIndicator();
+
                           return Container(
-                            child: snapshot.hasData ? CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:8000'+snapshot.data.photo,)) 
+                            child: snapshot.hasData ? CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,))
                             : CircleAvatar(backgroundImage: AssetImage('assets/proicon.png')),
                           );
                           /*if(snapshot.hasData) {
