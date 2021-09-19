@@ -122,7 +122,7 @@ class Account(APIView):
                 last_name=user_payload.validated_data['last_name'],
                 username=user_payload.validated_data['username'],
                 phone=account_payload.validated_data['phone'],
-                photo=account_payload.validated_data['photo'],
+                photo=account_payload.validated_data.get('photo'),
                 country=account_payload.validated_data['country'],
                 city=account_payload.validated_data['city'],
             )
