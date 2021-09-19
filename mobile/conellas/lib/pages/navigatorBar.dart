@@ -47,7 +47,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       children: <Widget>[
         HomePage(widget.deps),
         HomePage(widget.deps),
-        profileView(widget.deps),
+        ProfileView(widget.deps),
       ],
     );
   }
