@@ -38,6 +38,7 @@ dependencies:
   path_provider: any
   path: any
   local_auth: ^1.1.6
+  
   custom_navigator:
     git:
       url: https://github.com/kjawadDeveloper/Custom-navigator.git
@@ -45,6 +46,8 @@ dependencies:
   lottie: ^1.1.0
   twilio_phone_verify: ^1.0.0
   flutter_otp_text_field: ^1.0.0
+  image_picker: 
+  http_parser:   
 
 
 
