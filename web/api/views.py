@@ -172,7 +172,7 @@ class Payments(APIView):
         return Response(data=[{
             'amount': str(p.amount),
             'description': p.description,
-            'date': p.date.strftime("%a, %m-%b-%Y"),
+            'date': p.date.strftime("%d-%b-%Y"),
             'source': {
                 'username': p.source.user.username,
                 'first_name': p.source.user.first_name,
