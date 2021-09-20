@@ -187,7 +187,7 @@ class _SearchPageState extends State<SearchPage> {
         actions: <Widget>[
           IconButton(
               onPressed: () {},
-              icon: Icon(IconData(0xe57f, fontFamily: 'MaterialIcons')))
+              icon: Icon(Icons.settings)),
         ],
       ),
       body: Stack(

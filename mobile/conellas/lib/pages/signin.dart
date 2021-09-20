@@ -1,9 +1,11 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/common/dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 
 import '../clients/api.dart';
 
@@ -114,51 +116,36 @@ class _SignInPageState extends State<SignInPage> {
                                 ? await launch(_url)
                                 : throw 'Could not launch $_url';
                           },
-                          child: Icon(
-                            IconData(59101, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.web, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
                         ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/faces');
                           },
-                          child: Icon(
-                            IconData(63281, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.facebook, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
-                        ),
+                          ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/loader');
                             //SessionParams.deleteSession();
                           },
-                          child: Icon(
-                            IconData(57683, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.chat_rounded, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
                         ),
                         FlatButton(
                           onPressed: () {
-                            showAlertDialog(context);
                           },
-                          child: Icon(
-                            IconData(58615, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.qr_code_scanner, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
@@ -353,6 +340,8 @@ class _LoginFormState extends State<LoginForm> {
                           return;
                         }
                         try {
+                          ProgressDialog progressDialog = ProgressDialog(context);
+                          progressDialog.show();
                           var token = await widget.deps.api.login(
                             this.usernameController.text,
                             this.passwordController.text,
@@ -363,9 +352,12 @@ class _LoginFormState extends State<LoginForm> {
                           var me = await widget.deps.api.me();
                           await sessionStorage.set('publicKey', me.publicKey);
                           rememberme(isChecked);
+                          progressDialog.dismiss();
                           Navigator.pushNamed(context, '/navigatorBar');
                         } catch (err) {
                           await FlutterSession().set('token', '');
+                          ProgressDialog progressDialog = ProgressDialog(context);
+                          progressDialog.dismiss();
                           showDialog(
                             context: context,
                             builder: (context) {

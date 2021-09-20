@@ -47,8 +47,10 @@ dependencies:
   twilio_phone_verify: ^1.0.0
   flutter_otp_text_field: ^1.0.0
   image_picker: 
-  http_parser:   
-
+  http_parser:
+  progress_indicators: ^1.0.0
+  syncfusion_flutter_charts: ^19.2.62
+  bootstrap_icons: ^1.5.0
 
 
 dev_dependencies:
@@ -80,6 +82,9 @@ flutter:
     - assets/Logo.png
     - assets/PruebaApp1.png
     - assets/lottie/
+    - assets/proicon.png
+    - assets/Icons/gear-fill.svg
+    - assets/icon.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
