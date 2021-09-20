@@ -64,7 +64,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         actions: <Widget>[
           IconButton(
               onPressed: () {},
-              icon: Icon(IconData(0xe57f, fontFamily: 'MaterialIcons')))
+              icon: Icon(Icons.settings))
         ],
       ),
       body: Stack(

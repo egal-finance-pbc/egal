@@ -47,7 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
         actions: <Widget>[
           IconButton(
               onPressed: () {},
-              icon: Icon(IconData(0xe57f, fontFamily: 'MaterialIcons')))
+              icon: Icon(Icons.settings))
         ],
       ),
       body: Stack(

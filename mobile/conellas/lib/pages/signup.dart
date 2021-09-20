@@ -112,11 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ? await launch(_url)
                                 : throw 'Could not launch $_url';
                           },
-                          child: Icon(
-                            IconData(59101, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.web, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
@@ -124,11 +121,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         FlatButton(
                           onPressed: () {
                           },
-                          child: Icon(
-                            IconData(63281, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.facebook, color: Colors.white,
+                            size: 25,),
+                          color: Color(0xff3B2F8F),
+                          shape: CircleBorder(),
+                          height: 50,
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            //SessionParams.deleteSession();
+                          },
+                          child: Icon(Icons.chat_rounded, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
@@ -136,23 +140,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         FlatButton(
                           onPressed: () {
                           },
-                          child: Icon(
-                            IconData(57683, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                          color: Color(0xff3B2F8F),
-                          shape: CircleBorder(),
-                          height: 50,
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                          },
-                          child: Icon(
-                            IconData(58615, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                          child: Icon(Icons.qr_code_scanner, color: Colors.white,
+                            size: 25,),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,

@@ -52,7 +52,7 @@ class _ReceivePageState extends State<ReceivePage> {
         actions: <Widget>[
           IconButton(
               onPressed: () {},
-              icon: Icon(IconData(0xe57f, fontFamily: 'MaterialIcons')))
+              icon: Icon(Icons.settings))
         ],
       ),
       body: Stack(
@@ -240,22 +240,32 @@ class _ReceivePageState extends State<ReceivePage> {
                       descrip = ' ';
                     }
 
-                    return ListTile(
-                      leading: Icon(iconArrow, color: Color(0xff3b2f8f)),
-                      title: Text(sender),
-                      subtitle: Text(descrip),
-                      trailing: Text(
-                        '$action $amount',
-                        style: TextStyle(color: color),
-                      ),
-                      tileColor: backcolor,
+                    return Column(
+                      children: <Widget>[
+                        Card(
+                          color: Color(0xffF8991C),
+                          elevation: 0,
+                          child: ListTile(
+                            leading: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
+                              child: Text(dates),
+                            ),
+                            title: Text(sender, style: TextStyle(fontWeight: FontWeight.bold,),),
+                            subtitle: Text(descrip),
+                            trailing: Text(
+                              '$action $amount',
+                              style: TextStyle(color: color, fontWeight: FontWeight.bold),
+                            ),
+                            tileColor: backcolor,
+                          ),
+                        ),
+                      ],
                     );
                   },
                   separatorBuilder: (context, index) {
                     return Divider(
-                      height: 0,
-                      color: Colors.transparent,
-                      thickness: 2,
+                      color: Colors.white,
+                      thickness: 1,
                     );
                   },
                 );

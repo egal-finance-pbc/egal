@@ -38,7 +38,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.call_received), title: Text('Recived')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.face), title: Text('Profile')),
+                icon: Icon(Icons.account_circle), title: Text('Profile')),
           ],
           backgroundColor: Color(0xff3B2F8F),
           selectedItemColor: Color(0xffF8991C),
