@@ -62,9 +62,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         elevation: 0,
         title: Text('Profile'),
         actions: <Widget>[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.settings))
+          IconButton(onPressed: () {}, icon: Icon(Icons.settings))
         ],
       ),
       body: Stack(
@@ -259,6 +257,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                                           width: 2,
                                         ),
                                       ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
                                     ),
                                     onSaved: (value) => firstname = value,
                                   );
@@ -283,28 +287,35 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     initialValue: lastname =
                                         snapshot.data.lastName,
                                     decoration: InputDecoration(
-                                        suffixIcon: Icon(Icons.edit),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        labelText: '${snapshot.data.lastName}',
-                                        labelStyle: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                        helperText: 'Last Name',
-                                        helperStyle: TextStyle(
-                                          color: Colors.white,
+                                      suffixIcon: Icon(Icons.edit),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      labelText: '${snapshot.data.lastName}',
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20, 0, 20, 0),
-                                        disabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
+                                          fontWeight: FontWeight.bold),
+                                      helperText: 'Last Name',
+                                      helperStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
+                                      disabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
-                                        ))),
+                                        ),
+                                      ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
                                     onSaved: (value) => lastname = value,
                                   );
                                 } else if (snapshot.hasError) {
@@ -336,27 +347,35 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   initialValue: username =
                                       snapshot.data.username,
                                   decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                      labelText: '${snapshot.data.username}',
-                                      labelStyle: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                      helperText: 'Username',
-                                      helperStyle: TextStyle(
-                                        color: Colors.white,
+                                    suffixIcon: Icon(Icons.edit),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    labelText: '${snapshot.data.username}',
+                                    labelStyle: TextStyle(
+                                        color: Colors.black,
                                         fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      disabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
+                                        fontWeight: FontWeight.bold),
+                                    helperText: 'Username',
+                                    helperStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    contentPadding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
-                                      ))),
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
                                   onSaved: (value) => username = value,
                                 );
                               } else if (snapshot.hasError) {
@@ -379,27 +398,35 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 return TextFormField(
                                   initialValue: country = snapshot.data.country,
                                   decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                      labelText: '${snapshot.data.country}',
-                                      labelStyle: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                      helperText: 'Country',
-                                      helperStyle: TextStyle(
-                                        color: Colors.white,
+                                    suffixIcon: Icon(Icons.edit),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    labelText: '${snapshot.data.country}',
+                                    labelStyle: TextStyle(
+                                        color: Colors.black,
                                         fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      disabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
+                                        fontWeight: FontWeight.bold),
+                                    helperText: 'Country',
+                                    helperStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    contentPadding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
-                                      ))),
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
                                   onSaved: (value) => country = value,
                                 );
                               } else if (snapshot.hasError) {
@@ -428,27 +455,35 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 return TextFormField(
                                   initialValue: city = snapshot.data.city,
                                   decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                      labelText: '${snapshot.data.city}',
-                                      labelStyle: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                      helperText: 'City',
-                                      helperStyle: TextStyle(
-                                        color: Colors.white,
+                                    suffixIcon: Icon(Icons.edit),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    labelText: '${snapshot.data.city}',
+                                    labelStyle: TextStyle(
+                                        color: Colors.black,
                                         fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      disabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
+                                        fontWeight: FontWeight.bold),
+                                    helperText: 'City',
+                                    helperStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    contentPadding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
-                                      ))),
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
                                   onSaved: (value) => city = value,
                                 );
                               } else if (snapshot.hasError) {
@@ -471,27 +506,35 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 return TextFormField(
                                   initialValue: phone = snapshot.data.phone,
                                   decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.edit),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                      labelText: '${snapshot.data.phone}',
-                                      labelStyle: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
-                                      helperText: 'Phone #',
-                                      helperStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
-                                      disabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
+                                    suffixIcon: Icon(Icons.edit),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    labelText: '${snapshot.data.phone}',
+                                    labelStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                    helperText: 'Phone #',
+                                    helperStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    contentPadding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
-                                      ))),
+                                      ),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
                                   onSaved: (value) => phone = value,
                                 );
                               } else if (snapshot.hasError) {
@@ -596,7 +639,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pop(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -633,7 +676,8 @@ class _ProfileEditState extends State<ProfileEdit> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40)),
               onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();              },
+                Navigator.of(context, rootNavigator: true).pop();
+              },
             ),
           ),
         ),
@@ -673,7 +717,8 @@ void showWarning(BuildContext context) {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40)),
               onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();              },
+                Navigator.of(context, rootNavigator: true).pop();
+              },
             ),
           ),
         ),
