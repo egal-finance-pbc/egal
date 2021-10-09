@@ -5,6 +5,7 @@ class SignUp(serializers.Serializer):
     username = serializers.CharField(min_length=6, max_length=12)
     password = serializers.CharField(min_length=8, max_length=12)
     phone = serializers.CharField(min_length=10, max_length=15)
+    country = serializers.CharField(max_length=50)
 
     def create(self, validated_data):
         pass
