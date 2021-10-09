@@ -21,8 +21,8 @@ class Gateway:
         self.server = stellar.Server(horizon_url=settings.STELLAR_HORIZON_URL)
 
     @transaction.atomic
-    def create_account(self, username, phone, password) -> models.Account:
-        if User.objects.filter(Q(username=username) | Q(account__phone=phone)).exists():
+    def create_account(self, username, phone, password, country) -> models.Account:
+        if User.objects.filter(username=username).exists():
             raise LedgerError('An account already exists for this phone and username combination!')
         kp = self.create_keypair()
         # Funding the account with Friendbot.
@@ -33,7 +33,7 @@ class Gateway:
             logger.error('Failed to fund stellar account', addr=kp.public_key, error=r.text)
             raise LedgerError('account creation failed', r.text)
         user = User.objects.create_user(username, password=password)
-        return models.Account.objects.create(user=user, public_key=kp.public_key, secret=kp.secret, phone=phone)
+        return models.Account.objects.create(user=user, public_key=kp.public_key, secret=kp.secret, phone=phone, country=country)
 
     @staticmethod
     def create_keypair() -> stellar.Keypair:
