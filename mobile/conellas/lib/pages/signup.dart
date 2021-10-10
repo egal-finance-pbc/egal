@@ -212,6 +212,7 @@ class _SignUpFormState extends State<SignUpForm> {
   TwilioPhoneVerify _twilioPhoneVerify;
 
   String phone;
+  String phoneIsoCode;
   //final phoneController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -232,6 +233,7 @@ class _SignUpFormState extends State<SignUpForm> {
       String number, String internationalizedPhoneNumber, String isoCode) {
     setState(() {
       phone = internationalizedPhoneNumber;
+      phoneIsoCode = isoCode;
     });
   }
 
@@ -508,7 +510,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pushNamed(context, '/verificationCode', arguments: {'phone' : phone, 'username' : usernameController.text, 'password' : passwordController.text});
+                Navigator.pushNamed(context, '/verificationCode', arguments: {'phone' : phone, 'isoCode' : phoneIsoCode, 'username' : usernameController.text, 'password' : passwordController.text});
               },
             ),
           ),

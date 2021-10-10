@@ -10,15 +10,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
   String url;
+  String urlStellar;
 
   API() {
     // TODO: Make base URL address:port dynamic.
     this.url = 'http://10.0.2.2:5000/api/v1/';
+    this.urlStellar = 'https://api.lunarcrush.com/v2?data=assets&key=huck2rucpzuhd3d1bncf&symbol=XLM';
   }
 
   Future<Token> login(String username, password) async {
     final response = await http.post(
-      this.url + 'tokens/',
+      Uri.parse(this.url + 'tokens/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -34,9 +36,9 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> signup(String phone, username, password) async {
+  Future<bool> signup(String phone, username, password, country) async {
     final response = await http.post(
-      this.url + 'accounts/',
+      Uri.parse(this.url + 'accounts/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -44,10 +46,12 @@ class API {
         'phone': phone,
         'username': username,
         'password': password,
+        'country': country,
       }),
     );
 
     if (response.statusCode != 201) {
+      print(country);
       throw APIError.fromResponse(response);
     }
     return true;
@@ -56,7 +60,7 @@ class API {
   Future<Me> me() async {
     var token = await FlutterSession().get('token');
     final response = await http.get(
-      this.url + 'me/',
+      Uri.parse(this.url + 'me/'),
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
@@ -104,7 +108,7 @@ class API {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
     final response = await http.get(
-      this.url + 'accounts/$me/',
+      Uri.parse(this.url + 'accounts/$me/'),
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
@@ -119,7 +123,7 @@ class API {
     final token = await FlutterSession().get('token');
     final query = Uri(queryParameters: {'q': q}).query;
     final response = await http.get(
-      this.url + 'accounts/?' + query,
+      Uri.parse(this.url + 'accounts/?' + query),
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
     var body = utf8.decode(response.bodyBytes);
@@ -140,7 +144,7 @@ class API {
       body['description'] = desc;
     }
     final response = await http.post(
-      this.url + 'payments/',
+      Uri.parse(this.url + 'payments/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: 'Token $token',
@@ -155,12 +159,24 @@ class API {
   Future<List<Payment>> payments() async {
     var token = await FlutterSession().get('token');
     final response = await http.get(
-      this.url + 'payments/',
+      Uri.parse(this.url + 'payments/'),
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
     if (response.statusCode == 200) {
       return Payment.fromList(json.decode(response.body));
+    }
+    throw APIError.fromResponse(response);
+  }
+  
+  Future<CountryBalance> price() async {
+    final response = await http.get(
+      Uri.parse(this.urlStellar),
+      headers: {'Content-Type': 'application/json'}
+    );
+
+    if (response.statusCode == 200) {
+      return CountryBalance.fromJson(json.decode(response.body));
     }
     throw APIError.fromResponse(response);
   }
@@ -485,5 +501,62 @@ class FingerprintAPI {
     );
   }
 
+}
+
+  CountryBalance countryBalanceFromJson(String str) => CountryBalance.fromJson(json.decode(str));
+
+  String countryBalanceToJson(CountryBalance data) => json.encode(data.toJson());
+
+class CountryBalance {
+ 
+    CountryBalance({
+        this.data,
+    });
+
+    List<Datum> data;
+
+    factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    };
+}
+
+class Datum {
+    Datum({
+        this.id,
+        this.name,
+        this.symbol,
+        this.price,
+        this.priceBtc,
+        this.marketCap,
+    });
+
+    int id;
+    String name;
+    String symbol;
+    double price;
+    double priceBtc;
+    int marketCap;
+
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        id: json["id"],
+        name: json["name"],
+        symbol: json["symbol"],
+        price: json["price"].toDouble(),
+        priceBtc: json["price_btc"].toDouble(),
+        marketCap: json["market_cap"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "symbol": symbol,
+        "price": price,
+        "price_btc": priceBtc,
+        "market_cap": marketCap,
+    };
 }
 

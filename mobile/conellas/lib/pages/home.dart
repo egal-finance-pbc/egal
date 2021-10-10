@@ -22,6 +22,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+double price;
+String isoCode;
+double balanceDouble;
+
   @override
   Widget build(BuildContext context) {
     var futureMe = widget.deps.api.me();
@@ -88,7 +92,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget balanceContainer(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var futureCountry = widget.deps.api.price();
     var futureBalance = widget.deps.api.account();
+    var futureMe = widget.deps.api.me();
+
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       //Balance
@@ -120,21 +127,83 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FutureBuilder<Account>(
+                      FutureBuilder<CountryBalance>(
+                        future: futureCountry,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+
+                            for (var i = 0; i < snapshot.data.data.length; i++) {
+                              price = snapshot.data.data[i].price;
+                              print(price);
+                            }
+
+                          }else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          return Text('');
+                        },
+                        ),
+                        FutureBuilder<Me>(
+                          future: futureMe,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData){
+                              isoCode = snapshot.data.country;
+                            }else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            return Text('');
+                          }
+                        ),
+                        FutureBuilder<Account>(
                         future: futureBalance,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            // TODO: use tryParse as recommended and handle error.
-                            double balanceDouble =
-                                double.parse(snapshot.data.balance);
-                            return Text(
-                              currency.format(balanceDouble),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 45,
-                                color: Colors.white,
-                              ),
-                            );
+                            price != null ? balanceDouble = double.parse(snapshot.data.balance)
+                            : print('Maldita sea');
+                            try {
+                              switch (isoCode) {
+                              case 'US':
+                              return Text(
+                                currency.format(balanceDouble*price)+' '+'USD',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.white,
+                                ),
+                              );
+                              case 'CA':
+                              return Text(
+                                currency.format(balanceDouble*price*16).replaceAll('\$', 'C\$')+' '+'CAD',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.white,
+                                ),
+                              );
+                              case 'MX':
+                              return Text(
+                                currency.format(balanceDouble*price*20)+' '+'MXN',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.white,
+                                ),
+                              );
+                              case 'IN':
+                              return Text(
+                                currency.format(balanceDouble*price*74.55).replaceAll('\$', '₹')+' '+'INR',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.white,
+                                ),
+                              );
+                            }
+                            
+                            }catch (e) {
+                              print(e);
+                            }
+                            
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           }
