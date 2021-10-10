@@ -113,6 +113,7 @@ class API {
     );
 
     if (response.statusCode == 200) {
+      print(response.body);
       return Account.fromJson(json.decode(response.body));
     }
     throw APIError.fromResponse(response);
@@ -127,6 +128,7 @@ class API {
     );
     var body = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
+      print(json.decode(body));
       return User.fromList(json.decode(body));
     }
     throw APIError.fromResponse(response);
@@ -209,10 +211,11 @@ class User {
   final String lastName;
   final String username;
   final String publicKey;
+  final String savingKey;
   final String phone;
 
 
-  User({this.firstName, this.lastName, this.username, this.publicKey,this.phone});
+  User({this.firstName, this.lastName, this.username, this.publicKey, this.savingKey, this.phone});
 
   static List<User> fromList(List<dynamic> list) {
     var users = List<User>();
@@ -222,6 +225,7 @@ class User {
         lastName: item['last_name'],
         username: item['username'],
         publicKey: item['public_key'],
+        savingKey: item['saving_key'],
         phone: item["phone"],
 
       ));
@@ -235,6 +239,7 @@ class User {
       lastName: item['last_name'],
       username: item['username'],
       publicKey: item['public_key'],
+      savingKey: item['saving_key'],
       phone: item["phone"],
     );
   }
