@@ -29,7 +29,6 @@ class _verificationCodeState extends State<verificationCode> {
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context).settings.arguments;
-    String smsCode = '';
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -106,6 +105,7 @@ class _verificationCodeState extends State<verificationCode> {
                             String cellphone = data['phone'];
                             String user = data['username'];
                             String passcode = data['password'];
+                            String isoCode = data['isoCode'];
 
                             if (cellphone.isEmpty && smsCode.isEmpty) return;
                             TwilioResponse twilioResponse = await _twilioPhoneVerify.verifySmsCode(phone: cellphone, code: smsCode);
@@ -117,6 +117,7 @@ class _verificationCodeState extends State<verificationCode> {
                                     cellphone,
                                     user,
                                     passcode,
+                                    isoCode,
                                   );
                                     showSuccessDialog(context);
                                 }catch (e){
@@ -159,35 +160,6 @@ class _verificationCodeState extends State<verificationCode> {
       ),
     );
   }
-
-  /*void verifyCode() async {
-    Map data = ModalRoute.of(context).settings.arguments;
-    String cellphone = data['phone'];
-    String user = data['username'];
-    String passcode = data['password'];
-
-    if (cellphone.isEmpty && smsCode.isEmpty) return;
-    TwilioResponse twilioResponse = await _twilioPhoneVerify.verifySmsCode(phone: cellphone, code: smsCodeController.text);
-    if (twilioResponse.successful) {
-      if (twilioResponse.verification.status == VerificationStatus.approved) {
-        print('Phone number is approved');
-        try {
-          await widget.deps.api.signup(
-            cellphone,
-            user,
-            passcode,
-          );
-          showSuccessDialog(context);
-        }catch (e){
-          print(e);
-        }
-      } else {
-        print('Invalid code');
-      }
-    } else {
-      print(twilioResponse.errorMessage);
-    }
-  }*/
 }
 
 

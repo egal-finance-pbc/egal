@@ -2,6 +2,7 @@
 import 'package:conellas/clients/api.dart';
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/profileEdit.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -106,20 +107,6 @@ class _ProfileViewState extends State<ProfileView> {
                             return Text("${snapshot.error}");
                           }
                           return CircularProgressIndicator();
-
-                          return Container(
-                            child: snapshot.hasData ? CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,))
-                            : CircleAvatar(backgroundImage: AssetImage('assets/proicon.png')),
-                          );
-                          /*if(snapshot.hasData) {
-                            print(snapshot.data.photo);
-                            return ClipOval(
-                              child: Image.network('http://10.0.2.2:8000'+snapshot.data.photo),
-                            );
-                          }else if(snapshot.hasError){
-                            return Text("${snapshot.error}");
-                          }*/
-                          //return CircularProgressIndicator();
                         }
                       )
                   ),
@@ -309,29 +296,19 @@ class _ProfileViewState extends State<ProfileView> {
                           future: futureMe,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              return TextFormField(
-                                textAlign: TextAlign.center,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                    labelText: '${snapshot.data.country}',
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                    helperText: 'Country',
-                                    helperStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    disabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2,
-                                    ))),
-                              );
+                              return IgnorePointer(
+                                  child: CountryListPick(
+                                  theme: CountryTheme(
+                                    isShowFlag: true,
+                                    isShowTitle: true,
+                                    isDownIcon: false,
+                                    isShowCode: false,
+                                    showEnglishName: false,
+                                    
+                                  ),
+                                  initialSelection: snapshot.data.country,
+                              ),
+                                );
                             } else if (snapshot.hasError) {
                               return Text("${snapshot.error}");
                             }
