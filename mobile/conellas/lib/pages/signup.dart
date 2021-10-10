@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           color: Colors.white,
                         ),
                         Text(
-                          'Contac Egal',
+                          'Contact Egal',
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
