@@ -22,18 +22,25 @@ class Gateway:
 
     @transaction.atomic
     def create_account(self, username, phone, password) -> models.Account:
-        if User.objects.filter(Q(username=username) | Q(account__phone=phone)).exists():
+        if User.objects.filter(username=username).exists():
             raise LedgerError('An account already exists for this phone and username combination!')
         kp = self.create_keypair()
+        sk = self.create_keypair()
         # Funding the account with Friendbot.
         r = requests.get(settings.STELLAR_FRIENDBOT_URL, params={
             'addr': kp.public_key
         })
+        s = requests.get(settings.STELLAR_FRIENDBOT_URL, params={
+            'addr': sk.public_key
+        })
         if r.status_code != 200:
             logger.error('Failed to fund stellar account', addr=kp.public_key, error=r.text)
             raise LedgerError('account creation failed', r.text)
+        elif s.status_code != 200:
+            logger.error('Failed to fund stellar account', addr=sk.public_key, error=s.text)
+            raise LedgerError('account creation failed', s.text)
         user = User.objects.create_user(username, password=password)
-        return models.Account.objects.create(user=user, public_key=kp.public_key, secret=kp.secret, phone=phone)
+        return models.Account.objects.create(user=user, public_key=kp.public_key, saving_key=sk.public_key, secret=kp.secret, phone=phone)
 
     @staticmethod
     def create_keypair() -> stellar.Keypair:
@@ -41,7 +48,7 @@ class Gateway:
 
     @staticmethod
     def get_account(pubkey: str) -> models.Account:
-        account = models.Account.objects.filter(public_key=pubkey).first()
+        account = models.Account.objects.filter(Q(public_key=pubkey) | Q(saving_key=pubkey)).first()
         if account is None:
             raise LedgerError('account not found')
         return account
@@ -114,7 +121,8 @@ class Gateway:
     @staticmethod
     def search_accounts(q: str) -> List[models.Account]:
         criteria = Q(user__username__icontains=q) \
-            | Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q)
+            | Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(saving_key__icontains=q) \
+            | Q(phone__icontains=q)
         return models.Account.objects.filter(criteria)
 
 

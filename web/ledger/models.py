@@ -5,6 +5,7 @@ from django.db import models
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     public_key = models.CharField(max_length=56, unique=True)
+    saving_key = models.CharField(max_length=56, unique=True, null=True, default=None)
     secret = models.CharField(max_length=56)
     phone = models.CharField(max_length=15, default='')
     city = models.CharField(max_length=60, default='')

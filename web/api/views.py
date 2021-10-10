@@ -44,6 +44,7 @@ class Accounts(APIView):
             'first_name': a.user.first_name,
             'last_name': a.user.last_name,
             'public_key': a.public_key,
+            'saving_key': a.saving_key,
             'phone': a.phone,
 
         } for a in accounts])
@@ -150,6 +151,7 @@ class Me(APIView):
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
             'public_key': account.public_key,
+            'saving_key': account.saving_key,
             'phone': account.phone,
             'country': account.country,
             'city': account.city,

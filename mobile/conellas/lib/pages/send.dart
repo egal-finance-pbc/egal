@@ -401,6 +401,20 @@ class _SendPageState extends State<SendPage> {
     });
   }
 
+  void _savingSend() {
+    var howMuch = double.parse(_howMuchCtrl.text.trim());
+    setState(() {
+      ProgressDialog progressDialog = ProgressDialog(context);
+      progressDialog.show();
+      _futurePayment = widget.deps.api.pay(
+        _destUser.savingKey,
+        howMuch,
+        _descriptionCtrl.text.trim(),
+      );
+      _futurePayment.then(_done);
+    });
+  }
+
   void _done(_) {
     ProgressDialog progressDialog = ProgressDialog(context);
     progressDialog.dismissHome();
