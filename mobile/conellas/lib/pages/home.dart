@@ -32,29 +32,29 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Name(widget.deps),
-        leading:  Container(
+        leading: Container(
             padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
             margin: EdgeInsets.fromLTRB(0, size.height * 0.01, 0, 0),
             child: FutureBuilder<Me>(
                 future: futureMe,
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    if(snapshot.data.photo == null){
-                      return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
-                    }else{
-                      return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                  if (snapshot.hasData) {
+                    if (snapshot.data.photo == null) {
+                      return CircleAvatar(
+                          backgroundImage: AssetImage('assets/proicon.png'));
+                    } else {
+                      return CircleAvatar(
+                          backgroundImage: NetworkImage(
+                        'http://10.0.2.2:5000' + snapshot.data.photo,
+                      ));
                     }
-                  }else if(snapshot.hasError){
+                  } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
                   return CircularProgressIndicator();
-                }
-            )
-        ),
+                })),
         actions: <Widget>[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.settings)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
       ),
       body: Stack(
@@ -211,6 +211,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
+                ),
+                Container(
+                  height: size.height * 0.10,
+                  width: size.width * 1,
+
+                  margin: EdgeInsets.fromLTRB(0, size.height * 0.30, 0, 0),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 5,
+                    child: ListTile(
+                      title: Text('savings account', style: TextStyle(fontSize: 20,color: Color(0xffF8991C),fontWeight: FontWeight.bold),),
+                      trailing: Icon(Icons.savings_rounded,color: Color(0xffF8991C),),
+                      subtitle: Text(r'$10,000',style: TextStyle(fontSize: 20,color: Color(0xffF8991C),fontWeight: FontWeight.bold),),
+                    ),
+                  ),
                 ), //Buttons
               ],
             ),
@@ -276,11 +291,17 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               child: Text(dates),
                             ),
-                            title: Text(sender, style: TextStyle(fontWeight: FontWeight.bold,),),
+                            title: Text(
+                              sender,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             subtitle: Text(descrip),
                             trailing: Text(
                               '$action $amount',
-                              style: TextStyle(color: color, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: color, fontWeight: FontWeight.bold),
                             ),
                             tileColor: backcolor,
                           ),
