@@ -25,6 +25,14 @@ class _HomePageState extends State<HomePage> {
 double price;
 String isoCode;
 double balanceDouble;
+var futureCountry;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+      futureCountry = widget.deps.api.price();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +100,6 @@ double balanceDouble;
 
   Widget balanceContainer(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var futureCountry = widget.deps.api.price();
     var futureBalance = widget.deps.api.account();
     var futureMe = widget.deps.api.me();
 
@@ -158,8 +165,7 @@ double balanceDouble;
                         future: futureBalance,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            price != null ? balanceDouble = double.parse(snapshot.data.balance)
-                            : print('Maldita sea');
+                              balanceDouble = double.parse(snapshot.data.balance);
                             try {
                               switch (isoCode) {
                               case 'US':
@@ -173,7 +179,7 @@ double balanceDouble;
                               );
                               case 'CA':
                               return Text(
-                                currency.format(balanceDouble*price*16).replaceAll('\$', 'C\$')+' '+'CAD',
+                                currency.format(balanceDouble*16.50*price).replaceAll('\$', 'C\$')+' '+'CAD',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 45,
@@ -181,8 +187,8 @@ double balanceDouble;
                                 ),
                               );
                               case 'MX':
-                              return Text(
-                                currency.format(balanceDouble*price*20)+' '+'MXN',
+                              return Text( 
+                                currency.format(balanceDouble*20.0*price)+' '+'MXN',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 45,
@@ -191,7 +197,7 @@ double balanceDouble;
                               );
                               case 'IN':
                               return Text(
-                                currency.format(balanceDouble*price*74.55).replaceAll('\$', '₹')+' '+'INR',
+                                currency.format(balanceDouble*74.55*price).replaceAll('\$', '₹')+' '+'INR',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 45,
@@ -208,7 +214,7 @@ double balanceDouble;
                             return Text('${snapshot.error}');
                           }
                           // By default, show a loading spinner.
-                          return CircularProgressIndicator();
+                          return Text('');
                         },
                       ),
                     ],
