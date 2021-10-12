@@ -1,4 +1,3 @@
-
 import 'package:conellas/clients/api.dart';
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/profileEdit.dart';
@@ -27,28 +26,28 @@ class _ProfileViewState extends State<ProfileView> {
         elevation: 0,
         title: Text('Profile'),
         leading: Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
             margin: EdgeInsets.fromLTRB(0, size.height * 0.01, 0, 0),
             child: FutureBuilder<Me>(
                 future: futureMe,
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    if(snapshot.data.photo == null){
-                      return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
-                    }else{
-                      return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                  if (snapshot.hasData) {
+                    if (snapshot.data.photo == null) {
+                      return CircleAvatar(
+                          backgroundImage: AssetImage('assets/proicon.png'));
+                    } else {
+                      return CircleAvatar(
+                          backgroundImage: NetworkImage(
+                        'http://10.0.2.2:5000' + snapshot.data.photo,
+                      ));
                     }
-                  }else if(snapshot.hasError){
+                  } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
                   return CircularProgressIndicator();
-                }
-            )
-        ),
+                })),
         actions: <Widget>[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.settings))
+          IconButton(onPressed: () {}, icon: Icon(Icons.settings))
         ],
       ),
       body: Stack(
@@ -84,32 +83,35 @@ class _ProfileViewState extends State<ProfileView> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
-                    height: size.height * 0.30,
-                    width: size.height * 0.30,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 3,
-                        color: Color(0xffF8991C),
+                      margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
+                      height: size.height * 0.30,
+                      width: size.height * 0.30,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 3,
+                          color: Color(0xffF8991C),
+                        ),
+                        shape: BoxShape.circle,
                       ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: FutureBuilder<Me>(
-                        future: futureMe,
-                        builder: (context, snapshot) {
-                          if(snapshot.hasData){
-                            if(snapshot.data.photo == null){
-                              return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
-                            }else{
-                              return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                      child: FutureBuilder<Me>(
+                          future: futureMe,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data.photo == null) {
+                                return CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/proicon.png'));
+                              } else {
+                                return CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                  'http://10.0.2.2:5000' + snapshot.data.photo,
+                                ));
+                              }
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
                             }
-                          }else if(snapshot.hasError){
-                            return Text("${snapshot.error}");
-                          }
-                          return CircularProgressIndicator();
-                        }
-                      )
-                  ),
+                            return CircularProgressIndicator();
+                          })),
                 ),
                 Align(
                   alignment: Alignment.topCenter,
@@ -151,99 +153,98 @@ class _ProfileViewState extends State<ProfileView> {
       padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
       height: double.infinity,
       width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: FutureBuilder<Me>(
-                              future: futureMe,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return TextFormField(
-                                    textAlign: TextAlign.center,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                        labelText: '${snapshot.data.firstName}',
-                                        labelStyle: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                        helperText: 'First Name',
-                                        helperStyle: TextStyle(
-                                          color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: FutureBuilder<Me>(
+                            future: futureMe,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return TextFormField(
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                      labelText: '${snapshot.data.firstName}',
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        contentPadding: const EdgeInsets.fromLTRB(
-                                            20, 0, 20, 0),
-                                        disabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.white,
-                                              width: 2,
-                                            ))),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text("${snapshot.error}");
-                                }
-                                // By default, show a loading spinner.
-                                return CircularProgressIndicator();
-                              },
-                            ),
+                                          fontWeight: FontWeight.bold),
+                                      helperText: 'First Name',
+                                      helperStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
+                                      disabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ))),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              // By default, show a loading spinner.
+                              return CircularProgressIndicator();
+                            },
                           ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: FutureBuilder<Me>(
-                              future: futureMe,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return TextFormField(
-                                    textAlign: TextAlign.center,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                        labelText: '${snapshot.data.lastName}',
-                                        labelStyle: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                        helperText: 'Last Name',
-                                        helperStyle: TextStyle(
-                                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: FutureBuilder<Me>(
+                            future: futureMe,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return TextFormField(
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                      labelText: '${snapshot.data.lastName}',
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        contentPadding: const EdgeInsets.fromLTRB(
-                                            20, 0, 20, 0),
-                                        disabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.white,
-                                              width: 2,
-                                            ))),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text("${snapshot.error}");
-                                }
-                                // By default, show a loading spinner.
-                                return CircularProgressIndicator();
-                              },
-                            ),
+                                          fontWeight: FontWeight.bold),
+                                      helperText: 'Last Name',
+                                      helperStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
+                                      disabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ))),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              // By default, show a loading spinner.
+                              return CircularProgressIndicator();
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  // primer ROW
-
+                ),
+                // primer ROW
 
                 //Segundo ROW
                 Container(
@@ -297,18 +298,32 @@ class _ProfileViewState extends State<ProfileView> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return IgnorePointer(
-                                  child: CountryListPick(
+                                child: CountryListPick(
                                   theme: CountryTheme(
                                     isShowFlag: true,
                                     isShowTitle: true,
                                     isDownIcon: false,
                                     isShowCode: false,
-                                    showEnglishName: false,
-                                    
+                                    showEnglishName: true,
                                   ),
+                                  useUiOverlay: true,
+                                  useSafeArea: false,
                                   initialSelection: snapshot.data.country,
-                              ),
-                                );
+                                  pickerBuilder: (context, CountryCode countryCode){
+                                    return Row(
+                                      children: [
+                                        Image.asset(
+                                          countryCode.flagUri,
+                                          package: 'country_list_pick',
+                                          scale: 8,
+                                        ),
+                                        Text('    '),
+                                        Text(countryCode.name, style: TextStyle(color: Colors.black, letterSpacing: 1),),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              );
                             } else if (snapshot.hasError) {
                               return Text("${snapshot.error}");
                             }
@@ -320,7 +335,6 @@ class _ProfileViewState extends State<ProfileView> {
                     ],
                   ),
                 ),
-
 
                 //Tercer ROW
                 Container(
@@ -407,11 +421,11 @@ class _ProfileViewState extends State<ProfileView> {
                     ],
                   ),
                 ),
-                ],
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
+      ),
     );
   }
 }
