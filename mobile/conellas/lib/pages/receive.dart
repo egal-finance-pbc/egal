@@ -20,6 +20,9 @@ class ReceivePage extends StatefulWidget {
 }
 
 class _ReceivePageState extends State<ReceivePage> {
+  double price;
+  String isoCode;
+  double balanceDouble;
   @override
   Widget build(BuildContext context) {
     var futureMe = widget.deps.api.me();
@@ -94,8 +97,11 @@ class _ReceivePageState extends State<ReceivePage> {
 
   Widget balanceContainer(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var futureCountry = widget.deps.api.price();
     var paymentFuture = widget.deps.api.payments();
     var futureBalance = widget.deps.api.account();
+    var futureMe = widget.deps.api.me();
+
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       //Balance
@@ -126,21 +132,146 @@ class _ReceivePageState extends State<ReceivePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        FutureBuilder<CountryBalance>(
+                          future: futureCountry,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              for (var i = 0;
+                              i < snapshot.data.data.length;
+                              i++) {
+                                price = snapshot.data.data[i].price;
+                                print(price);
+                              }
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            return Text('');
+                          },
+                        ),
+                        FutureBuilder<Me>(
+                            future: futureMe,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                isoCode = snapshot.data.country;
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              }
+                              return Text('');
+                            }),
                         FutureBuilder<Account>(
                           future: futureBalance,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              // TODO: use tryParse as recommended and handle error.
-                              double balanceDouble =
-                                  double.parse(snapshot.data.balance);
-                              return Text(
-                                currency.format(balanceDouble),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 45,
-                                  color: Colors.white,
-                                ),
-                              );
+                              price != null
+                                  ? balanceDouble =
+                                  double.parse(snapshot.data.balance)
+                                  : print('Maldita sea');
+                              try {
+                                switch (isoCode) {
+                                  case 'US':
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(balanceDouble * price * 20),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(' '),
+                                        Text(
+                                          'US',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  case 'CA':
+                                    return Row(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Text(
+                                            currency
+                                                .format(
+                                                balanceDouble * price * 16)
+                                                .replaceAll('\$', 'C\$'),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 45,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(' '),
+                                          Text(
+                                            'CA',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ]);
+                                  case 'MX':
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(balanceDouble * price * 20),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(' '),
+                                        Text(
+                                          'MXN',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  case 'IN':
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(
+                                              balanceDouble * price * 74.55)
+                                              .replaceAll('\$', '₹'),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(' '),
+                                        Text(
+                                          'IN',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                }
+                              } catch (e) {
+                                print(e);
+                              }
                             } else if (snapshot.hasError) {
                               return Text('${snapshot.error}');
                             }
@@ -173,7 +304,14 @@ class _ReceivePageState extends State<ReceivePage> {
                                           SalesData('Feb', 28),
                                           SalesData('Mar', 34),
                                           SalesData('Apr', 32),
-                                          SalesData('May', 40)
+                                          SalesData('May', 40),
+                                          SalesData('Jun', 78),
+                                          SalesData('Jul', 95),
+                                          SalesData('Ago', 40),
+                                          SalesData('Sep', 100),
+                                          SalesData('Oct', 30),
+                                          SalesData('Nov', 54),
+                                          SalesData('Dic', 10)
                                         ],
                                         xValueMapper: (SalesData sales, _) => sales.year,
                                         yValueMapper: (SalesData sales, _) => sales.sales,
@@ -200,7 +338,6 @@ class _ReceivePageState extends State<ReceivePage> {
     var paymentFuture = widget.deps.api.payments();
     var futureMe = widget.deps.api.me();
     Size size = MediaQuery.of(context).size;
-
     return Container(
       margin: EdgeInsets.fromLTRB(0, size.height * 0.50, 0, 0),
       padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),

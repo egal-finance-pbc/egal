@@ -29,6 +29,9 @@ class _SendPageState extends State<SendPage> {
   final _descriptionCtrl = TextEditingController();
   Future<void> _futurePayment;
   User _destUser;
+  double price;
+  String isoCode;
+  double balanceDouble;
 
   Widget _headerContainer() {
     Size size = MediaQuery.of(context).size;
@@ -50,6 +53,8 @@ class _SendPageState extends State<SendPage> {
 
   Widget _balanceContainer() {
     Size size = MediaQuery.of(context).size;
+    var futureMe = widget.deps.api.me();
+    var futureCountry = widget.deps.api.price();
     var futureBalance = widget.deps.api.account();
     return SingleChildScrollView(
       child: Column(
@@ -83,21 +88,146 @@ class _SendPageState extends State<SendPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      FutureBuilder<CountryBalance>(
+                        future: futureCountry,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            for (var i = 0;
+                            i < snapshot.data.data.length;
+                            i++) {
+                              price = snapshot.data.data[i].price;
+                              print(price);
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          return Text('');
+                        },
+                      ),
+                      FutureBuilder<Me>(
+                          future: futureMe,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              isoCode = snapshot.data.country;
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            return Text('');
+                          }),
                       FutureBuilder<Account>(
                         future: futureBalance,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            // TODO: use tryParse as recommended and handle error.
-                            double balanceDouble =
-                                double.parse(snapshot.data.balance);
-                            return Text(
-                              currency.format(balanceDouble),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 45,
-                                color: Colors.white,
-                              ),
-                            );
+                            price != null
+                                ? balanceDouble =
+                                double.parse(snapshot.data.balance)
+                                : print('Maldita sea');
+                            try {
+                              switch (isoCode) {
+                                case 'US':
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        currency
+                                            .format(balanceDouble * price * 20),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(' '),
+                                      Text(
+                                        'US',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                case 'CA':
+                                  return Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(
+                                              balanceDouble * price * 16)
+                                              .replaceAll('\$', 'C\$'),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(' '),
+                                        Text(
+                                          'CA',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ]);
+                                case 'MX':
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        currency
+                                            .format(balanceDouble * price * 20),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(' '),
+                                      Text(
+                                        'MXN',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                case 'IN':
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        currency
+                                            .format(
+                                            balanceDouble * price * 74.55)
+                                            .replaceAll('\$', '₹'),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(' '),
+                                      Text(
+                                        'IN',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                              }
+                            } catch (e) {
+                              print(e);
+                            }
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           }

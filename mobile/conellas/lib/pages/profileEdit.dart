@@ -399,16 +399,31 @@ class _ProfileEditState extends State<ProfileEdit> {
                               if (snapshot.hasData) {
                                 return IgnorePointer(
                                   child: CountryListPick(
-                                  theme: CountryTheme(
-                                    isShowFlag: true,
-                                    isShowTitle: true,
-                                    isDownIcon: false,
-                                    isShowCode: false,
-                                    showEnglishName: false,
-                                    
+                                    theme: CountryTheme(
+                                      isShowFlag: true,
+                                      isShowTitle: true,
+                                      isDownIcon: false,
+                                      isShowCode: false,
+                                      showEnglishName: true,
+                                    ),
+                                    useUiOverlay: true,
+                                    useSafeArea: false,
+                                    initialSelection: snapshot.data.country,
+                                    pickerBuilder: (context, CountryCode countryCode){
+                                      return Row(
+                                        children: [
+                                          Image.asset(
+                                            countryCode.flagUri,
+                                            package: 'country_list_pick',
+                                            scale: 8,
+                                          ),
+                                          Text('    '),
+                                          Text(countryCode.name, style: TextStyle(color: Colors.black, letterSpacing: 1),),
+                                        ],
+                                      );
+                                    },
                                   ),
-                                  initialSelection: snapshot.data.country,
-                              ),
+
                                 );
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
