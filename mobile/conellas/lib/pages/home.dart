@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:conellas/pages/search.dart';
 import 'package:intl/intl.dart';
 
+import 'savingsAccount.dart';
+
 final currency = new NumberFormat.simpleCurrency();
 
 class HomePage extends StatefulWidget {
@@ -45,29 +47,29 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Name(widget.deps),
-        leading:  Container(
+        leading: Container(
             padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
             margin: EdgeInsets.fromLTRB(0, size.height * 0.01, 0, 0),
             child: FutureBuilder<Me>(
                 future: futureMe,
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    if(snapshot.data.photo == null){
-                      return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
-                    }else{
-                      return CircleAvatar(backgroundImage: NetworkImage('http://10.0.2.2:5000'+snapshot.data.photo,));
+                  if (snapshot.hasData) {
+                    if (snapshot.data.photo == null) {
+                      return CircleAvatar(
+                          backgroundImage: AssetImage('assets/proicon.png'));
+                    } else {
+                      return CircleAvatar(
+                          backgroundImage: NetworkImage(
+                        'http://10.0.2.2:5000' + snapshot.data.photo,
+                      ));
                     }
-                  }else if(snapshot.hasError){
+                  } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
                   return CircularProgressIndicator();
-                }
-            )
-        ),
+                })),
         actions: <Widget>[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.settings)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
       ),
       body: Stack(
@@ -214,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       Container(
                         height: size.height * 0.05,
-                        padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+                        padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                         child: FlatButton(
                           onPressed: () {
                             Navigator.push(
@@ -238,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Container(
                         height: size.height * 0.05,
-                        padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                        padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                         child: FlatButton(
                           onPressed: () {
                             Navigator.push(
@@ -273,7 +275,52 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                ), //Buttons
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, size.height * 0.30, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: size.height * 0.05,
+                        padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        savingAccount(widget.deps)));
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.savings_rounded,
+                                size: 28,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'savings account',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80),
+                          ),
+                          color: Color(0xffF8991C),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                //Buttons
               ],
             ),
           ),
@@ -338,11 +385,17 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               child: Text(dates),
                             ),
-                            title: Text(sender, style: TextStyle(fontWeight: FontWeight.bold,),),
+                            title: Text(
+                              sender,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             subtitle: Text(descrip),
                             trailing: Text(
                               '$action $amount',
-                              style: TextStyle(color: color, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: color, fontWeight: FontWeight.bold),
                             ),
                             tileColor: backcolor,
                           ),

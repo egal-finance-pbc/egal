@@ -12,6 +12,7 @@ import 'instructionsPage/takePicture.dart';
 import 'instructionsPage/verificationCode.dart';
 import 'pages/home.dart';
 import 'pages/receive.dart';
+import 'pages/savingsAccount.dart';
 import 'pages/search.dart';
 import 'pages/send.dart';
 import 'pages/signin.dart';
@@ -47,6 +48,8 @@ class ConEllasApp extends StatelessWidget {
         '/verificationCode': (context) => verificationCode(deps),
         '/loader': (context) => Loader(),
         '/receive': (context) => ReceivePage(deps),
+        '/saving': (context) => savingAccount(deps),
+
 
 
 
