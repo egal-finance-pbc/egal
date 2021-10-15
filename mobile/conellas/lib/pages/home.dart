@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/QRscan.dart';
@@ -22,16 +25,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-double price;
-String isoCode;
-double balanceDouble;
-var futureCountry;
-
+  double price;
+  String isoCode;
+  double balanceDouble;
+  
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      futureCountry = widget.deps.api.price();
   }
 
   @override
@@ -99,9 +100,21 @@ var futureCountry;
   }
 
   Widget balanceContainer(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     var futureBalance = widget.deps.api.account();
-    var futureMe = widget.deps.api.me();
+    Future futureMe = widget.deps.api.me();
+    Future futureCountry = widget.deps.api.price();
+    
+    futureCountry.then((data) {
+        price = data.rates.xlm;
+        print(price);
+    });
+    
+    futureMe.then((data) {
+      isoCode = data.country;
+      print(isoCode);
+    });
 
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
@@ -134,38 +147,14 @@ var futureCountry;
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FutureBuilder<CountryBalance>(
-                        future: futureCountry,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-
-                            for (var i = 0; i < snapshot.data.data.length; i++) {
-                              price = snapshot.data.data[i].price;
-                              print(price);
-                            }
-
-                          }else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          }
-                          return Text('');
-                        },
-                        ),
-                        FutureBuilder<Me>(
-                          future: futureMe,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData){
-                              isoCode = snapshot.data.country;
-                            }else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            }
-                            return Text('');
-                          }
-                        ),
-                        FutureBuilder<Account>(
+                      FutureBuilder<Account>(
                         future: futureBalance,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                              balanceDouble = double.parse(snapshot.data.balance);
+
+                            balanceDouble = double.parse(snapshot.data.balance);
+                            print(balanceDouble);
+
                             try {
                               switch (isoCode) {
                               case 'US':
@@ -188,7 +177,7 @@ var futureCountry;
                               );
                               case 'MX':
                               return Text( 
-                                currency.format(balanceDouble*20.0*price)+' '+'MXN',
+                                currency.format(this.balanceDouble*20.0*this.price)+' '+'MXN',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 45,
@@ -209,14 +198,12 @@ var futureCountry;
                             }catch (e) {
                               print(e);
                             }
-                            
-                          } else if (snapshot.hasError) {
+                          }else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           }
-                          // By default, show a loading spinner.
-                          return Text('');
+                          return CircularProgressIndicator();
                         },
-                      ),
+                        ),
                     ],
                   ),
                 ),
@@ -330,7 +317,7 @@ var futureCountry;
                     DateTime now = new DateTime.now();
                     var dateNow = new DateTime(now.year, now.month, now.day);
 
-                    if (me.username == item.destination.username) {
+                   if (me.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received_rounded;
                       action = '+';
