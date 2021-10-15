@@ -15,7 +15,7 @@ class API {
   API() {
     // TODO: Make base URL address:port dynamic.
     this.url = 'http://10.0.2.2:5000/api/v1/';
-    this.urlStellar = 'https://api.lunarcrush.com/v2?data=assets&key=huck2rucpzuhd3d1bncf&symbol=XLM';
+    this.urlStellar = 'http://api.coinlayer.com/api/live?access_key=';
   }
 
   Future<Token> login(String username, password) async {
@@ -113,7 +113,6 @@ class API {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
       return Account.fromJson(json.decode(response.body));
     }
     throw APIError.fromResponse(response);
@@ -128,7 +127,6 @@ class API {
     );
     var body = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
-      print(json.decode(body));
       return User.fromList(json.decode(body));
     }
     throw APIError.fromResponse(response);
@@ -171,7 +169,7 @@ class API {
   
   Future<CountryBalance> price() async {
     final response = await http.get(
-      Uri.parse(this.urlStellar),
+      Uri.parse(this.urlStellar+'2b38edff0cca9b23fc093f22857850c1'),
       headers: {'Content-Type': 'application/json'}
     );
 
@@ -503,60 +501,48 @@ class FingerprintAPI {
 
 }
 
-  CountryBalance countryBalanceFromJson(String str) => CountryBalance.fromJson(json.decode(str));
+CountryBalance countryBalanceFromJson(String str) => CountryBalance.fromJson(json.decode(str));
 
-  String countryBalanceToJson(CountryBalance data) => json.encode(data.toJson());
+String countryBalanceToJson(CountryBalance data) => json.encode(data.toJson());
 
 class CountryBalance {
- 
     CountryBalance({
-        this.data,
+        this.success,
+        this.target,
+        this.rates,
     });
 
-    List<Datum> data;
+    bool success;
+    String target;
+    Rates rates;
 
     factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        success: json["success"],
+        target: json["target"],
+        rates: Rates.fromJson(json["rates"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "success": success,
+        "target": target,
+        "rates": rates.toJson(),
     };
 }
 
-class Datum {
-    Datum({
-        this.id,
-        this.name,
-        this.symbol,
-        this.price,
-        this.priceBtc,
-        this.marketCap,
+class Rates {
+    Rates({
+        this.xlm,
     });
 
-    int id;
-    String name;
-    String symbol;
-    double price;
-    double priceBtc;
-    int marketCap;
+    double xlm;
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json["id"],
-        name: json["name"],
-        symbol: json["symbol"],
-        price: json["price"].toDouble(),
-        priceBtc: json["price_btc"].toDouble(),
-        marketCap: json["market_cap"],
+    factory Rates.fromJson(Map<String, dynamic> json) => Rates(
+        xlm: json["XLM"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "symbol": symbol,
-        "price": price,
-        "price_btc": priceBtc,
-        "market_cap": marketCap,
+        "XLM": xlm,
     };
 }
+
 
