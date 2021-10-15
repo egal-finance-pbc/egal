@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:conellas/pages/search.dart';
 import 'package:intl/intl.dart';
 
+import 'savingsAccount.dart';
+
 final currency = new NumberFormat.simpleCurrency();
 
 class HomePage extends StatefulWidget {
@@ -358,7 +360,7 @@ class _HomePageState extends State<HomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        SearchPage(widget.deps)));
+                                        savingAccount(widget.deps)));
                           },
                           child: Row(
                             children: <Widget>[
