@@ -92,7 +92,7 @@ class _savingAccountState extends State<savingAccount> {
   Widget balanceContainer(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var futureCountry = widget.deps.api.price();
-    var futureBalance = widget.deps.api.account();
+    var futureBalance = widget.deps.api.saving();
     var futureMe = widget.deps.api.me();
     futureCountry.then((data) {
       price = data.rates.xlm;
@@ -135,7 +135,7 @@ class _savingAccountState extends State<savingAccount> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FutureBuilder<Account>(
+                      FutureBuilder<Saving>(
                         future: futureBalance,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
