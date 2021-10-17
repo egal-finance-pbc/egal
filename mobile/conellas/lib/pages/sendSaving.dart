@@ -13,10 +13,10 @@ class SendSaving extends StatefulWidget {
   final Dependencies deps;
 
   SendSaving(
-    this.deps, {
-    Account account,
-    Key key,
-  }) : super(key: key);
+      this.deps, {
+        Account account,
+        Key key,
+      }) : super(key: key);
 
   @override
   _SendSavingState createState() {
@@ -32,6 +32,8 @@ class _SendSavingState extends State<SendSaving> {
   double price;
   String isoCode;
   double balanceDouble;
+  String savingKey;
+  String firstName;
 
   Widget _headerContainer() {
     Size size = MediaQuery.of(context).size;
@@ -63,6 +65,8 @@ class _SendSavingState extends State<SendSaving> {
 
     futureMe.then((data) {
       isoCode = data.country;
+      savingKey = data.savingKey;
+      firstName = data.firstName;
       print(isoCode);
     });
     return SingleChildScrollView(
@@ -121,9 +125,9 @@ class _SendSavingState extends State<SendSaving> {
                                   case 'CA':
                                     return Text(
                                       currency
-                                              .format(
-                                                  balanceDouble * 16.50 * price)
-                                              .replaceAll('\$', 'C\$') +
+                                          .format(
+                                          balanceDouble * 16.50 * price)
+                                          .replaceAll('\$', 'C\$') +
                                           ' ' +
                                           'CAD',
                                       textAlign: TextAlign.center,
@@ -135,8 +139,8 @@ class _SendSavingState extends State<SendSaving> {
                                   case 'MX':
                                     return Text(
                                       currency.format(this.balanceDouble *
-                                              20.0 *
-                                              this.price) +
+                                          20.0 *
+                                          this.price) +
                                           ' ' +
                                           'MXN',
                                       textAlign: TextAlign.center,
@@ -148,9 +152,9 @@ class _SendSavingState extends State<SendSaving> {
                                   case 'IN':
                                     return Text(
                                       currency
-                                              .format(
-                                                  balanceDouble * 74.55 * price)
-                                              .replaceAll('\$', '₹') +
+                                          .format(
+                                          balanceDouble * 74.55 * price)
+                                          .replaceAll('\$', '₹') +
                                           ' ' +
                                           'INR',
                                       textAlign: TextAlign.center,
@@ -264,7 +268,7 @@ class _SendSavingState extends State<SendSaving> {
                   borderRadius: BorderRadius.circular(40)),
             ),
             child: Text(
-              isPaying ? 'Paying ${_destUser.firstName}...' : 'Send',
+              isPaying ? 'Paying ${firstName}...' : 'Send',
               style: TextStyle(fontSize: 18),
             ),
             onPressed: () {
@@ -322,7 +326,7 @@ class _SendSavingState extends State<SendSaving> {
       ProgressDialog progressDialog = ProgressDialog(context);
       progressDialog.show();
       _futurePayment = widget.deps.api.pay(
-        _destUser.savingKey,
+        savingKey,
         howMuch,
         _descriptionCtrl.text.trim(),
       );
