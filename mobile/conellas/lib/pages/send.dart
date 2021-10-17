@@ -56,194 +56,128 @@ class _SendPageState extends State<SendPage> {
     var futureMe = widget.deps.api.me();
     var futureCountry = widget.deps.api.price();
     var futureBalance = widget.deps.api.account();
+    futureCountry.then((data) {
+      price = data.rates.xlm;
+      print(price);
+    });
+
+    futureMe.then((data) {
+      isoCode = data.country;
+      print(isoCode);
+    });
     return SingleChildScrollView(
       child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          height: size.height,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            height: double.infinity,
-            width: double.maxFinite,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Available Money',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            height: size.height,
+            child: Container(
+              margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              height: double.infinity,
+              width: double.maxFinite,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'Available Money',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height * 0.03, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FutureBuilder<CountryBalance>(
-                        future: futureCountry,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            for (var i = 0;
-                            i < snapshot.data.data.length;
-                            i++) {
-                              price = snapshot.data.data[i].price;
-                              print(price);
-                            }
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          }
-                          return Text('');
-                        },
-                      ),
-                      FutureBuilder<Me>(
-                          future: futureMe,
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FutureBuilder<Account>(
+                          future: futureBalance,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              isoCode = snapshot.data.country;
+                              balanceDouble =
+                                  double.parse(snapshot.data.balance);
+                              print(balanceDouble);
+
+                              try {
+                                switch (isoCode) {
+                                  case 'US':
+                                    return Text(
+                                      currency.format(balanceDouble * price) +
+                                          ' ' +
+                                          'USD',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 45,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  case 'CA':
+                                    return Text(
+                                      currency
+                                              .format(
+                                                  balanceDouble * 16.50 * price)
+                                              .replaceAll('\$', 'C\$') +
+                                          ' ' +
+                                          'CAD',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 45,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  case 'MX':
+                                    return Text(
+                                      currency.format(this.balanceDouble *
+                                              20.0 *
+                                              this.price) +
+                                          ' ' +
+                                          'MXN',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 45,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  case 'IN':
+                                    return Text(
+                                      currency
+                                              .format(
+                                                  balanceDouble * 74.55 * price)
+                                              .replaceAll('\$', '₹') +
+                                          ' ' +
+                                          'INR',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 45,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                }
+                              } catch (e) {
+                                print(e);
+                              }
                             } else if (snapshot.hasError) {
                               return Text('${snapshot.error}');
                             }
-                            return Text('');
-                          }),
-                      FutureBuilder<Account>(
-                        future: futureBalance,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            price != null
-                                ? balanceDouble =
-                                double.parse(snapshot.data.balance)
-                                : print('Maldita sea');
-                            try {
-                              switch (isoCode) {
-                                case 'US':
-                                  return Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        currency
-                                            .format(balanceDouble * price * 20),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(' '),
-                                      Text(
-                                        'US',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                case 'CA':
-                                  return Row(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          currency
-                                              .format(
-                                              balanceDouble * price * 16)
-                                              .replaceAll('\$', 'C\$'),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 45,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text(' '),
-                                        Text(
-                                          'CA',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ]);
-                                case 'MX':
-                                  return Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        currency
-                                            .format(balanceDouble * price * 20),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(' '),
-                                      Text(
-                                        'MXN',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                case 'IN':
-                                  return Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        currency
-                                            .format(
-                                            balanceDouble * price * 74.55)
-                                            .replaceAll('\$', '₹'),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(' '),
-                                      Text(
-                                        'IN',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                              }
-                            } catch (e) {
-                              print(e);
-                            }
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          }
-                          // By default, show a loading spinner.
-                          return CircularProgressIndicator();
-                        },
-                      ),
-                    ],
+                            return CircularProgressIndicator();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
     );
   }
 
@@ -551,7 +485,7 @@ class _SendPageState extends State<SendPage> {
     Size size = MediaQuery.of(context).size;
     showDialog(
       context: context,
-        builder: (BuildContext _) {
+      builder: (BuildContext _) {
         return AlertDialog(
           title: Text('That\'s it!', style: TextStyle(color: Colors.black)),
           content: Text('Your payment has completed successfully',
@@ -568,10 +502,9 @@ class _SendPageState extends State<SendPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40)),
                   onPressed: () {
-                    Navigator.of(context).pop(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                HomePage(widget.deps)));
+                    Navigator.of(context).pop(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            HomePage(widget.deps)));
                   },
                 ),
               ),
@@ -594,9 +527,7 @@ class _SendPageState extends State<SendPage> {
         elevation: 0,
         title: Name(widget.deps),
         actions: <Widget>[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.settings)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
       ),
       body: Stack(
