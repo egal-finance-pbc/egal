@@ -118,6 +118,20 @@ class API {
     throw APIError.fromResponse(response);
   }
 
+  Future<Saving> saving() async {
+    var token = await FlutterSession().get('token');
+    var me = await FlutterSession().get('savingKey');
+    final response = await http.get(
+      Uri.parse(this.url + 'accounts/$me/'),
+      headers: {HttpHeaders.authorizationHeader: 'Token $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return Saving.fromJson(json.decode(response.body));
+    }
+    throw APIError.fromResponse(response);
+  }
+
   Future<List<User>> search(String q) async {
     final token = await FlutterSession().get('token');
     final query = Uri(queryParameters: {'q': q}).query;
@@ -335,17 +349,28 @@ class Account {
   }
 }
 
+class Saving {
+  final String balance;
+
+  Saving({this.balance});
+
+  factory Saving.fromJson(Map<String, dynamic> json) {
+    return Saving(balance: json['balance']);
+  }
+}
+
 class Me {
   final String firstName;
   final String lastName;
   final String username;
   final String publicKey;
+  final String savingKey;
   final String phone;
   final String country;
   final String city;
   final String photo;
 
-  Me({this.firstName, this.lastName, this.username, this.publicKey, this.phone, this.country, this.city, this.photo});
+  Me({this.firstName, this.lastName, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.photo});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
@@ -353,6 +378,7 @@ class Me {
       lastName: json['last_name'],
       username: json['username'],
       publicKey: json['public_key'],
+      savingKey: json['saving_key'],
       phone: json['phone'],
       country: json['country'],
       city: json['city'],
