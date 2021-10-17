@@ -351,6 +351,7 @@ class _LoginFormState extends State<LoginForm> {
 
                           var me = await widget.deps.api.me();
                           await sessionStorage.set('publicKey', me.publicKey);
+                          await sessionStorage.set('savingKey', me.savingKey);
                           rememberme(isChecked);
                           progressDialog.dismiss();
                           Navigator.pushNamed(context, '/navigatorBar');
