@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/pages/sendSaving.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
@@ -289,7 +290,7 @@ class _savingAccountState extends State<savingAccount> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        SearchPage(widget.deps)));
+                                        SendSaving(widget.deps)));
                           },
                           child: Text(
                             'Deposit',
