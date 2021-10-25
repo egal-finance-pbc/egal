@@ -152,40 +152,90 @@ class _ReceivePageState extends State<ReceivePage> {
                               try {
                                 switch (isoCode) {
                                   case 'US':
-                                    return Text(
-                                      currency.format(balanceDouble*price)+' '+'USD',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                    return Row(
+                                      children: <Widget>[
+                                        Text(
+                                          currency.format(balanceDouble * price),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text('USD',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.white)),
+                                      ],
                                     );
                                   case 'CA':
-                                    return Text(
-                                      currency.format(balanceDouble*16.50*price).replaceAll('\$', 'C\$')+' '+'CAD',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                    return Row(
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(
+                                              balanceDouble * 16.50 * price)
+                                              .replaceAll('\$', 'C\$'),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text(
+                                          'CAD',
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.white),
+                                        ),
+                                      ],
                                     );
                                   case 'MX':
-                                    return Text(
-                                      currency.format(this.balanceDouble*20.0*this.price)+' '+'MXN',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency.format(this.balanceDouble *
+                                              20.0 *
+                                              this.price),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text(
+                                          'MXN',
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.white),
+                                        ),
+                                      ],
                                     );
                                   case 'IN':
-                                    return Text(
-                                      currency.format(balanceDouble*74.55*price).replaceAll('\$', '₹')+' '+'INR',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(balanceDouble *
+                                              74.55 *
+                                              price)
+                                              .replaceAll('\$', '₹'),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text(
+                                          'INR',
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.white),
+                                        ),
+                                      ],
                                     );
                                 }
 
