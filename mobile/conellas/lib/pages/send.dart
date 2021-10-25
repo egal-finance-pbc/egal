@@ -93,7 +93,7 @@ class _SendPageState extends State<SendPage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.04, 0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -108,56 +108,90 @@ class _SendPageState extends State<SendPage> {
                               try {
                                 switch (isoCode) {
                                   case 'US':
-                                    return Text(
-                                      currency.format(balanceDouble * price) +
-                                          ' ' +
-                                          'USD',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                    return Row(
+                                      children: <Widget>[
+                                        Text(
+                                          currency.format(balanceDouble * price),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text('USD',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.white)),
+                                      ],
                                     );
                                   case 'CA':
-                                    return Text(
-                                      currency
+                                    return Row(
+                                      children: <Widget>[
+                                        Text(
+                                          currency
                                               .format(
-                                                  balanceDouble * 16.50 * price)
-                                              .replaceAll('\$', 'C\$') +
-                                          ' ' +
+                                              balanceDouble * 16.50 * price)
+                                              .replaceAll('\$', 'C\$'),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text(
                                           'CAD',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.white),
+                                        ),
+                                      ],
                                     );
                                   case 'MX':
-                                    return Text(
-                                      currency.format(this.balanceDouble *
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency.format(this.balanceDouble *
                                               20.0 *
-                                              this.price) +
-                                          ' ' +
+                                              this.price),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text(
                                           'MXN',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.white),
+                                        ),
+                                      ],
                                     );
                                   case 'IN':
-                                    return Text(
-                                      currency
-                                              .format(
-                                                  balanceDouble * 74.55 * price)
-                                              .replaceAll('\$', '₹') +
-                                          ' ' +
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency
+                                              .format(balanceDouble *
+                                              74.55 *
+                                              price)
+                                              .replaceAll('\$', '₹'),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text('  '),
+                                        Text(
                                           'INR',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
-                                      ),
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.white),
+                                        ),
+                                      ],
                                     );
                                 }
                               } catch (e) {

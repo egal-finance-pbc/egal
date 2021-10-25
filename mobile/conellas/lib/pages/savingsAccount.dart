@@ -139,54 +139,102 @@ class _savingAccountState extends State<savingAccount> {
                         future: futureBalance,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-
                             balanceDouble = double.parse(snapshot.data.balance);
                             print(balanceDouble);
 
                             try {
                               switch (isoCode) {
                                 case 'US':
-                                  return Text(
-                                    currency.format(balanceDouble*price)+' '+'USD',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 45,
-                                      color: Colors.white,
-                                    ),
+                                  return Row(
+                                    children: <Widget>[
+                                      Text(
+                                        currency.format(balanceDouble * price),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text('  '),
+                                      Text('USD',
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white)),
+                                    ],
                                   );
                                 case 'CA':
-                                  return Text(
-                                    currency.format(balanceDouble*16.50*price).replaceAll('\$', 'C\$')+' '+'CAD',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 45,
-                                      color: Colors.white,
-                                    ),
+                                  return Row(
+                                    children: <Widget>[
+                                      Text(
+                                        currency
+                                            .format(
+                                            balanceDouble * 16.50 * price)
+                                            .replaceAll('\$', 'C\$'),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text('  '),
+                                      Text(
+                                        'CAD',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white),
+                                      ),
+                                    ],
                                   );
                                 case 'MX':
-                                  return Text(
-                                    currency.format(this.balanceDouble*20.0*this.price)+' '+'MXN',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 45,
-                                      color: Colors.white,
-                                    ),
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        currency.format(this.balanceDouble *
+                                            20.0 *
+                                            this.price),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text('  '),
+                                      Text(
+                                        'MXN',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white),
+                                      ),
+                                    ],
                                   );
                                 case 'IN':
-                                  return Text(
-                                    currency.format(balanceDouble*74.55*price).replaceAll('\$', '₹')+' '+'INR',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 45,
-                                      color: Colors.white,
-                                    ),
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        currency
+                                            .format(balanceDouble *
+                                            74.55 *
+                                            price)
+                                            .replaceAll('\$', '₹'),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text('  '),
+                                      Text(
+                                        'INR',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white),
+                                      ),
+                                    ],
                                   );
                               }
-
-                            }catch (e) {
+                            } catch (e) {
                               print(e);
                             }
-                          }else if (snapshot.hasError) {
+                          } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           }
                           return CircularProgressIndicator();
@@ -228,8 +276,7 @@ class _savingAccountState extends State<savingAccount> {
                         height: size.height * 0.05,
                         padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                         child: FlatButton(
-                          onPressed: () {
-                          },
+                          onPressed: () {},
                           child: Row(
                             children: <Widget>[
                               SizedBox(
