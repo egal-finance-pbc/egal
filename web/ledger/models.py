@@ -11,6 +11,7 @@ class Account(models.Model):
     city = models.CharField(max_length=60, default='')
     country = models.CharField(max_length=50, default='')
     photo = models.ImageField(upload_to='uploads/photos/', null=True, blank=True)
+    state = models.CharField(max_length=30, default="")
 
     @property
     def photo_url(self):
