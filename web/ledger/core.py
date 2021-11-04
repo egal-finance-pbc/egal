@@ -61,7 +61,7 @@ class Gateway:
             raise LedgerError('account missing balance')
 
     @staticmethod
-    def update_account(pubkey: str, first_name, last_name, username, phone, city, country, photo) -> models.Account:
+    def update_account(pubkey: str, first_name, last_name, username, phone, city, country, photo, state) -> models.Account:
         account = Gateway.get_account(pubkey)
         if account is None:
             raise LedgerError('account not found')
@@ -74,6 +74,7 @@ class Gateway:
         account.phone = phone
         account.city = city
         account.country = country
+        account.state = state
         account.photo = photo
         account.save()
         return account
