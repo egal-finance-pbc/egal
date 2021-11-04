@@ -128,6 +128,7 @@ class Account(APIView):
                 photo=account_payload.validated_data.get('photo'),
                 country=account_payload.validated_data['country'],
                 city=account_payload.validated_data['city'],
+                state=account_payload.validated_data['state'],
             )
             print(account)
             return Response(status=status.HTTP_200_OK)
