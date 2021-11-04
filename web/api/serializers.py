@@ -53,6 +53,7 @@ class AccountUpdateSerializer(serializers.Serializer):
     photo = serializers.ImageField(max_length=254, required=False)
     city = serializers.CharField(max_length=60)
     country = serializers.CharField(max_length=50)
+    state = serializers.CharField(max_length=30)
 
     def create(self, validated_data):
         pass
