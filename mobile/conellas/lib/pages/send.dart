@@ -536,9 +536,7 @@ class _SendPageState extends State<SendPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40)),
                   onPressed: () {
-                    Navigator.of(context).pop(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            HomePage(widget.deps)));
+                    Navigator.popUntil(context, ModalRoute.withName('/navigatorBar'));
                   },
                 ),
               ),

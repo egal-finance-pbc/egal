@@ -392,9 +392,7 @@ class _SendSavingState extends State<SendSaving> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40)),
                   onPressed: () {
-                    Navigator.of(context).pop(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            HomePage(widget.deps)));
+                    Navigator.of(context).pop();
                   },
                 ),
               ),

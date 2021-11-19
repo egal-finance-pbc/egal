@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:conellas/pages/search.dart';
 import 'package:intl/intl.dart';
 
+import 'navigatorBar.dart';
 import 'savingsAccount.dart';
 
 final currency = new NumberFormat.simpleCurrency();
@@ -408,14 +409,16 @@ class _HomePageState extends State<HomePage> {
                     var backcolor = Color.fromRGBO(255, 153, 0, 0.20);
                     var descrip = item.description;
                     var dates = item.date;
-                    DateTime now = new DateTime.now();
-                    var dateNow = new DateTime(now.year, now.month, now.day);
 
                     if (me.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received_rounded;
                       action = '+';
                       sender = item.source.username;
+                    }
+
+                    if(item.destination.username == null){
+                      return CircularProgressIndicator();
                     }
 
                     if (item.description == null) {

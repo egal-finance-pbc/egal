@@ -31,7 +31,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   url_launcher: ^6.0.5
-  curved_navigation_bar: ^1.0.1
   qr_code_scanner: ^0.5.2
   international_phone_input: ^1.0.4
   camera: any
@@ -39,9 +38,7 @@ dependencies:
   path: any
   local_auth: ^1.1.6
   
-  custom_navigator:
-    git:
-      url: https://github.com/kjawadDeveloper/Custom-navigator.git
+
   shared_preferences: ^0.5.12+4
   lottie: ^1.1.0
   twilio_phone_verify: ^2.0.0
@@ -52,6 +49,8 @@ dependencies:
   syncfusion_flutter_charts: ^19.2.62
   bootstrap_icons: ^1.5.0
   country_list_pick: ^1.0.1+5
+  curved_navigation_bar: ^1.0.1
+  motion_tab_bar_v2: ^0.2.5
 
 
 dev_dependencies:
