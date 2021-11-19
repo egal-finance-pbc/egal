@@ -35,27 +35,6 @@ class _savingAccountState extends State<savingAccount> {
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
         title: Text('Saving account'),
-        leading: Container(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, size.height * 0.0001),
-            margin: EdgeInsets.fromLTRB(0, size.height * 0.01, 0, 0),
-            child: FutureBuilder<Me>(
-                future: futureMe,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data.photo == null) {
-                      return CircleAvatar(
-                          backgroundImage: AssetImage('assets/proicon.png'));
-                    } else {
-                      return CircleAvatar(
-                          backgroundImage: NetworkImage(
-                        'http://10.0.2.2:5000' + snapshot.data.photo,
-                      ));
-                    }
-                  } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
-                  return CircularProgressIndicator();
-                })),
         actions: <Widget>[
           IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
