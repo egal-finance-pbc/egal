@@ -71,7 +71,8 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<Update> updateAccount(String firstName, String lastName, String username, String country, String city, String phone, File photo) async {
+  Future<Update> updateAccount(String firstName, String lastName, String username, String country, String city, String state, String phone, File photo) async {
+
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
     final response = await http.MultipartRequest('PUT',
@@ -85,11 +86,12 @@ class API {
       response.fields['phone'] = phone;
       response.fields['city'] = city;
       response.fields['country'] = country;
+      response.fields['state'] = state;
       response.headers.addAll(headers);
       response.files.add(await http.MultipartFile.fromBytes(
         'photo', await photo.readAsBytesSync(),
         filename: photo.path.split('/').last,
-        contentType: new MediaType('png', 'jpeg')));
+        contentType: MediaType('png', 'jpeg')));
 
       var request = await response.send();
 
@@ -368,9 +370,10 @@ class Me {
   final String phone;
   final String country;
   final String city;
+  final String state;
   final String photo;
 
-  Me({this.firstName, this.lastName, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.photo});
+  Me({this.firstName, this.lastName, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.state, this.photo});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
@@ -382,6 +385,7 @@ class Me {
       phone: json['phone'],
       country: json['country'],
       city: json['city'],
+      state: json['state'],
       photo: json['photo'],
     );
   }
@@ -400,6 +404,7 @@ class Update {
         this.country,
         this.city,
         this.photo,
+        this.state
     });
 
     final String username;
@@ -410,6 +415,7 @@ class Update {
     final String country;
     final String city;
     final String photo;
+    final String state;
 
     factory Update.fromJson(Map<String, dynamic> json) => Update(
         username: json["username"],
@@ -420,6 +426,7 @@ class Update {
         country: json["country"],
         city: json["city"],
         photo: json["photo"],
+        state: json['state'],
     );
 
     Map<String, dynamic> toJson() => {
@@ -431,6 +438,7 @@ class Update {
         "country": country,
         "city": city,
         "photo": photo,
+        "state": state,
     };
 }
 
@@ -535,27 +543,27 @@ class CountryBalance {
     CountryBalance({
         this.success,
         this.target,
-        this.rates,
+        //this.rates,
     });
 
     bool success;
     String target;
-    Rates rates;
+    //Rates rates;
 
     factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
         success: json["success"],
         target: json["target"],
-        rates: Rates.fromJson(json["rates"]),
+        //rates: Rates.fromJson(json["rates"]),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "target": target,
-        "rates": rates.toJson(),
+        //"rates": rates.toJson(),
     };
 }
 
-class Rates {
+/*class Rates {
     Rates({
         this.xlm,
     });
@@ -569,6 +577,6 @@ class Rates {
     Map<String, dynamic> toJson() => {
         "XLM": xlm,
     };
-}
+}*/
 
 
