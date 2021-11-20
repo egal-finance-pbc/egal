@@ -157,6 +157,7 @@ class Me(APIView):
             'phone': account.phone,
             'country': account.country,
             'city': account.city,
+            'state': account.state,
             'photo': account.photo_url,
         })
 
