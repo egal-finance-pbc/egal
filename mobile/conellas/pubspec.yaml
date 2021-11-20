@@ -25,7 +25,10 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.3
-  flutter_session: ^0.1.1
+  flutter_session:
+    git:
+      url: https://github.com/RomanIvn/flutter_session.git
+      ref: master
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,11 +42,11 @@ dependencies:
   local_auth: ^1.1.6
   
 
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^2.0.9
   lottie: ^1.1.0
   twilio_phone_verify: ^2.0.0
   flutter_otp_text_field: ^1.0.0
-  image_picker: 0.6.2+3
+  image_picker: ^0.8.4+4
   http_parser:
   progress_indicators: ^1.0.0
   syncfusion_flutter_charts: ^19.2.62
@@ -51,6 +54,7 @@ dependencies:
   country_list_pick: ^1.0.1+5
   curved_navigation_bar: ^1.0.1
   motion_tab_bar_v2: ^0.2.5
+  csc_picker: ^0.2.6
 
 
 dev_dependencies:
