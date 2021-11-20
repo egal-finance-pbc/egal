@@ -12,7 +12,6 @@ import 'package:motion_tab_bar_v2/motion-tab-item.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
-//import 'Bottombar.dart';
 import 'QRscan.dart';
 
 class BottomNavBar extends StatefulWidget {

@@ -150,93 +150,19 @@ class _ReceivePageState extends State<ReceivePage> {
                               print(balanceDouble);
 
                               try {
-                                switch (isoCode) {
-                                  case 'US':
-                                    return Row(
-                                      children: <Widget>[
-                                        Text(
-                                          currency.format(balanceDouble * price),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 45,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text('  '),
-                                        Text('USD',
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.white)),
-                                      ],
-                                    );
-                                  case 'CA':
-                                    return Row(
-                                      children: <Widget>[
-                                        Text(
-                                          currency
-                                              .format(
-                                              balanceDouble * 16.50 * price)
-                                              .replaceAll('\$', 'C\$'),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 45,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text('  '),
-                                        Text(
-                                          'CAD',
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.white),
-                                        ),
-                                      ],
-                                    );
-                                  case 'MX':
-                                    return Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          currency.format(this.balanceDouble),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 45,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text('  '),
-                                        Text(
-                                          'MXN',
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.white),
-                                        ),
-                                      ],
-                                    );
-                                  case 'IN':
-                                    return Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          currency
-                                              .format(balanceDouble *
-                                              74.55 *
-                                              price)
-                                              .replaceAll('\$', '₹'),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 45,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text('  '),
-                                        Text(
-                                          'INR',
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.white),
-                                        ),
-                                      ],
-                                    );
-                                }
-
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      currency.format(this.balanceDouble),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 45,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                );
                               }catch (e) {
                                 print(e);
                               }
@@ -247,51 +173,6 @@ class _ReceivePageState extends State<ReceivePage> {
                           },
                         ),
                       ],
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(10, size.height * 0.16, 10, size.height * 0.50),
-                      child: FutureBuilder(
-                        future: paymentFuture,
-                        builder: (context, snapshot){
-                          if(snapshot.hasData){
-                            return Center(
-                              child: SfCartesianChart(
-                                  primaryXAxis: CategoryAxis(labelStyle: TextStyle(color: Colors.white)),
-                                  // Chart title
-                                  title: ChartTitle(text: 'monthly receipts and shipments', textStyle: TextStyle(color: Colors.white)),
-                                  // Enable tooltip
-                                  tooltipBehavior: _tooltipBehavior,
-
-                                  series: <LineSeries<SalesData, String>>[
-                                    LineSeries<SalesData, String>(
-                                        dataSource:  <SalesData>[
-                                          SalesData('Jan', 35),
-                                          SalesData('Feb', 28),
-                                          SalesData('Mar', 34),
-                                          SalesData('Apr', 32),
-                                          SalesData('May', 40),
-                                          SalesData('Jun', 78),
-                                          SalesData('Jul', 95),
-                                          SalesData('Ago', 40),
-                                          SalesData('Sep', 100),
-                                          SalesData('Oct', 30),
-                                          SalesData('Nov', 54),
-                                          SalesData('Dic', 10)
-                                        ],
-                                        xValueMapper: (SalesData sales, _) => sales.year,
-                                        yValueMapper: (SalesData sales, _) => sales.sales,
-                                        // Enable data label
-                                        dataLabelSettings: DataLabelSettings(isVisible: true, textStyle: TextStyle(color: Colors.white))
-                                    )
-                                  ]
-                              ),
-                            );
-                          }
-                          return CircularProgressIndicator();
-                        }
-                      ),
                     ),
                   ),
                 ],

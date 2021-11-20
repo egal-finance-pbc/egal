@@ -157,48 +157,6 @@ class _HomePageState extends State<HomePage> {
                             print(balanceDouble);
 
                             try {
-                              switch (isoCode) {
-                                case 'US':
-                                  return Row(
-                                    children: <Widget>[
-                                      Text(
-                                        currency.format(balanceDouble * price),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text('  '),
-                                      Text('USD',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.white)),
-                                    ],
-                                  );
-                                case 'CA':
-                                  return Row(
-                                    children: <Widget>[
-                                      Text(
-                                        currency
-                                            .format(
-                                                balanceDouble * 16.50 * price)
-                                            .replaceAll('\$', 'C\$'),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text('  '),
-                                      Text(
-                                        'CAD',
-                                        style: TextStyle(
-                                            fontSize: 16, color: Colors.white),
-                                      ),
-                                    ],
-                                  );
-                                case 'MX':
                                   return Row(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
@@ -210,39 +168,8 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      Text('  '),
-                                      Text(
-                                        'MXN',
-                                        style: TextStyle(
-                                            fontSize: 16, color: Colors.white),
-                                      ),
                                     ],
                                   );
-                                case 'IN':
-                                  return Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        currency
-                                                .format(balanceDouble *
-                                                    74.55 *
-                                                    price)
-                                                .replaceAll('\$', '₹'),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text('  '),
-                                      Text(
-                                        'INR',
-                                        style: TextStyle(
-                                            fontSize: 16, color: Colors.white),
-                                      ),
-                                    ],
-                                  );
-                              }
                             } catch (e) {
                               print(e);
                             }
