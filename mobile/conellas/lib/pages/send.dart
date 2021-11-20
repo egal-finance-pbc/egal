@@ -56,10 +56,10 @@ class _SendPageState extends State<SendPage> {
     var futureMe = widget.deps.api.me();
     var futureCountry = widget.deps.api.price();
     var futureBalance = widget.deps.api.account();
-    futureCountry.then((data) {
+    /*futureCountry.then((data) {
       price = data.rates.xlm;
       print(price);
-    });
+    });*/
 
     futureMe.then((data) {
       isoCode = data.country;
@@ -152,9 +152,7 @@ class _SendPageState extends State<SendPage> {
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          currency.format(this.balanceDouble *
-                                              20.0 *
-                                              this.price),
+                                          currency.format(this.balanceDouble),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 45,

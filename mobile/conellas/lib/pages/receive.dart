@@ -101,10 +101,10 @@ class _ReceivePageState extends State<ReceivePage> {
     var paymentFuture = widget.deps.api.payments();
     var futureBalance = widget.deps.api.account();
     var futureMe = widget.deps.api.me();
-    futureCountry.then((data) {
+    /*futureCountry.then((data) {
       price = data.rates.xlm;
       print(price);
-    });
+    });*/
 
     futureMe.then((data) {
       isoCode = data.country;
@@ -196,9 +196,7 @@ class _ReceivePageState extends State<ReceivePage> {
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          currency.format(this.balanceDouble *
-                                              20.0 *
-                                              this.price),
+                                          currency.format(this.balanceDouble),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 45,
