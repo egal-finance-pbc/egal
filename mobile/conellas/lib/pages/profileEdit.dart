@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:conellas/clients/api.dart';
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/profile.dart';
@@ -9,6 +10,7 @@ import 'package:country_list_pick/country_selection_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:csc_picker/csc_picker.dart';
 
 class ProfileEdit extends StatefulWidget {
   final Dependencies deps;
@@ -22,8 +24,9 @@ class ProfileEdit extends StatefulWidget {
 class _ProfileEditState extends State<ProfileEdit> {
   File image;
   Future pickImage(ImageSource source) async {
+    final ImagePicker _picker = ImagePicker();
     try {
-      final image = await ImagePicker.pickImage(source: source);
+      final XFile image = await _picker.pickImage(source: source);
       //final camera = await ImagePicker.pickImage(source: ImageSource.camera);
 
       if (image == null) return;
@@ -47,12 +50,28 @@ class _ProfileEditState extends State<ProfileEdit> {
   String country;
   String city;
   String phone;
+  String state;
+  String cities;
+  String countryValue = '';
+  String stateValue = '';
+  String cityValue = '';
+  DefaultCountry vacio;
+  var futureMe;
   //var photo = 'http://192.168.0.103:5000//media/uploads/photos/descarga.jpg';
 
   @override
   void initState() {
     super.initState();
-    Timer.run(() => showWarning(context));
+    //Timer.run(() => showWarning(context));
+    futureMe = widget.deps.api.me();
+    futureMe.then((data){
+      setState(() {
+        country = data.country;
+        state = data.state;
+        cities = data.city;
+      });
+    });
+    print(country);
   }
 
   Widget build(BuildContext context) {
@@ -165,7 +184,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                         print(this.lastname);
                         print(this.username);
                         print(this.country);
-                        print(this.city);
+                        print(this.cityValue);
+                        print(this.stateValue);
                         print(this.phone);
                         print(this.image);
 
@@ -178,7 +198,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                             this.lastname,
                             this.username,
                             this.country,
-                            this.city,
+                            cityValue == '' ? this.cities : cityValue,
+                            stateValue == '' ? this.state : stateValue,
                             this.phone,
                             this.image,
                           );
@@ -190,6 +211,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                               this.username,
                               this.country,
                               this.city,
+                              this.stateValue,
                               this.phone,
                               this.image));
                           showErrorDialog(context, e);
@@ -408,7 +430,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     ),
                                     useUiOverlay: true,
                                     useSafeArea: false,
-                                    initialSelection: snapshot.data.country,
+                                    initialSelection: country,
                                     pickerBuilder: (context, CountryCode countryCode){
                                       return Row(
                                         children: [
@@ -544,6 +566,109 @@ class _ProfileEditState extends State<ProfileEdit> {
                       ],
                     ),
                   ),
+                  Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            height: 600,
+            child: Column(
+              children: [
+                SizedBox(height: 20.0,),
+                ///Adding CSC Picker Widget in app
+                    //sleep(Duration(seconds:5));
+                  country == null ? CircularProgressIndicator() : CSCPicker(
+                  defaultCountry: country == 'MX' ? DefaultCountry.Mexico 
+                  : country == 'US' ? DefaultCountry.United_States 
+                  : country == 'CA' ? DefaultCountry.Canada
+                  : country == 'IN' ? DefaultCountry.India
+                  : vacio,
+                  ///Enable disable state dropdown [OPTIONAL PARAMETER]
+                  showStates: true,
+
+                  /// Enable disable city drop down [OPTIONAL PARAMETER]
+                  showCities: true,
+
+                  ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
+                  flagState: CountryFlag.ENABLE,
+
+                  ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
+                  dropdownDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white,
+                      border:
+                      Border.all(color: Colors.grey.shade300, width: 1)),
+
+                  ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+                  disabledDropdownDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.grey.shade300,
+                      border:
+                      Border.all(color: Colors.grey.shade300, width: 1)),
+
+                  ///placeholders for dropdown search field
+                  countrySearchPlaceholder: "Country",
+                  stateSearchPlaceholder: "State",
+                  citySearchPlaceholder: "City",
+
+                  ///labels for dropdown
+                  countryDropdownLabel: "*Country",
+                  stateDropdownLabel: state,
+                  cityDropdownLabel: cities,
+
+                  ///Default Country
+                  //defaultCountry: DefaultCountry.India,
+
+                  ///Disable country dropdown (Note: use it with default country)
+                  disableCountry: true,
+
+                  ///selected item style [OPTIONAL PARAMETER]
+                  selectedItemStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+
+                  ///DropdownDialog Heading style [OPTIONAL PARAMETER]
+                  dropdownHeadingStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+
+                  ///DropdownDialog Item style [OPTIONAL PARAMETER]
+                  dropdownItemStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+
+                  ///Dialog box radius [OPTIONAL PARAMETER]
+                  dropdownDialogRadius: 10.0,
+
+                  ///Search bar radius [OPTIONAL PARAMETER]
+                  searchBarRadius: 10.0,
+
+                  ///triggers once country selected in dropdown
+                  onCountryChanged: (value) {
+                      /*setState(() {
+                      ///store value in country variable
+                      countryValue = value;
+                    });*/
+                  },
+
+                  ///triggers once state selected in dropdown
+                  onStateChanged: (value) {
+                    setState(() {
+                      ///store value in state variable
+                      stateValue = value;
+                    });
+                  },
+
+                  ///triggers once city selected in dropdown
+                  onCityChanged: (value) {
+                    setState(() {
+                      ///store value in city variable
+                      cityValue = value;
+                    });
+                  },
+                ),
+              ],
+            )),
                 ],
               ),
             ],
