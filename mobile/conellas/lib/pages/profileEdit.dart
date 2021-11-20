@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:csc_picker/csc_picker.dart';
 
+import 'navigatorBar.dart';
+
 class ProfileEdit extends StatefulWidget {
   final Dependencies deps;
 
@@ -64,7 +66,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     super.initState();
     //Timer.run(() => showWarning(context));
     futureMe = widget.deps.api.me();
-    futureMe.then((data){
+    futureMe.then((data) {
       setState(() {
         country = data.country;
         state = data.state;
@@ -244,7 +246,6 @@ class _ProfileEditState extends State<ProfileEdit> {
               Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
                     child: Container(
                       child: Row(
                         children: [
@@ -257,9 +258,22 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   return TextFormField(
                                     initialValue: firstname =
                                         snapshot.data.firstName,
-                                    textAlign: TextAlign.center,
                                     decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.edit),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                          color: Color(0xff3B2F8F),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      suffixIcon: Icon(
+                                        Icons.edit,
+                                        size: 20,
+                                        color: Color(0xff3B2F8F),
+                                      ),
                                       labelText: '${snapshot.data.firstName}',
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
@@ -273,15 +287,17 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
+                                      contentPadding:
+                                          const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                       disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
                                         ),
                                       ),
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
@@ -311,7 +327,21 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     initialValue: lastname =
                                         snapshot.data.lastName,
                                     decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.edit),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                          color: Color(0xff3B2F8F),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      suffixIcon: Icon(
+                                        Icons.edit,
+                                        size: 20,
+                                        color: Color(0xff3B2F8F),
+                                      ),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       labelText: '${snapshot.data.lastName}',
@@ -325,15 +355,17 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20, 0, 20, 0),
+                                      contentPadding:
+                                          const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                       disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
                                         ),
                                       ),
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
@@ -358,7 +390,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                   //Segundo ROW
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.12, 0, 0),
                     child: Row(
                       children: [
                         Flexible(
@@ -368,10 +400,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return TextFormField(
+                                  enabled: false,
                                   initialValue: username =
                                       snapshot.data.username,
                                   decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.edit),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade300,
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,
                                     labelText: '${snapshot.data.username}',
@@ -386,14 +420,18 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                     contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    disabledBorder: UnderlineInputBorder(
+                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       borderSide: BorderSide(
-                                        color: Colors.white,
+                                        color: Colors.grey.shade300,
                                         width: 2,
                                       ),
                                     ),
-                                    enabledBorder: UnderlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
@@ -419,112 +457,25 @@ class _ProfileEditState extends State<ProfileEdit> {
                             future: futureMe,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return IgnorePointer(
-                                  child: CountryListPick(
-                                    theme: CountryTheme(
-                                      isShowFlag: true,
-                                      isShowTitle: true,
-                                      isDownIcon: false,
-                                      isShowCode: false,
-                                      showEnglishName: true,
-                                    ),
-                                    useUiOverlay: true,
-                                    useSafeArea: false,
-                                    initialSelection: country,
-                                    pickerBuilder: (context, CountryCode countryCode){
-                                      return Row(
-                                        children: [
-                                          Image.asset(
-                                            countryCode.flagUri,
-                                            package: 'country_list_pick',
-                                            scale: 8,
-                                          ),
-                                          Text('    '),
-                                          Text(countryCode.name, style: TextStyle(color: Colors.black, letterSpacing: 1),),
-                                        ],
-                                      );
-                                    },
-                                  ),
-
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text("${snapshot.error}");
-                              }
-                              // By default, show a loading spinner.
-                              return CircularProgressIndicator();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //Tercer ROW
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.20, 0, 0),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: FutureBuilder<Me>(
-                            future: futureMe,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
                                 return TextFormField(
-                                  initialValue: city = snapshot.data.city,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.edit),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
-                                    labelText: '${snapshot.data.city}',
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                    helperText: 'City',
-                                    helperStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    disabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  ),
-                                  onSaved: (value) => city = value,
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text("${snapshot.error}");
-                              }
-                              // By default, show a loading spinner.
-                              return CircularProgressIndicator();
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: FutureBuilder<Me>(
-                            future: futureMe,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return TextFormField(
+                                  autofocus: true,
                                   initialValue: phone = snapshot.data.phone,
                                   decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.edit),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(
+                                        color: Color(0xff3B2F8F),
+                                        width: 2,
+                                      ),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    suffixIcon: Icon(
+                                      Icons.edit,
+                                      size: 20,
+                                      color: Color(0xff3B2F8F),
+                                    ),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,
                                     labelText: '${snapshot.data.phone}',
@@ -539,14 +490,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                     contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    disabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
+                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
@@ -567,108 +514,122 @@ class _ProfileEditState extends State<ProfileEdit> {
                     ),
                   ),
                   Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            height: 600,
-            child: Column(
-              children: [
-                SizedBox(height: 20.0,),
-                ///Adding CSC Picker Widget in app
-                    //sleep(Duration(seconds:5));
-                  country == null ? CircularProgressIndicator() : CSCPicker(
-                  defaultCountry: country == 'MX' ? DefaultCountry.Mexico 
-                  : country == 'US' ? DefaultCountry.United_States 
-                  : country == 'CA' ? DefaultCountry.Canada
-                  : country == 'IN' ? DefaultCountry.India
-                  : vacio,
-                  ///Enable disable state dropdown [OPTIONAL PARAMETER]
-                  showStates: true,
+                      margin: EdgeInsets.fromLTRB(0, size.height * 0.18, 0, 0),
+                      height: 600,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 40.0,
+                          ),
 
-                  /// Enable disable city drop down [OPTIONAL PARAMETER]
-                  showCities: true,
+                          ///Adding CSC Picker Widget in app
+                          //sleep(Duration(seconds:5));
+                          country == null
+                              ? CircularProgressIndicator()
+                              : CSCPicker(
+                                  layout: Layout.horizontal,
+                                  defaultCountry: country == 'MX'
+                                      ? DefaultCountry.Mexico
+                                      : country == 'US'
+                                          ? DefaultCountry.United_States
+                                          : country == 'CA'
+                                              ? DefaultCountry.Canada
+                                              : country == 'IN'
+                                                  ? DefaultCountry.India
+                                                  : vacio,
 
-                  ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
-                  flagState: CountryFlag.ENABLE,
+                                  ///Enable disable state dropdown [OPTIONAL PARAMETER]
+                                  showStates: true,
 
-                  ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
-                  dropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                      border:
-                      Border.all(color: Colors.grey.shade300, width: 1)),
+                                  /// Enable disable city drop down [OPTIONAL PARAMETER]
+                                  showCities: true,
 
-                  ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
-                  disabledDropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.grey.shade300,
-                      border:
-                      Border.all(color: Colors.grey.shade300, width: 1)),
+                                  ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
+                                  flagState: CountryFlag.ENABLE,
 
-                  ///placeholders for dropdown search field
-                  countrySearchPlaceholder: "Country",
-                  stateSearchPlaceholder: "State",
-                  citySearchPlaceholder: "City",
+                                  ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
+                                  dropdownDecoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.white, width: 2)),
 
-                  ///labels for dropdown
-                  countryDropdownLabel: "*Country",
-                  stateDropdownLabel: state,
-                  cityDropdownLabel: cities,
+                                  ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+                                  disabledDropdownDecoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: Colors.grey.shade300,
+                                      border: Border.all(
+                                          color: Colors.grey.shade300,
+                                          width: 1)),
 
-                  ///Default Country
-                  //defaultCountry: DefaultCountry.India,
+                                  ///placeholders for dropdown search field
+                                  countrySearchPlaceholder: "Country",
+                                  stateSearchPlaceholder: "State",
+                                  citySearchPlaceholder: "City",
 
-                  ///Disable country dropdown (Note: use it with default country)
-                  disableCountry: true,
+                                  ///labels for dropdown
+                                  countryDropdownLabel: "*Country",
+                                  stateDropdownLabel: state,
+                                  cityDropdownLabel: cities,
 
-                  ///selected item style [OPTIONAL PARAMETER]
-                  selectedItemStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                  ),
+                                  ///Default Country
+                                  //defaultCountry: DefaultCountry.India,
 
-                  ///DropdownDialog Heading style [OPTIONAL PARAMETER]
-                  dropdownHeadingStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                                  ///Disable country dropdown (Note: use it with default country)
+                                  disableCountry: true,
 
-                  ///DropdownDialog Item style [OPTIONAL PARAMETER]
-                  dropdownItemStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                  ),
+                                  ///selected item style [OPTIONAL PARAMETER]
+                                  selectedItemStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
 
-                  ///Dialog box radius [OPTIONAL PARAMETER]
-                  dropdownDialogRadius: 10.0,
+                                  ///DropdownDialog Heading style [OPTIONAL PARAMETER]
+                                  dropdownHeadingStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
 
-                  ///Search bar radius [OPTIONAL PARAMETER]
-                  searchBarRadius: 10.0,
+                                  ///DropdownDialog Item style [OPTIONAL PARAMETER]
+                                  dropdownItemStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
 
-                  ///triggers once country selected in dropdown
-                  onCountryChanged: (value) {
-                      /*setState(() {
+                                  ///Dialog box radius [OPTIONAL PARAMETER]
+                                  dropdownDialogRadius: 10.0,
+
+                                  ///Search bar radius [OPTIONAL PARAMETER]
+                                  searchBarRadius: 50.0,
+
+                                  ///triggers once country selected in dropdown
+                                  onCountryChanged: (value) {
+                                    /*setState(() {
                       ///store value in country variable
                       countryValue = value;
                     });*/
-                  },
+                                  },
 
-                  ///triggers once state selected in dropdown
-                  onStateChanged: (value) {
-                    setState(() {
-                      ///store value in state variable
-                      stateValue = value;
-                    });
-                  },
+                                  ///triggers once state selected in dropdown
+                                  onStateChanged: (value) {
+                                    setState(() {
+                                      ///store value in state variable
+                                      stateValue = value;
+                                    });
+                                  },
 
-                  ///triggers once city selected in dropdown
-                  onCityChanged: (value) {
-                    setState(() {
-                      ///store value in city variable
-                      cityValue = value;
-                    });
-                  },
-                ),
-              ],
-            )),
+                                  ///triggers once city selected in dropdown
+                                  onCityChanged: (value) {
+                                    setState(() {
+                                      ///store value in city variable
+                                      cityValue = value;
+                                    });
+                                  },
+                                ),
+                        ],
+                      )),
                 ],
               ),
             ],
@@ -760,11 +721,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ProfileView(widget.deps)));
+                            BottomNavBar(widget.deps)));
               },
             ),
           ),
