@@ -7,6 +7,7 @@ urlpatterns = [
     path('accounts/', views.Accounts.as_view()),
     path('accounts/<str:pubkey>/', views.Account.as_view()),
     path('accounts/<str:pubkey>/update/', views.Account.as_view()),
+    path('accounts/<str:pubkey>/photo/', views.Account.as_view()),
     path('payments/', views.Payments.as_view()),
     path('tokens/', fviews.obtain_auth_token),
     path('me/', views.Me.as_view()),
