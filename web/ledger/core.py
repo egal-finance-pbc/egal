@@ -12,7 +12,6 @@ from stellar_sdk import exceptions
 from . import models
 from conellas import logging
 
-
 logger = logging.get_logger(__name__)
 
 
@@ -40,7 +39,8 @@ class Gateway:
             logger.error('Failed to fund stellar account', addr=sk.public_key, error=s.text)
             raise LedgerError('account creation failed', s.text)
         user = User.objects.create_user(username, password=password)
-        return models.Account.objects.create(user=user, public_key=kp.public_key, saving_key=sk.public_key, secret=kp.secret, phone=phone, country=country)
+        return models.Account.objects.create(user=user, public_key=kp.public_key, saving_key=sk.public_key,
+                                             secret=kp.secret, phone=phone, country=country)
 
     @staticmethod
     def create_keypair() -> stellar.Keypair:
@@ -61,7 +61,16 @@ class Gateway:
             raise LedgerError('account missing balance')
 
     @staticmethod
-    def update_account(pubkey: str, first_name, last_name, username, phone, city, country, photo, state) -> models.Account:
+    def uploading_photo(pubkey: str, photo) -> models.Account:
+        account = Gateway.get_account(pubkey)
+        if account is None:
+            raise LedgerError('account not found')
+        account.photo = photo
+        account.save()
+        return account
+
+    @staticmethod
+    def update_account(pubkey: str, first_name, last_name, username, phone, city, country, state) -> models.Account:
         account = Gateway.get_account(pubkey)
         if account is None:
             raise LedgerError('account not found')
@@ -75,7 +84,6 @@ class Gateway:
         account.city = city
         account.country = country
         account.state = state
-        account.photo = photo
         account.save()
         return account
 
@@ -122,8 +130,8 @@ class Gateway:
     @staticmethod
     def search_accounts(q: str) -> List[models.Account]:
         criteria = Q(user__username__icontains=q) \
-            | Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(saving_key__icontains=q) \
-            | Q(phone__icontains=q)
+                   | Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(saving_key__icontains=q) \
+                   | Q(phone__icontains=q)
         return models.Account.objects.filter(criteria)
 
 
