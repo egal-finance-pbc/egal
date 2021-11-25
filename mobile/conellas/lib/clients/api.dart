@@ -71,22 +71,34 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<Update> updateAccount(String firstName, String lastName, String username, String country, String city, String state, String phone, File photo) async {
-
+  Future<bool> updateAccount(String firstName, String lastName, String username, String country, String city, String state, String phone) async {
     var token = await FlutterSession().get('token');
+    var me = await FlutterSession().get('publicKey');
+
+    final response =  await http.put(
+      Uri.parse(this.url + 'accounts/$me/update/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: 'Token $token',
+        'Content-Type': 'application/json',
+      },
+
+      body: jsonEncode(<String, String>{
+        'first_name': firstName,
+        'last_name': lastName,
+        'username': username,
+        'phone': phone,
+        'city': city,
+        'country': country,
+        'state': state,
+      }),
+    );
+    /*var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
     final response = await http.MultipartRequest('PUT',
       Uri.parse(this.url + 'accounts/$me/update/'),);
 
       Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
 
-      response.fields['first_name'] = firstName;
-      response.fields['last_name'] = lastName;
-      response.fields['username'] = username;
-      response.fields['phone'] = phone;
-      response.fields['city'] = city;
-      response.fields['country'] = country;
-      response.fields['state'] = state;
       response.headers.addAll(headers);
       response.files.add(await http.MultipartFile.fromBytes(
         'photo', await photo.readAsBytesSync(),
@@ -95,15 +107,40 @@ class API {
 
       var request = await response.send();
 
+*/
+      /*if (request.statusCode == 200) print('Uploaded!');
 
-      if (request.statusCode == 200) print('Uploaded!');
+    print(request.statusCode);*/
 
-    print(request.statusCode);
-
-    if (request.statusCode != 200){
-      print('failed');
-      //throw APIError.fromResponse(response);
+    if (response.statusCode != 200){
+      throw APIError.fromResponse(response);
     }
+    return true;
+  }
+
+  Future<bool> updatePhoto(File photo) async {
+    var token = await FlutterSession().get('token');
+    var me = await FlutterSession().get('publicKey');
+    final response = await http.MultipartRequest('PUT',
+      Uri.parse(this.url + 'accounts/$me/photo/'),);
+
+      Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
+
+      response.headers.addAll(headers);
+      response.files.add(await http.MultipartFile.fromBytes(
+        'photo', await photo.readAsBytesSync(),
+        filename: photo.path.split('/').last,
+        contentType: MediaType('png', 'jpeg')));
+
+      var request = await response.send();
+
+      if (request.statusCode == 200) {
+        print('Uploaded!');
+      }else{
+        print('Failed!');
+        print(request.statusCode);
+      }
+      return true;
   }
 
   Future<Account> account() async {

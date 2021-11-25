@@ -58,14 +58,14 @@ class _ProfileEditState extends State<ProfileEdit> {
   String stateValue = '';
   String cityValue = '';
   DefaultCountry vacio;
-  var futureMe;
+  //var futureMe;
   //var photo = 'http://192.168.0.103:5000//media/uploads/photos/descarga.jpg';
 
   @override
   void initState() {
     super.initState();
     //Timer.run(() => showWarning(context));
-    futureMe = widget.deps.api.me();
+    var futureMe = widget.deps.api.me();
     futureMe.then((data) {
       setState(() {
         country = data.country;
@@ -203,7 +203,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             cityValue == '' ? this.cities : cityValue,
                             stateValue == '' ? this.state : stateValue,
                             this.phone,
-                            this.image,
+                            //this.image,
                           );
                           showSuccessDialog(context);
                         } catch (e) {
@@ -215,6 +215,40 @@ class _ProfileEditState extends State<ProfileEdit> {
                               this.city,
                               this.stateValue,
                               this.phone,
+                              /*this.image*/));
+                          showErrorDialog(context, e);
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(
+                        size.height * 0.29, size.height * 0.40, 0, 0),
+                    height: size.height * 0.07,
+                    width: size.height * 0.07,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF8991C),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.image),
+                      onPressed: () async {
+                        print(this.image);
+
+                        try {
+                          if (!_formKey.currentState.validate()) return;
+                          _formKey.currentState.save();
+
+                          await widget.deps.api.updatePhoto(
+                            this.image,
+                          );
+                          showSuccessDialog(context);
+                        } catch (e) {
+                          print(widget.deps.api.updatePhoto(
                               this.image));
                           showErrorDialog(context, e);
                         }
