@@ -70,6 +70,33 @@ class Accounts(APIView):
             raise APIException(detail=e.message, code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+    def put(self, request, pubkey=None):
+        if request.user.is_anonymous:
+            raise PermissionDenied()
+
+        photo_payload = serializers.AccountImageProfileSerializer(data=request.data)
+        if not photo_payload.is_valid():
+            raise ParseError(photo_payload.errors)
+
+        try:
+            account = self.ledger.get_account(pubkey)
+            if account is None:
+                raise NotFound()
+
+            if account.user.id != request.user.id:
+                raise PermissionDenied()
+
+            account = self.ledger.uploading_photo(
+                pubkey,
+                photo=photo_payload.validated_data.get('photo')
+            )
+            print(account)
+            return Response(status=status.HTTP_200_OK)
+
+        except LedgerError as e:
+            raise APIException(detail=e.message, code=status.HTTP_400_BAD_REQUEST)
+
+
 class Account(APIView):
     """View to manage a single account resource."""
 
@@ -128,32 +155,6 @@ class Account(APIView):
                 country=account_payload.validated_data['country'],
                 city=account_payload.validated_data['city'],
                 state=account_payload.validated_data['state'],
-            )
-            print(account)
-            return Response(status=status.HTTP_200_OK)
-
-        except LedgerError as e:
-            raise APIException(detail=e.message, code=status.HTTP_400_BAD_REQUEST)
-
-    def puts(self, request, pubkey=None):
-        if request.user.is_anonymous:
-            raise PermissionDenied()
-
-        photo_payload = serializers.AccountImageProfileSerializer(data=request.data)
-        if not photo_payload.is_valid():
-            raise ParseError(photo_payload.errors)
-
-        try:
-            account = self.ledger.get_account(pubkey)
-            if account is None:
-                raise NotFound()
-
-            if account.user.id != request.user.id:
-                raise PermissionDenied()
-
-            account = self.ledger.uploading_photo(
-                pubkey,
-                photo=account_payload.validated_data.get('photo')
             )
             print(account)
             return Response(status=status.HTTP_200_OK)
