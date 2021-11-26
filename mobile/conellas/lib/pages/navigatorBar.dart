@@ -48,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar>  with TickerProviderStateMi
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: MotionTabBar(
-        initialSelectedTab: "Send",
+        initialSelectedTab: "Receive",
         useSafeArea: true, // default: true, apply safe area wrapper
         labels: const ["Send", "Receive", "Profile"],
         icons: const [Icons.call_made, Icons.call_received, Icons.people_alt],
