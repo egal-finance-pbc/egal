@@ -85,7 +85,48 @@ class _ProfileEditState extends State<ProfileEdit> {
         elevation: 0,
         title: Text('Profile'),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings))
+          IconButton(
+            color: Colors.white,
+            icon: Icon(Icons.save),
+            onPressed: () async {
+              print(this.firstname);
+              print(this.lastname);
+              print(this.username);
+              print(this.country);
+              print(this.cityValue);
+              print(this.stateValue);
+              print(this.phone);
+              print(this.image);
+
+              try {
+                if (!_formKey.currentState.validate()) return;
+                _formKey.currentState.save();
+
+                await widget.deps.api.updateAccount(
+                  this.firstname,
+                  this.lastname,
+                  this.username,
+                  this.country,
+                  cityValue == '' ? this.cities : cityValue,
+                  stateValue == '' ? this.state : stateValue,
+                  this.phone,
+                  //this.image,
+                );
+                showImageSuccess(context);
+              } catch (e) {
+                print(widget.deps.api.updateAccount(
+                  this.firstname,
+                  this.lastname,
+                  this.username,
+                  this.country,
+                  this.city,
+                  this.stateValue,
+                  this.phone,
+                  /*this.image*/));
+                showErrorDialog(context, e);
+              }
+            },
+          ),
         ],
       ),
       body: Stack(
@@ -168,65 +209,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                   ),
                 ),
                 Container(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(
-                        size.height * 0.29, size.height * 0.40, 0, 0),
-                    height: size.height * 0.07,
-                    width: size.height * 0.07,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF8991C),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.save),
-                      onPressed: () async {
-                        print(this.firstname);
-                        print(this.lastname);
-                        print(this.username);
-                        print(this.country);
-                        print(this.cityValue);
-                        print(this.stateValue);
-                        print(this.phone);
-                        print(this.image);
-
-                        try {
-                          if (!_formKey.currentState.validate()) return;
-                          _formKey.currentState.save();
-
-                          await widget.deps.api.updateAccount(
-                            this.firstname,
-                            this.lastname,
-                            this.username,
-                            this.country,
-                            cityValue == '' ? this.cities : cityValue,
-                            stateValue == '' ? this.state : stateValue,
-                            this.phone,
-                            //this.image,
-                          );
-                          showSuccessDialog(context);
-                        } catch (e) {
-                          print(widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.username,
-                              this.country,
-                              this.city,
-                              this.stateValue,
-                              this.phone,
-                              /*this.image*/));
-                          showErrorDialog(context, e);
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Container(
                   alignment: Alignment.topLeft,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(
-                        size.height * 0.29, size.height * 0.40, 0, 0),
+                    margin: EdgeInsets.fromLTRB(size.height * 0.35, size.height * 0.40, 0, 0),
                     height: size.height * 0.07,
                     width: size.height * 0.07,
                     decoration: BoxDecoration(
@@ -275,6 +260,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: <Widget>[
               Stack(
@@ -293,19 +279,15 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     initialValue: firstname =
                                         snapshot.data.firstName,
                                     decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
+                                      focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Color(0xff3B2F8F),
                                           width: 2,
                                         ),
                                       ),
-                                      filled: true,
-                                      fillColor: Colors.white,
                                       suffixIcon: Icon(
                                         Icons.edit,
-                                        size: 20,
+                                        size: 15,
                                         color: Color(0xff3B2F8F),
                                       ),
                                       labelText: '${snapshot.data.firstName}',
@@ -325,13 +307,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                                           const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                       disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Colors.white,
+                                          color: Color(0xff3B2F8F),
                                           width: 2,
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
+                                      enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
@@ -349,7 +329,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             ),
                           ),
                           SizedBox(
-                            width: 30,
+                            width: 10,
                           ),
                           Flexible(
                             flex: 1,
@@ -361,19 +341,15 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     initialValue: lastname =
                                         snapshot.data.lastName,
                                     decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
+                                      focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Color(0xff3B2F8F),
                                           width: 2,
                                         ),
                                       ),
-                                      filled: true,
-                                      fillColor: Colors.white,
                                       suffixIcon: Icon(
                                         Icons.edit,
-                                        size: 20,
+                                        size: 15,
                                         color: Color(0xff3B2F8F),
                                       ),
                                       floatingLabelBehavior:
@@ -393,13 +369,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                                           const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                       disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Colors.white,
+                                          color: Color(0xff3B2F8F),
                                           width: 2,
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
+                                      enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                           width: 2,
@@ -424,7 +398,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                   //Segundo ROW
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.12, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.09, 0, 0),
                     child: Row(
                       children: [
                         Flexible(
@@ -438,8 +412,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   initialValue: username =
                                       snapshot.data.username,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.grey.shade300,
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,
                                     labelText: '${snapshot.data.username}',
@@ -455,22 +427,18 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     ),
                                     contentPadding:
                                         const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                    disabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.grey.shade300,
+                                        color: Color(0xff3B2F8F),
                                         width: 2,
                                       ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
+                                    enabledBorder:UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                  color: Color(0xff3B2F8F),
+                                  width: 2,
+                                ),
+                              ),
                                   ),
                                   onSaved: (value) => username = value,
                                 );
@@ -483,7 +451,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           ),
                         ),
                         SizedBox(
-                          width: 30,
+                          width: 10,
                         ),
                         Flexible(
                           flex: 1,
@@ -492,22 +460,17 @@ class _ProfileEditState extends State<ProfileEdit> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return TextFormField(
-                                  autofocus: true,
                                   initialValue: phone = snapshot.data.phone,
                                   decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                    focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color(0xff3B2F8F),
                                         width: 2,
                                       ),
                                     ),
-                                    filled: true,
-                                    fillColor: Colors.white,
                                     suffixIcon: Icon(
                                       Icons.edit,
-                                      size: 20,
+                                      size: 15,
                                       color: Color(0xff3B2F8F),
                                     ),
                                     floatingLabelBehavior:
@@ -525,9 +488,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     ),
                                     contentPadding:
                                         const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                    enabledBorder:  UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
@@ -548,7 +509,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.fromLTRB(0, size.height * 0.18, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, size.height * 0.14, 0, 0),
                       height: 600,
                       child: Column(
                         children: [
@@ -583,20 +544,15 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                                   ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
                                   dropdownDecoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.white, width: 2)),
+                                      border: Border(
+                                          bottom: BorderSide(color: Colors.white, width: 2),
+                                          )),
 
                                   ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                                   disabledDropdownDecoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      color: Colors.grey.shade300,
-                                      border: Border.all(
-                                          color: Colors.grey.shade300,
-                                          width: 1)),
+                                      border: Border(
+                                        bottom: BorderSide(color: Color(0xff3B2F8F), width: 2),
+                                      )),
 
                                   ///placeholders for dropdown search field
                                   countrySearchPlaceholder: "Country",
@@ -724,7 +680,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
       title: Text("The image has been uploaded"),
-      content: Text("You will see it when you save the changes"),
+      content: Text("To save the image click on the image icon"),
     );
     showDialog(
       context: context,
@@ -741,8 +697,48 @@ class _ProfileEditState extends State<ProfileEdit> {
       contentPadding: const EdgeInsets.all(20),
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
-      title: Text("Update Successfully"),
-      content: Text("Now, you would see the changes"),
+      title: Text("The data has been updated"),
+      content: Text("To update the image you must click the button below the image"),
+      actions: [
+        Center(
+          child: Container(
+            width: size.width * 0.50,
+            height: size.height * 0.06,
+            child: FlatButton(
+              color: Color(0xff3B2F8F),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            BottomNavBar(widget.deps)));
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext _) {
+        return successDialog;
+      },
+    );
+  }
+  void showImageSuccess(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    var successDialog = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      contentPadding: const EdgeInsets.all(20),
+      actionsPadding: const EdgeInsets.only(top: 60),
+      titlePadding: const EdgeInsets.all(20),
+      title: Text("The image has been updated"),
+      content: Text("To save the data, you must click the top save button"),
       actions: [
         Center(
           child: Container(
@@ -807,38 +803,4 @@ class _ProfileEditState extends State<ProfileEdit> {
       },
     );
   }
-}
-
-void showWarning(BuildContext context) {
-  Size size = MediaQuery.of(context).size;
-
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      contentPadding: const EdgeInsets.all(20),
-      actionsPadding: const EdgeInsets.only(top: 60),
-      titlePadding: const EdgeInsets.all(20),
-      title: Text('Warning'),
-      content: Text('Always update your photo, every time you save a change.'),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              child: Text("OK"),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();
-              },
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 }

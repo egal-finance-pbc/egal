@@ -4,6 +4,8 @@ import 'package:conellas/pages/profileEdit.dart';
 import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:csc_picker/csc_picker.dart';
+
 
 class ProfileView extends StatefulWidget {
   final Dependencies deps;
@@ -15,6 +17,33 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  String firstname;
+  String lastname;
+  String username;
+  String country;
+  String city;
+  String phone;
+  String state;
+  String cities;
+  String countryValue = '';
+  String stateValue = '';
+  String cityValue = '';
+  DefaultCountry vacio;
+
+  void initState() {
+    super.initState();
+    //Timer.run(() => showWarning(context));
+    var futureMe = widget.deps.api.me();
+    futureMe.then((data) {
+      setState(() {
+        country = data.country;
+        state = data.state;
+        cities = data.city;
+      });
+    });
+    print(country);
+  }
+
   @override
   Widget build(BuildContext context) {
     var futureMe = widget.deps.api.me();
@@ -150,10 +179,11 @@ class _ProfileViewState extends State<ProfileView> {
     Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.fromLTRB(0, size.height * 0.47, 0, 0),
-      padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+      padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
       height: double.infinity,
       width: double.maxFinite,
       child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: <Widget>[
             Stack(
@@ -201,7 +231,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                         ),
                         SizedBox(
-                          width: 30,
+                          width: 10,
                         ),
                         Flexible(
                           flex: 1,
@@ -289,97 +319,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                       SizedBox(
-                        width: 30,
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: FutureBuilder<Me>(
-                          future: futureMe,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return IgnorePointer(
-                                child: CountryListPick(
-                                  theme: CountryTheme(
-                                    isShowFlag: true,
-                                    isShowTitle: true,
-                                    isDownIcon: false,
-                                    isShowCode: false,
-                                    showEnglishName: true,
-                                  ),
-                                  useUiOverlay: true,
-                                  useSafeArea: false,
-                                  initialSelection: snapshot.data.country,
-                                  pickerBuilder: (context, CountryCode countryCode){
-                                    return Row(
-                                      children: [
-                                        Image.asset(
-                                          countryCode.flagUri,
-                                          package: 'country_list_pick',
-                                          scale: 8,
-                                        ),
-                                        Text('    '),
-                                        Text(countryCode.name, style: TextStyle(color: Colors.black, letterSpacing: 1),),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
-                            }
-                            // By default, show a loading spinner.
-                            return CircularProgressIndicator();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //Tercer ROW
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height * 0.20, 0, 0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: FutureBuilder<Me>(
-                          future: futureMe,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return TextFormField(
-                                textAlign: TextAlign.center,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                    labelText: '${snapshot.data.city}',
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                    helperText: 'City',
-                                    helperStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    disabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2,
-                                    ))),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
-                            }
-                            // By default, show a loading spinner.
-                            return CircularProgressIndicator();
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 30,
+                        width: 10,
                       ),
                       Flexible(
                         flex: 1,
@@ -394,7 +334,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     labelText: '${snapshot.data.phone}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 12,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                     helperText: 'Phone #',
                                     helperStyle: TextStyle(
@@ -403,12 +343,12 @@ class _ProfileViewState extends State<ProfileView> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                     contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                     disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2,
-                                    ))),
+                                          color: Colors.white,
+                                          width: 2,
+                                        ))),
                               );
                             } else if (snapshot.hasError) {
                               return Text("${snapshot.error}");
@@ -421,6 +361,117 @@ class _ProfileViewState extends State<ProfileView> {
                     ],
                   ),
                 ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.14, 0, 0),
+                    height: 600,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 40.0,
+                        ),
+                        ///Adding CSC Picker Widget in app
+                        //sleep(Duration(seconds:5));
+                        country == null
+                            ? CircularProgressIndicator()
+                            : CSCPicker(
+                          layout: Layout.horizontal,
+                          defaultCountry: country == 'MX'
+                              ? DefaultCountry.Mexico
+                              : country == 'US'
+                              ? DefaultCountry.United_States
+                              : country == 'CA'
+                              ? DefaultCountry.Canada
+                              : country == 'IN'
+                              ? DefaultCountry.India
+                              : vacio,
+
+                          ///Enable disable state dropdown [OPTIONAL PARAMETER]
+                          showStates: true,
+
+                          /// Enable disable city drop down [OPTIONAL PARAMETER]
+                          showCities: true,
+
+                          ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
+                          flagState: CountryFlag.ENABLE,
+
+                          ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
+                          dropdownDecoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Colors.white, width: 2),
+                              )),
+
+                          ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+                          disabledDropdownDecoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Color(0xff3B2F8F), width: 2),
+                              )),
+
+                          ///placeholders for dropdown search field
+                          countrySearchPlaceholder: "Country",
+                          stateSearchPlaceholder: "State",
+                          citySearchPlaceholder: "City",
+
+                          ///labels for dropdown
+                          countryDropdownLabel: country,
+                          stateDropdownLabel: state,
+                          cityDropdownLabel: cities,
+
+                          ///Default Country
+                          //defaultCountry: DefaultCountry.India,
+
+                          ///Disable country dropdown (Note: use it with default country)
+                          disableCountry: true,
+
+                          ///selected item style [OPTIONAL PARAMETER]
+                          selectedItemStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+
+                          ///DropdownDialog Heading style [OPTIONAL PARAMETER]
+                          dropdownHeadingStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+
+                          ///DropdownDialog Item style [OPTIONAL PARAMETER]
+                          dropdownItemStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+
+                          ///Dialog box radius [OPTIONAL PARAMETER]
+                          dropdownDialogRadius: 10.0,
+
+                          ///Search bar radius [OPTIONAL PARAMETER]
+                          searchBarRadius: 50.0,
+
+                          ///triggers once country selected in dropdown
+                          onCountryChanged: (value) {
+                            /*setState(() {
+                      ///store value in country variable
+                      countryValue = value;
+                    });*/
+                          },
+
+                          ///triggers once state selected in dropdown
+                          onStateChanged: (value) {
+                            setState(() {
+                              ///store value in state variable
+                              stateValue = value;
+                            });
+                          },
+
+                          ///triggers once city selected in dropdown
+                          onCityChanged: (value) {
+                            setState(() {
+                              ///store value in city variable
+                              cityValue = value;
+                            });
+                          },
+                        ),
+                      ],
+                    )),
               ],
             ),
           ],
