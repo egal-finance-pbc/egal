@@ -87,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
     Size size = MediaQuery.of(context).size;
     const padding = EdgeInsets.fromLTRB(20, 15, 20, 0);
     return Container(
-      margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, 0),
+      margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, size.height *0.4),
       child: FutureBuilder(
         future: _usersFuture,
         builder: (context, AsyncSnapshot<List<User>> snapshot) {
