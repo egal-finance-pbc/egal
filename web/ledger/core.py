@@ -70,7 +70,7 @@ class Gateway:
         return account
 
     @staticmethod
-    def update_account(pubkey: str, first_name, last_name, username, phone, city, country, state) -> models.Account:
+    def update_account(pubkey: str, first_name, last_name, phone, city, country, state) -> models.Account:
         account = Gateway.get_account(pubkey)
         if account is None:
             raise LedgerError('account not found')
@@ -78,7 +78,6 @@ class Gateway:
         user = account.user
         user.first_name = first_name
         user.last_name = last_name
-        user.username = username
         user.save()
         account.phone = phone
         account.city = city
