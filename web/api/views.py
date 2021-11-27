@@ -150,7 +150,6 @@ class Account(APIView):
                 pubkey,
                 first_name=user_payload.validated_data['first_name'],
                 last_name=user_payload.validated_data['last_name'],
-                username=user_payload.validated_data['username'],
                 phone=account_payload.validated_data['phone'],
                 country=account_payload.validated_data['country'],
                 city=account_payload.validated_data['city'],
