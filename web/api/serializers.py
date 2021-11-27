@@ -39,7 +39,6 @@ class AccountQuerySerializer(serializers.Serializer):
 class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=24)
     last_name = serializers.CharField(max_length=24)
-    username = serializers.CharField(min_length=6, max_length=12)
 
     def create(self, validated_data):
         pass
