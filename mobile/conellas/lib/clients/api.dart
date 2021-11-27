@@ -71,7 +71,7 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> updateAccount(String firstName, String lastName, String username, String country, String city, String state, String phone) async {
+  Future<bool> updateAccount(String firstName, String lastName, String country, String city, String state, String phone) async {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
 
@@ -85,7 +85,6 @@ class API {
       body: jsonEncode(<String, String>{
         'first_name': firstName,
         'last_name': lastName,
-        'username': username,
         'phone': phone,
         'city': city,
         'country': country,
