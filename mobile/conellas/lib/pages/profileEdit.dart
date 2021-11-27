@@ -93,38 +93,60 @@ class _ProfileEditState extends State<ProfileEdit> {
               print(this.lastname);
               print(this.username);
               print(this.country);
-              print(this.cityValue);
-              print(this.stateValue);
+              print(this.cities);
+              print(this.state);
               print(this.phone);
               print(this.image);
 
-              try {
-                if (!_formKey.currentState.validate()) return;
-                _formKey.currentState.save();
-
-                await widget.deps.api.updateAccount(
-                  this.firstname,
-                  this.lastname,
-                  this.username,
-                  this.country,
-                  cityValue == '' ? this.cities : cityValue,
-                  stateValue == '' ? this.state : stateValue,
-                  this.phone,
-                  //this.image,
-                );
-                showImageSuccess(context);
-              } catch (e) {
-                print(widget.deps.api.updateAccount(
-                  this.firstname,
-                  this.lastname,
-                  this.username,
-                  this.country,
-                  this.city,
-                  this.stateValue,
-                  this.phone,
-                  /*this.image*/));
-                showErrorDialog(context, e);
-              }
+              if (cities != null && state != null) {
+                        try {
+                          if (!_formKey.currentState.validate()) return;
+                          _formKey.currentState.save();
+                          print('Tu city es: '+cities);
+                          await widget.deps.api.updateAccount(
+                            this.firstname,
+                            this.lastname,
+                            this.country,
+                            this.cities,
+                            this.state,
+                            this.phone,
+                          );
+                          showSuccessDialog(context);
+                        } catch (e) {
+                          print(widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.country,
+                              this.city,
+                              this.stateValue,
+                              this.phone,));
+                          showErrorDialog(context, e);
+                        }
+                        }else if (stateValue != '' && cityValue != '') {
+                          try {
+                          if (!_formKey.currentState.validate()) return;
+                          _formKey.currentState.save();
+                          print('Tu city es: '+cities);
+                          await widget.deps.api.updateAccount(
+                            this.firstname,
+                            this.lastname,
+                            this.country,
+                            this.cityValue,
+                            this.stateValue,
+                            this.phone,
+                          );
+                          showSuccessDialog(context);
+                        } catch (e) {
+                          print(widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.country,
+                              this.city,
+                              this.stateValue,
+                              this.phone,));
+                          showErrorDialog(context, e);
+                        }
+                        }
             },
           ),
         ],
