@@ -32,7 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar>  with TickerProviderStateMi
   void initState() {
     super.initState();
     _tabController = TabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 3,
       vsync: this,
     );

@@ -87,67 +87,8 @@ class _ProfileEditState extends State<ProfileEdit> {
         actions: <Widget>[
           IconButton(
             color: Colors.white,
-            icon: Icon(Icons.save),
-            onPressed: () async {
-              print(this.firstname);
-              print(this.lastname);
-              print(this.username);
-              print(this.country);
-              print(this.cities);
-              print(this.state);
-              print(this.phone);
-              print(this.image);
-
-              if (cities != null && state != null) {
-                        try {
-                          if (!_formKey.currentState.validate()) return;
-                          _formKey.currentState.save();
-                          print('Tu city es: '+cities);
-                          await widget.deps.api.updateAccount(
-                            this.firstname,
-                            this.lastname,
-                            this.country,
-                            this.cities,
-                            this.state,
-                            this.phone,
-                          );
-                          showSuccessDialog(context);
-                        } catch (e) {
-                          print(widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.country,
-                              this.city,
-                              this.stateValue,
-                              this.phone,));
-                          showErrorDialog(context, e);
-                        }
-                        }else if (stateValue != '' && cityValue != '') {
-                          try {
-                          if (!_formKey.currentState.validate()) return;
-                          _formKey.currentState.save();
-                          print('Tu city es: '+cities);
-                          await widget.deps.api.updateAccount(
-                            this.firstname,
-                            this.lastname,
-                            this.country,
-                            this.cityValue,
-                            this.stateValue,
-                            this.phone,
-                          );
-                          showSuccessDialog(context);
-                        } catch (e) {
-                          print(widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.country,
-                              this.city,
-                              this.stateValue,
-                              this.phone,));
-                          showErrorDialog(context, e);
-                        }
-                        }
-            },
+            icon: Icon(Icons.settings),
+            onPressed: () {}
           ),
         ],
       ),
@@ -242,22 +183,65 @@ class _ProfileEditState extends State<ProfileEdit> {
                     ),
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.image),
+                      icon: Icon(Icons.save,size: 25,),
                       onPressed: () async {
+                        print(this.firstname);
+                        print(this.lastname);
+                        print(this.username);
+                        print(this.country);
+                        print(this.cities);
+                        print(this.state);
+                        print(this.phone);
                         print(this.image);
 
-                        try {
-                          if (!_formKey.currentState.validate()) return;
-                          _formKey.currentState.save();
-
-                          await widget.deps.api.updatePhoto(
-                            this.image,
-                          );
-                          showSuccessDialog(context);
-                        } catch (e) {
-                          print(widget.deps.api.updatePhoto(
-                              this.image));
-                          showErrorDialog(context, e);
+                        if (cities != null && state != null) {
+                          try {
+                            if (!_formKey.currentState.validate()) return;
+                            _formKey.currentState.save();
+                            print('Tu city es: '+cities);
+                            await widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.country,
+                              this.cities,
+                              this.state,
+                              this.phone,
+                            );
+                            showSuccessDialog(context);
+                          } catch (e) {
+                            print(widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.country,
+                              this.city,
+                              this.stateValue,
+                              this.phone,));
+                            showErrorDialog(context, e);
+                          }
+                        }else if (stateValue != '' && cityValue != '') {
+                          try {
+                            if (!_formKey.currentState.validate()) return;
+                            _formKey.currentState.save();
+                            print('Tu city es: '+cities);
+                            await widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.country,
+                              this.cityValue,
+                              this.stateValue,
+                              this.phone,
+                            );
+                            showSuccessDialog(context);
+                          } catch (e) {
+                            print(widget.deps.api.updateAccount(
+                              this.firstname,
+                              this.lastname,
+                              this.country,
+                              this.city,
+                              this.stateValue,
+                              this.phone,));
+                            showErrorDialog(context, e);
+                          }
                         }
                       },
                     ),
@@ -682,9 +666,23 @@ class _ProfileEditState extends State<ProfileEdit> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40)),
                     child: Text("OK"),
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                      showImg(context);
+                    onPressed: () async{
+                      print(this.image);
+
+                      try {
+                        if (!_formKey.currentState.validate()) return;
+                        _formKey.currentState.save();
+
+                        await widget.deps.api.updatePhoto(
+                          this.image,
+                        );
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacementNamed('/profileEdit');
+                      } catch (e) {
+                        print(widget.deps.api.updatePhoto(
+                            this.image));
+                        showErrorDialog(context, e);
+                      }
                     },
                   ),
                 ],
@@ -693,7 +691,6 @@ class _ProfileEditState extends State<ProfileEdit> {
           );
         });
   }
-
   void showImg(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var selectorImg = AlertDialog(
@@ -702,7 +699,39 @@ class _ProfileEditState extends State<ProfileEdit> {
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
       title: Text("The image has been uploaded"),
-      content: Text("To save the image click on the image icon"),
+      content: Text("The image has been saved click okey to continue"),
+      actions: [
+        Center(
+          child: Container(
+            width: size.width * 0.50,
+            height: size.height * 0.06,
+            child: FlatButton(
+              color: Color(0xff3B2F8F),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              child: Text("OK"),
+              onPressed: () async {
+                print(this.image);
+
+                try {
+                  if (!_formKey.currentState.validate()) return;
+                  _formKey.currentState.save();
+
+                  await widget.deps.api.updatePhoto(
+                    this.image,
+                  );
+                  Navigator.pop(context);
+                } catch (e) {
+                  print(widget.deps.api.updatePhoto(
+                      this.image));
+                  showErrorDialog(context, e);
+                }
+              },
+            ),
+          ),
+        ),
+      ],
     );
     showDialog(
       context: context,
@@ -720,7 +749,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       actionsPadding: const EdgeInsets.only(top: 60),
       titlePadding: const EdgeInsets.all(20),
       title: Text("The data has been updated"),
-      content: Text("To update the image you must click the button below the image"),
+      content: Text("Changes have been successfully saved"),
       actions: [
         Center(
           child: Container(
@@ -733,12 +762,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            BottomNavBar(widget.deps)));
-              },
+                Navigator.of(context).pop();
+                Navigator.of(context).popUntil(ModalRoute.withName('/navigatorBar'));},
             ),
           ),
         ),

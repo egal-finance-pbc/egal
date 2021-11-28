@@ -88,6 +88,7 @@ flutter:
     - assets/lottie/
     - assets/proicon.png
     - assets/icon.png
+    - assets/Card3.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
