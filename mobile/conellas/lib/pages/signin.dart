@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bootstrap_icons/bootstrap_icons.dart';
 
 import '../clients/api.dart';
 

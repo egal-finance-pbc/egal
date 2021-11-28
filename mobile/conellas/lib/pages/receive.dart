@@ -122,55 +122,108 @@ class _ReceivePageState extends State<ReceivePage> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.04, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Stack(
                       children: <Widget>[
-                        Text(
-                          'Available Money',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              size.height * 0.01,
+                              size.height * 0.02,
+                              size.height * 0.01,
+                              size.height * 0.72),
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            image: DecorationImage(
+                                image: AssetImage('assets/Card3.png'),
+                                fit: BoxFit.fill),
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                offset:
+                                Offset(5, 10), // changes position of shadow
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FutureBuilder<Account>(
-                          future: futureBalance,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              size.height * 0.04, size.height * 0.04, 0, 0),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Available Money',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xff3B2F8F),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              size.height * 0.04, size.height * 0.08, 0, 0),
+                          child: Row(
+                            children: [
+                              FutureBuilder<Account>(
+                                future: futureBalance,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    balanceDouble =
+                                        double.parse(snapshot.data.balance);
+                                    print(balanceDouble);
 
-                              balanceDouble = double.parse(snapshot.data.balance);
-                              print(balanceDouble);
-
-                              try {
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      currency.format(this.balanceDouble),
-                                      textAlign: TextAlign.center,
+                                    try {
+                                      return Row(
+                                        children: <Widget>[
+                                          Text(
+                                            currency.format(this.balanceDouble),
+                                            style: TextStyle(
+                                              fontSize: 40,
+                                              color: Color(0xff3B2F8F),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                  } else if (snapshot.hasError) {
+                                    return Text('${snapshot.error}');
+                                  }
+                                  return CircularProgressIndicator();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              size.height * 0.04, size.height * 0.22, 0, 0),
+                          child: Row(
+                            children: <Widget>[
+                              FutureBuilder<Me>(
+                                future: futureMe,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text('${snapshot.data.firstName} ${snapshot.data.lastName}',
                                       style: TextStyle(
-                                        fontSize: 45,
-                                        color: Colors.white,
+                                        fontSize: 18,
+                                        color: Color(0xff3B2F8F),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }catch (e) {
-                                print(e);
-                              }
-                            }else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            }
-                            return CircularProgressIndicator();
-                          },
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("${snapshot.error}");
+                                  }
+                                  // By default, show a loading spinner.
+                                  return CircularProgressIndicator();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
