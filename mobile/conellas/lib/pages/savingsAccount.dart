@@ -247,7 +247,7 @@ class _savingAccountState extends State<savingAccount> {
                     DateTime now = new DateTime.now();
                     var dateNow = new DateTime(now.year, now.month, now.day);
 
-                    if (me.username == item.destination.username) {
+                    if (me?.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received_rounded;
                       action = '+';
