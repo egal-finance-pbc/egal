@@ -194,11 +194,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                         print(this.phone);
                         print(this.image);
 
-                        if (cities != null && state != null) {
+                        if (cityValue == null && stateValue == null) {
                           try {
                             if (!_formKey.currentState.validate()) return;
                             _formKey.currentState.save();
-                            print('Tu city es: '+cities);
+                            print('Primer if');
                             await widget.deps.api.updateAccount(
                               this.firstname,
                               this.lastname,
@@ -218,11 +218,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                               this.phone,));
                             showErrorDialog(context, e);
                           }
-                        }else if (stateValue != '' && cityValue != '') {
+                        }else if (stateValue != null && cityValue != null) {
                           try {
                             if (!_formKey.currentState.validate()) return;
                             _formKey.currentState.save();
-                            print('Tu city es: '+cities);
+                            print('Segundo if');
                             await widget.deps.api.updateAccount(
                               this.firstname,
                               this.lastname,
