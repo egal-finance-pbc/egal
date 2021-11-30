@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                     var descrip = item.description;
                     var dates = item.date;
 
-                    if (me.username == item.destination.username) {
+                    if (me?.username == item.destination.username) {
                       color = Colors.green;
                       iconArrow = Icons.call_received_rounded;
                       action = '+';
