@@ -5,6 +5,7 @@ import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:csc_picker/csc_picker.dart';
+import 'package:intl/intl.dart';
 
 class ProfileView extends StatefulWidget {
   final Dependencies deps;
@@ -111,7 +112,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Container(
-                      margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
                       height: size.height * 0.30,
                       width: size.height * 0.30,
                       decoration: BoxDecoration(
@@ -190,6 +191,7 @@ class _ProfileViewState extends State<ProfileView> {
                   margin: EdgeInsets.fromLTRB(0, size.height * 0.0, 0, 0),
                   child: Container(
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Flexible(
                           flex: 1,
@@ -198,7 +200,6 @@ class _ProfileViewState extends State<ProfileView> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return TextFormField(
-                                  textAlign: TextAlign.center,
                                   enabled: false,
                                   decoration: InputDecoration(
                                     labelText: '${snapshot.data.firstName}',
@@ -240,7 +241,6 @@ class _ProfileViewState extends State<ProfileView> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return TextFormField(
-                                  textAlign: TextAlign.center,
                                   enabled: false,
                                   decoration: InputDecoration(
                                     labelText: '${snapshot.data.lastName}',
@@ -263,6 +263,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                     ),
                                   ),
+                                  textAlign: TextAlign.center,
                                 );
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
@@ -282,6 +283,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, size.height * 0.10, 0, 0),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Flexible(
                         flex: 1,
@@ -411,6 +413,8 @@ class _ProfileViewState extends State<ProfileView> {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, size.height * 0.20, 0, 0),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Flexible(
                         flex: 1,
