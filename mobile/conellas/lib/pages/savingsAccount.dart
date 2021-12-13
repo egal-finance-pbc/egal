@@ -94,60 +94,115 @@ class _savingAccountState extends State<savingAccount> {
             child: Stack(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height * 0.04, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Stack(
                     children: <Widget>[
-                      Text(
-                        'Money in savings account',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
+                      Container(
+                        margin: EdgeInsets.fromLTRB(
+                            size.height * 0.01,
+                            size.height * 0.02,
+                            size.height * 0.01,
+                            size.height * 0.72),
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          image: DecorationImage(
+                              image: AssetImage('assets/CardBlack.png'),
+                              fit: BoxFit.fill),
+                          borderRadius: BorderRadius.circular(33),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              offset:
+                              Offset(5, 10), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(
+                            size.height * 0.04, size.height * 0.04, 0, 0),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'Savings account',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(
+                            size.height * 0.04, size.height * 0.08, 0, 0),
+                        child: Row(
+                          children: [
+                            FutureBuilder<Saving>(
+                              future: futureBalance,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  balanceDouble = double.parse(snapshot.data.balance);
+                                  print(balanceDouble);
+                                  try {
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          currency.format(this.balanceDouble),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 40,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                } else if (snapshot.hasError) {
+                                  return Text('${snapshot.error}');
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        margin: EdgeInsets.fromLTRB(
+                            size.height * 0.04, size.height * 0.22, 0, 0),
+                        child: Row(
+                          children: <Widget>[
+                            FutureBuilder<Me>(
+                              future: futureMe,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text('${snapshot.data.firstName} ${snapshot.data.lastName}',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                // By default, show a loading spinner.
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height * 0.08, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FutureBuilder<Saving>(
-                        future: futureBalance,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            balanceDouble = double.parse(snapshot.data.balance);
-                            print(balanceDouble);
-                            try {
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    currency.format(this.balanceDouble),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 45,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            } catch (e) {
-                              print(e);
-                            }
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          }
-                          return CircularProgressIndicator();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height * 0.18, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, size.height * 0.35, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

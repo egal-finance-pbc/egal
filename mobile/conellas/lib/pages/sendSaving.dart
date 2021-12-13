@@ -303,7 +303,7 @@ class _SendSavingState extends State<SendSaving> {
         return AlertDialog(
           title: Text('That\'s it!', style: TextStyle(color: Colors.black)),
           content: Text(
-              'The money has been successfully saved, your current balance is 10000 and in your savings account is 1000.',
+              'The money has been successfully saved.',
               style: TextStyle(color: Colors.black)),
           actions: [
             Center(

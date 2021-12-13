@@ -256,7 +256,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(30, size.height * 0.11, 30, 0),
-                    padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    padding: EdgeInsets.fromLTRB(18, 0, 30, 0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -286,7 +286,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             borderRadius: BorderRadius.circular(5),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.all(20),
+                          contentPadding: const EdgeInsets.only(left: 40),
                         ),
                         onPhoneNumberChange: onPhoneNumberChange,
                         initialPhoneNumber: phone,

@@ -83,7 +83,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       appBar: AppBar(
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
-        title: Text('Profile'),
+        title: Text('Edit Profile'),
         actions: <Widget>[
           IconButton(
             color: Colors.white,
@@ -113,7 +113,7 @@ class _ProfileEditState extends State<ProfileEdit> {
             child: Stack(
               children: <Widget>[
                 Container(
-                  height: size.height * 0.50,
+                  height: size.height * 0.43,
                   //height: 320,
                   decoration: BoxDecoration(
                       color: Color(0xff3B2F8F),
@@ -125,124 +125,56 @@ class _ProfileEditState extends State<ProfileEdit> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
-                    height: size.height * 0.30,
-                    width: size.height * 0.30,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 3,
-                        color: Color(0xffF8991C),
+                      margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
+                      height: size.height * 0.30,
+                      width: size.height * 0.30,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 3,
+                          color: Color(0xffF8991C),
+                        ),
+                        shape: BoxShape.circle,
                       ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: FutureBuilder<Me>(
-                        future: futureMe,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.data.photo == null) {
-                              return CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/proicon.png'));
-                            } else {
-                              return CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                'http://10.0.2.2:5000' + snapshot.data.photo,
-                              ));
+                      child: FutureBuilder<Me>(
+                          future: futureMe,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data.photo == null) {
+                                return CircleAvatar(
+                                    backgroundImage:
+                                    AssetImage('assets/proicon.png'));
+                              } else {
+                                return CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      'http://10.0.2.2:5000' + snapshot.data.photo,
+                                    ));
+                              }
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
                             }
-                          } else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-                          return CircularProgressIndicator();
-                        }),
-                  ),
+                            return CircularProgressIndicator();
+                          })),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(
-                      size.height * 0.19, size.height * 0.31, 0, 0),
-                  height: size.height * 0.07,
-                  width: size.height * 0.07,
-                  decoration: BoxDecoration(
-                    color: Color(0xffF8991C),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.edit),
-                    onPressed: () => _optionsDialogBox(),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
+                Align(
+                  alignment: Alignment.topCenter,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(size.height * 0.35, size.height * 0.40, 0, 0),
+                    margin: EdgeInsets.fromLTRB(
+                        size.height * 0.35, size.height * 0.33, 0, 0),
                     height: size.height * 0.07,
-                    width: size.height * 0.07,
+                    width: size.width * 0.14,
                     decoration: BoxDecoration(
                       color: Color(0xffF8991C),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.save,size: 25,),
-                      onPressed: () async {
-                        print(this.firstname);
-                        print(this.lastname);
-                        print(this.username);
-                        print(this.country);
-                        print(this.cities);
-                        print(this.state);
-                        print(this.phone);
-                        print(this.image);
-
-                        if (cityValue == null && stateValue == null) {
-                          try {
-                            if (!_formKey.currentState.validate()) return;
-                            _formKey.currentState.save();
-                            print('Primer if');
-                            await widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.country,
-                              this.cities,
-                              this.state,
-                              this.phone,
-                            );
-                            showSuccessDialog(context);
-                          } catch (e) {
-                            print(widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.country,
-                              this.city,
-                              this.stateValue,
-                              this.phone,));
-                            showErrorDialog(context, e);
-                          }
-                        }else if (stateValue != null && cityValue != null) {
-                          try {
-                            if (!_formKey.currentState.validate()) return;
-                            _formKey.currentState.save();
-                            print('Segundo if');
-                            await widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.country,
-                              this.cityValue,
-                              this.stateValue,
-                              this.phone,
-                            );
-                            showSuccessDialog(context);
-                          } catch (e) {
-                            print(widget.deps.api.updateAccount(
-                              this.firstname,
-                              this.lastname,
-                              this.country,
-                              this.city,
-                              this.stateValue,
-                              this.phone,));
-                            showErrorDialog(context, e);
-                          }
-                        }
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ProfileEdit(widget.deps)));
                       },
                     ),
                   ),
@@ -259,7 +191,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     var futureMe = widget.deps.api.me();
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.fromLTRB(0, size.height * 0.47, 0, 0),
+      margin: EdgeInsets.fromLTRB(0, size.height * 0.40, 0, 0),
       padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
       height: double.infinity,
       width: double.maxFinite,
@@ -404,7 +336,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                   //Segundo ROW
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height * 0.09, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.12, 0, 0),
                     child: Row(
                       children: [
                         Flexible(
@@ -515,7 +447,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.fromLTRB(0, size.height * 0.14, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, size.height * 0.20, 0, 0),
                       height: 600,
                       child: Column(
                         children: [
