@@ -5,8 +5,8 @@ from django.db import models
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     names = models.CharField(max_length=24, default='')
-    dad_last_name = models.CharField(max_length=24, default='')
-    mom_last_name = models.CharField(max_length=24, default='')
+    paternal_surname = models.CharField(max_length=24, default='')
+    maternal_surname = models.CharField(max_length=24, default='')
     public_key = models.CharField(max_length=56, unique=True)
     saving_key = models.CharField(max_length=56, unique=True, null=True, default=None)
     secret = models.CharField(max_length=56)
