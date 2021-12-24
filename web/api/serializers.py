@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class SignUp(serializers.Serializer):
     names = serializers.CharField(max_length=24)
-    daddy_last_name = serializers.CharField(max_length=24)
+    dad_last_name = serializers.CharField(max_length=24)
     mom_last_name = serializers.CharField(max_length=24, required=False)
     username = serializers.CharField(min_length=6, max_length=12)
     password = serializers.CharField(min_length=8, max_length=12)
