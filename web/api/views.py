@@ -59,6 +59,9 @@ class Accounts(APIView):
 
         try:
             account = self.ledger.create_account(
+                names=payload.validated_data['names'],
+                daddy_last_name=payload.validated_data['daddy_last_name'],
+                mom_last_name=payload.validated_data.get('mom_last_name'),
                 username=payload.validated_data['username'],
                 password=payload.validated_data['password'],
                 phone=payload.validated_data['phone'],
@@ -68,7 +71,6 @@ class Accounts(APIView):
 
         except LedgerError as e:
             raise APIException(detail=e.message, code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
     def put(self, request, pubkey=None):
         if request.user.is_anonymous:
@@ -148,10 +150,6 @@ class Account(APIView):
 
             account = self.ledger.update_account(
                 pubkey,
-                first_name=user_payload.validated_data['first_name'],
-                last_name=user_payload.validated_data['last_name'],
-                phone=account_payload.validated_data['phone'],
-                country=account_payload.validated_data['country'],
                 city=account_payload.validated_data['city'],
                 state=account_payload.validated_data['state'],
             )
