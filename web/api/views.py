@@ -60,8 +60,8 @@ class Accounts(APIView):
         try:
             account = self.ledger.create_account(
                 names=payload.validated_data['names'],
-                dad_last_name=payload.validated_data['dad_last_name'],
-                mom_last_name=payload.validated_data.get('mom_last_name'),
+                paternal_surname=payload.validated_data['paternal_surname'],
+                maternal_surname=payload.validated_data.get('maternal_surname'),
                 username=payload.validated_data['username'],
                 password=payload.validated_data['password'],
                 phone=payload.validated_data['phone'],
