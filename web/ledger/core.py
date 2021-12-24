@@ -20,8 +20,8 @@ class Gateway:
         self.server = stellar.Server(horizon_url=settings.STELLAR_HORIZON_URL)
 
     @transaction.atomic
-    def create_account(self, username, phone, password, country, names, dad_last_name,
-                       mom_last_name) -> models.Account:
+    def create_account(self, username, phone, password, country, names, paternal_surname,
+                       maternal_surname) -> models.Account:
         if User.objects.filter(username=username).exists():
             raise LedgerError('An account already exists for this phone and username combination!')
         kp = self.create_keypair()
@@ -42,7 +42,7 @@ class Gateway:
         user = User.objects.create_user(username, password=password)
         return models.Account.objects.create(user=user, public_key=kp.public_key, saving_key=sk.public_key,
                                              secret=kp.secret, phone=phone, country=country, names=names,
-                                             daddy_last_name=dad_last_name, mom_last_name=mom_last_name)
+                                             paternal_surname=paternal_surname, maternal_surname=maternal_surname)
 
     @staticmethod
     def create_keypair() -> stellar.Keypair:
