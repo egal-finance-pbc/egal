@@ -167,16 +167,47 @@ class _ProfileEditState extends State<ProfileEdit> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ProfileEdit(widget.deps)));
-                      },
-                    ),
+                    color: Colors.white,
+                    icon: Icon(Icons.save),
+                    onPressed: () async {
+                      print(this.firstname);
+                      print(this.lastname);
+                      print(this.username);
+                      print(this.country);
+                      print(this.cityValue);
+                      print(this.stateValue);
+                      print(this.phone);
+                      print(this.image);
+
+                      try {
+                        if (!_formKey.currentState.validate()) return;
+                        _formKey.currentState.save();
+
+                        await widget.deps.api.updateAccount(
+                          this.firstname,
+                          this.lastname,
+                          this.username,
+                          this.country,
+                          cityValue == '' ? this.cities : cityValue,
+                          stateValue == '' ? this.state : stateValue,
+                          //this.phone,
+                          //this.image,
+                        );
+                        showImageSuccess(context);
+                      } catch (e) {
+                        print(widget.deps.api.updateAccount(
+                          this.firstname,
+                          this.lastname,
+                          this.username,
+                          this.country,
+                          this.city,
+                          this.stateValue,
+                          //this.phone,
+                          /*this.image*/));
+                        showErrorDialog(context, e);
+                      }
+                    },
+                  ),
                   ),
                 ),
               ],
