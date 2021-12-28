@@ -20,7 +20,8 @@ class Gateway:
         self.server = stellar.Server(horizon_url=settings.STELLAR_HORIZON_URL)
 
     @transaction.atomic
-    def create_account(self, username, phone, password, country) -> models.Account:
+    def create_account(self, username, phone, password, country, names, paternal_surname,
+                       maternal_surname) -> models.Account:
         if User.objects.filter(username=username).exists():
             raise LedgerError('An account already exists for this phone and username combination!')
         kp = self.create_keypair()
@@ -40,7 +41,8 @@ class Gateway:
             raise LedgerError('account creation failed', s.text)
         user = User.objects.create_user(username, password=password)
         return models.Account.objects.create(user=user, public_key=kp.public_key, saving_key=sk.public_key,
-                                             secret=kp.secret, phone=phone, country=country)
+                                             secret=kp.secret, phone=phone, country=country, names=names,
+                                             paternal_surname=paternal_surname, maternal_surname=maternal_surname)
 
     @staticmethod
     def create_keypair() -> stellar.Keypair:
@@ -70,18 +72,11 @@ class Gateway:
         return account
 
     @staticmethod
-    def update_account(pubkey: str, first_name, last_name, phone, city, country, state) -> models.Account:
+    def update_account(pubkey: str, city, state) -> models.Account:
         account = Gateway.get_account(pubkey)
         if account is None:
             raise LedgerError('account not found')
-
-        user = account.user
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
-        account.phone = phone
         account.city = city
-        account.country = country
         account.state = state
         account.save()
         return account
