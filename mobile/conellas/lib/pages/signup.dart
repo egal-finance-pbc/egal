@@ -211,10 +211,14 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TwilioPhoneVerify _twilioPhoneVerify;
 
+  bool _isVisible = true;
   String phone;
   String phoneIsoCode;
   //final phoneController = TextEditingController();
   final usernameController = TextEditingController();
+  final names = TextEditingController();
+  final patsurname = TextEditingController();
+  final matsurname = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isHidden = true;
@@ -345,8 +349,165 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 100, 30, 0),
+                    child: TextFormField(
+                      controller: names,
+                      /*validator: (value) {
+                        RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+                        RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+                        RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                        RegExp regUser = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regUser.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },*/
+                      decoration: InputDecoration(
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Names',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Names',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 160, 30, 0),
+                    child: TextFormField(
+                      controller: patsurname,
+                      /*validator: (value) {
+                        RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+                        RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+                        RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                        RegExp regUser = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regUser.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },*/
+                      decoration: InputDecoration(
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Paternal surname',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Paternal surname',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  //maternalInput(),
+                  Visibility(
+                    visible: phoneIsoCode == 'MX' ? _isVisible : !_isVisible,
+                    child: Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 220, 30, 0),
+                    child: TextFormField(
+                      controller: matsurname,
+                      /*validator: (value) {
+                        RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+                        RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+                        RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                        RegExp regUser = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regUser.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },*/
+                      decoration: InputDecoration(
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Maternal surname',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Maternal surname',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ),
+                  ),
+                  Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.32, 0, 0),
-                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    padding: EdgeInsets.fromLTRB(30, 190, 30, 0),
                     child: TextFormField(
                       controller: passwordController,
                       keyboardType: TextInputType.text,
@@ -366,7 +527,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         } else if (!regPass.hasMatch(value)) {
                           return '6 characters minimum, 12 maximum';
                         } else if (value.length > 12) {
-                          return 'Username length exceeded';
+                          return 'Passcode length exceeded';
                         }
                         return null;
                       },
@@ -405,7 +566,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, size.height * 0.43, 0, 0),
-                    padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                    padding: EdgeInsets.fromLTRB(30, 160, 30, 0),
                     child: TextFormField(
                       controller: confirmPasswordController,
                       keyboardType: TextInputType.text,
@@ -446,7 +607,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.63),
+                    margin: EdgeInsets.only(top: size.height * 0.70),
                     padding: EdgeInsets.fromLTRB(60, 10, 60, 10),
                     width: double.infinity,
                     height: 70,
@@ -510,7 +671,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pushNamed(context, '/verificationCode', arguments: {'phone' : phone, 'isoCode' : phoneIsoCode, 'username' : usernameController.text, 'password' : passwordController.text});
+                Navigator.pushNamed(context, '/verificationCode', arguments: {'phone' : phone, 'isoCode' : phoneIsoCode, 'username' : usernameController.text, 'names': names.text, 'patSurname': patsurname.text, 'matSurname': matsurname.text, 'password' : passwordController.text});
               },
             ),
           ),
@@ -568,4 +729,115 @@ class _SignUpFormState extends State<SignUpForm> {
       showSuccessDialog(context);
     }
   }
+
+  /*maternalInput(){
+    Size size = MediaQuery.of(context).size;
+    switch (phoneIsoCode) {
+                              case 'US':
+                              return Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 220, 30, 0),
+                    child: TextFormField(
+                      enabled: false,
+                      controller: matsurname,
+                      /*validator: (value) {
+                        RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+                        RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+                        RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                        RegExp regUser = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regUser.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },*/
+                      decoration: InputDecoration(
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Maternal surname',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Maternal surname',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  );
+                  case 'MX':
+                  return Container(
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.21, 0, 0),
+                    padding: EdgeInsets.fromLTRB(30, 220, 30, 0),
+                    child: TextFormField(
+                      controller: matsurname,
+                      /*validator: (value) {
+                        RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
+                        RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
+                        RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                        RegExp regUser = RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
+                        if (value.isEmpty) {
+                          return 'Missing username';
+                        } else if (!regMayus.hasMatch(value)) {
+                          return 'at least 1 uppercase';
+                        } else if (!regNum2.hasMatch(value)) {
+                          return 'at least 1 number';
+                        } else if (!regMinus.hasMatch(value)) {
+                          return 'at least 1 lowercase';
+                        } else if (!regUser.hasMatch(value)) {
+                          return '6 characters minimum, 12 maximum';
+                        } else if (value.length > 12) {
+                          return 'Username length exceeded';
+                        }
+                        return null;
+                      },*/
+                      decoration: InputDecoration(
+                        errorStyle:
+                            TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Color(0xffF8991C), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Maternal surname',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        hintText: 'Maternal surname',
+                        hintTextDirection: TextDirection.rtl,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  );
+                            };
+  }*/
 }

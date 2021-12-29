@@ -104,6 +104,9 @@ class _verificationCodeState extends State<verificationCode> {
 
                             String cellphone = data['phone'];
                             String user = data['username'];
+                            String names = data['names'];
+                            String patSurname = data['patSurname'];
+                            String matSurname = data['matSurname'];
                             String passcode = data['password'];
                             String isoCode = data['isoCode'];
 
@@ -112,10 +115,14 @@ class _verificationCodeState extends State<verificationCode> {
                             if (twilioResponse.successful) {
                               if (twilioResponse.verification.status == VerificationStatus.approved) {
                                 print('Phone number is approved');
+                                print(names);
                                 try {
                                   await widget.deps.api.signup(
                                     cellphone,
                                     user,
+                                    names,
+                                    patSurname,
+                                    matSurname,
                                     passcode,
                                     isoCode,
                                   );

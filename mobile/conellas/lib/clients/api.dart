@@ -14,7 +14,7 @@ class API {
 
   API() {
     // TODO: Make base URL address:port dynamic.
-    this.url = 'http://10.0.2.2:5000/api/v1/';
+    this.url = 'http://192.168.0.112:5000/api/v1/';
     this.urlStellar = 'http://api.coinlayer.com/api/live?access_key=';
   }
 
@@ -36,7 +36,7 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> signup(String phone, username, password, country) async {
+  Future<bool> signup(String phone, username, names, patSurname, matSurname, password, country) async {
     final response = await http.post(
       Uri.parse(this.url + 'accounts/'),
       headers: <String, String>{
@@ -45,6 +45,9 @@ class API {
       body: jsonEncode(<String, String>{
         'phone': phone,
         'username': username,
+        'names': names,
+        'paternal_surname': patSurname,
+        'maternal_surname': matSurname,
         'password': password,
         'country': country,
       }),
