@@ -41,8 +41,9 @@ class Accounts(APIView):
         accounts = self.ledger.search_accounts(payload.validated_data['q'])
         return Response(data=[{
             'username': a.user.username,
-            'first_name': a.user.first_name,
-            'last_name': a.user.last_name,
+            'names': a.names,
+            'paternal_surname': a.paternal_surname,
+            'maternal_surname': a.paternal_surname,
             'public_key': a.public_key,
             'saving_key': a.saving_key,
             'phone': a.phone,
@@ -173,8 +174,9 @@ class Me(APIView):
 
         return Response(data={
             'username': request.user.username,
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
+            'names': request.account.names,
+            'paternal_surname': request.account.paternal_surname,
+            'maternal_surname': request.account.maternal_surname,
             'public_key': account.public_key,
             'saving_key': account.saving_key,
             'phone': account.phone,
@@ -203,14 +205,16 @@ class Payments(APIView):
             'date': p.date.strftime("%d-%b-%Y"),
             'source': {
                 'username': p.source.user.username,
-                'first_name': p.source.user.first_name,
-                'last_name': p.source.user.last_name,
+                'names': p.source.names,
+                'paternal_surname': p.source.paternal_surname,
+                'maternal_surname': p.source.maternal_surname,
                 'public_key': p.source.public_key,
             },
             'destination': {
                 'username': p.destination.user.username,
-                'first_name': p.destination.user.first_name,
-                'last_name': p.destination.user.last_name,
+                'names': p.destination.names,
+                'paternal_surname': p.destination.paternal_surname,
+                'maternal_surname': p.destination.maternal_surname,
                 'public_key': p.destination.public_key,
             },
         } for p in payments])
