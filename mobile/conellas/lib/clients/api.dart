@@ -14,7 +14,10 @@ class API {
 
   API() {
     // TODO: Make base URL address:port dynamic.
-    this.url = 'http://192.168.0.112:5000/api/v1/';
+    // URL GENERAL PARA TODOS
+    this.url = 'http://10.0.2.2:5000/api/v1/';
+    // URL PARA PRUEBAS DE EMIR
+    //this.url = 'http://192.168.0.112:5000/api/v1/';
     this.urlStellar = 'http://api.coinlayer.com/api/live?access_key=';
   }
 
