@@ -124,7 +124,8 @@ class Gateway:
     @staticmethod
     def search_accounts(q: str) -> List[models.Account]:
         criteria = Q(user__username__icontains=q) \
-                   | Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(saving_key__icontains=q) \
+                   | Q(names__icontains=q) | Q(paternal_surname__icontains=q) \
+                   | Q(maternal_surname__icontains=q) | Q(saving_key__icontains=q) \
                    | Q(phone__icontains=q)
         return models.Account.objects.filter(criteria)
 
