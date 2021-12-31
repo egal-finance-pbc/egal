@@ -39,17 +39,6 @@ class AccountQuerySerializer(serializers.Serializer):
         pass
 
 
-class UserSerializer(serializers.Serializer):
-    first_name = serializers.CharField(max_length=24)
-    last_name = serializers.CharField(max_length=24)
-
-    def create(self, validated_data):
-        pass
-
-    def update(self, instance, validated_data):
-        pass
-
-
 class AccountImageProfileSerializer(serializers.Serializer):
     photo = serializers.ImageField(max_length=254, required=False)
 
@@ -61,9 +50,7 @@ class AccountImageProfileSerializer(serializers.Serializer):
 
 
 class AccountUpdateSerializer(serializers.Serializer):
-    phone = serializers.CharField(min_length=10, max_length=15)
     city = serializers.CharField(max_length=60)
-    country = serializers.CharField(max_length=50)
     state = serializers.CharField(max_length=30)
 
     def create(self, validated_data):
