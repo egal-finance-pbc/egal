@@ -66,7 +66,7 @@ class _SendSavingState extends State<SendSaving> {
     futureMe.then((data) {
       isoCode = data.country;
       savingKey = data.savingKey;
-      firstName = data.firstName;
+      firstName = data.names;
       print(isoCode);
     });
     return SingleChildScrollView(
