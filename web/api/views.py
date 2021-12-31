@@ -43,7 +43,7 @@ class Accounts(APIView):
             'username': a.user.username,
             'names': a.names,
             'paternal_surname': a.paternal_surname,
-            'maternal_surname': a.paternal_surname,
+            'maternal_surname': a.maternal_surname,
             'public_key': a.public_key,
             'saving_key': a.saving_key,
             'phone': a.phone,
@@ -134,12 +134,9 @@ class Account(APIView):
         if request.user.is_anonymous:
             raise PermissionDenied()
 
-        user_payload = serializers.UserSerializer(data=request.data)
         account_payload = serializers.AccountUpdateSerializer(data=request.data)
         if not account_payload.is_valid():
             raise ParseError(account_payload.errors)
-        elif not user_payload.is_valid():
-            raise ParseError(user_payload.errors)
 
         try:
             account = self.ledger.get_account(pubkey)
@@ -174,9 +171,9 @@ class Me(APIView):
 
         return Response(data={
             'username': request.user.username,
-            'names': request.account.names,
-            'paternal_surname': request.account.paternal_surname,
-            'maternal_surname': request.account.maternal_surname,
+            'names': account.names,
+            'paternal_surname': account.paternal_surname,
+            'maternal_surname': account.maternal_surname,
             'public_key': account.public_key,
             'saving_key': account.saving_key,
             'phone': account.phone,
