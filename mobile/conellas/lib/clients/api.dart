@@ -74,7 +74,7 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> updateAccount(String firstName, String lastName, String country, String city, String state, String phone) async {
+  Future<bool> updateAccount(String city, String state) async {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
 
@@ -86,33 +86,10 @@ class API {
       },
 
       body: jsonEncode(<String, String>{
-        'first_name': firstName,
-        'last_name': lastName,
-        'phone': phone,
         'city': city,
-        'country': country,
         'state': state,
       }),
     );
-    /*var token = await FlutterSession().get('token');
-    var me = await FlutterSession().get('publicKey');
-    final response = await http.MultipartRequest('PUT',
-      Uri.parse(this.url + 'accounts/$me/update/'),);
-
-      Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
-
-      response.headers.addAll(headers);
-      response.files.add(await http.MultipartFile.fromBytes(
-        'photo', await photo.readAsBytesSync(),
-        filename: photo.path.split('/').last,
-        contentType: MediaType('png', 'jpeg')));
-
-      var request = await response.send();
-
-*/
-      /*if (request.statusCode == 200) print('Uploaded!');
-
-    print(request.statusCode);*/
 
     if (response.statusCode != 200){
       throw APIError.fromResponse(response);
@@ -216,8 +193,9 @@ class API {
       headers: {HttpHeaders.authorizationHeader: 'Token $token'},
     );
 
+    var body = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
-      return Payment.fromList(json.decode(response.body));
+      return Payment.fromList(json.decode(body));
     }
     throw APIError.fromResponse(response);
   }
@@ -260,22 +238,24 @@ class Payment {
 }
 
 class User {
-  final String firstName;
-  final String lastName;
+  final String names;
+  final String paternal_surname;
+  final String maternal_surname;
   final String username;
   final String publicKey;
   final String savingKey;
   final String phone;
 
 
-  User({this.firstName, this.lastName, this.username, this.publicKey, this.savingKey, this.phone});
+  User({this.names, this.paternal_surname, this.maternal_surname, this.username, this.publicKey, this.savingKey, this.phone});
 
   static List<User> fromList(List<dynamic> list) {
     var users = List<User>();
     for (final item in list) {
       users.add(User(
-        firstName: item['first_name'],
-        lastName: item['last_name'],
+        names: item['names'],
+        paternal_surname: item['paternal_surname'],
+        maternal_surname: item['maternal_surname'],
         username: item['username'],
         publicKey: item['public_key'],
         savingKey: item['saving_key'],
@@ -288,8 +268,9 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> item) {
     return User(
-      firstName: item['first_name'],
-      lastName: item['last_name'],
+      names: item['names'],
+      paternal_surname: item['paternal_surname'],
+      maternal_surname: item['maternal_surname'],
       username: item['username'],
       publicKey: item['public_key'],
       savingKey: item['saving_key'],
@@ -298,7 +279,7 @@ class User {
   }
 
   String fullName() {
-    return '$firstName $lastName';
+    return '$names $paternal_surname $maternal_surname';
   }
 }
 
@@ -401,8 +382,9 @@ class Saving {
 }
 
 class Me {
-  final String firstName;
-  final String lastName;
+  final String names;
+  final String paternal_surname;
+  final String maternal_surname;
   final String username;
   final String publicKey;
   final String savingKey;
@@ -412,12 +394,13 @@ class Me {
   final String state;
   final String photo;
 
-  Me({this.firstName, this.lastName, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.state, this.photo});
+  Me({this.names, this.paternal_surname, this.maternal_surname, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.state, this.photo});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
-      firstName: json['first_name'],
-      lastName: json['last_name'],
+      names: json['names'],
+      paternal_surname: json['paternal_surname'],
+      maternal_surname: json['maternal_surname'],
       username: json['username'],
       publicKey: json['public_key'],
       savingKey: json['saving_key'],
@@ -429,58 +412,6 @@ class Me {
     );
   }
 }
-
-Update updateFromJson(String str) => Update.fromJson(json.decode(str));
-
-String updateToJson(Update data) => json.encode(data.toJson());
-class Update {
-    Update({
-        this.username,
-        this.firstName,
-        this.lastName,
-        this.publicKey,
-        this.phone,
-        this.country,
-        this.city,
-        this.photo,
-        this.state
-    });
-
-    final String username;
-    final String firstName;
-    final String lastName;
-    final String publicKey;
-    final String phone;
-    final String country;
-    final String city;
-    final String photo;
-    final String state;
-
-    factory Update.fromJson(Map<String, dynamic> json) => Update(
-        username: json["username"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        publicKey: json["public_key"],
-        phone: json["phone"],
-        country: json["country"],
-        city: json["city"],
-        photo: json["photo"],
-        state: json['state'],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "username": username,
-        "first_name": firstName,
-        "last_name": lastName,
-        "public_key": publicKey,
-        "phone": phone,
-        "country": country,
-        "city": city,
-        "photo": photo,
-        "state": state,
-    };
-}
-
 
 class Token {
   final String token;

@@ -170,13 +170,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                     color: Colors.white,
                     icon: Icon(Icons.save),
                     onPressed: () async {
-                      print(this.firstname);
-                      print(this.lastname);
-                      print(this.username);
-                      print(this.country);
                       print(this.cityValue);
                       print(this.stateValue);
-                      print(this.phone);
                       print(this.image);
 
                       try {
@@ -184,10 +179,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                         _formKey.currentState.save();
 
                         await widget.deps.api.updateAccount(
-                          this.firstname,
-                          this.lastname,
-                          this.username,
-                          this.country,
                           cityValue == '' ? this.cities : cityValue,
                           stateValue == '' ? this.state : stateValue,
                           //this.phone,
@@ -196,10 +187,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                         showImageSuccess(context);
                       } catch (e) {
                         print(widget.deps.api.updateAccount(
-                          this.firstname,
-                          this.lastname,
-                          this.username,
-                          this.country,
                           this.city,
                           this.stateValue,
                           //this.phone,
@@ -245,8 +232,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return TextFormField(
-                                    initialValue: firstname =
-                                        snapshot.data.firstName,
+                                    /*initialValue: firstname =
+                                        snapshot.data.firstName,*/
                                     decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
@@ -259,14 +246,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         size: 15,
                                         color: Color(0xff3B2F8F),
                                       ),
-                                      labelText: '${snapshot.data.firstName}',
+                                      labelText: '${snapshot.data.names}',
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       labelStyle: TextStyle(
                                           color: Colors.black,
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold),
-                                      helperText: 'First Name',
+                                      helperText: 'Names',
                                       helperStyle: TextStyle(
                                         color: Colors.white,
                                         fontSize: 15,
@@ -306,9 +293,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                               future: futureMe,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
+                                  String isoCode = snapshot.data.country;
                                   return TextFormField(
-                                    initialValue: lastname =
-                                        snapshot.data.lastName,
+                                    /*initialValue: lastname =
+                                        snapshot.data.lastName,*/
                                     decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
@@ -323,12 +311,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       ),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
-                                      labelText: '${snapshot.data.lastName}',
+                                      labelText: isoCode == 'MX' ? '${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}' : '${snapshot.data.paternal_surname}',
                                       labelStyle: TextStyle(
                                           color: Colors.black,
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold),
-                                      helperText: 'Last Name',
+                                      helperText: 'Surnames',
                                       helperStyle: TextStyle(
                                         color: Colors.white,
                                         fontSize: 15,

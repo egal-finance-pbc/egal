@@ -209,12 +209,26 @@ class _ReceivePageState extends State<ReceivePage> {
                                 future: futureMe,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    return Text('${snapshot.data.firstName} ${snapshot.data.lastName}',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Color(0xff3B2F8F),
-                                      ),
-                                    );
+                                    String isoCode = snapshot.data.country;
+                                      switch (isoCode) {
+                                        case 'US':
+                                        case 'CA':
+                                        case 'IN':
+                                        return Text('${snapshot.data.names} ${snapshot.data.paternal_surname}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Color(0xff3B2F8F),
+                                        ),
+                                      );
+                                          break;
+                                        case 'MX':
+                                        return Text('${snapshot.data.names} ${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Color(0xff3B2F8F),
+                                        ),
+                                      );
+                                    }
                                   } else if (snapshot.hasError) {
                                     return Text("${snapshot.error}");
                                   }
