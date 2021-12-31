@@ -234,12 +234,12 @@ class _SendPageState extends State<SendPage> {
                         child: TextField(
                           enabled: false,
                           decoration: InputDecoration(
-                              labelText: '${_destUser.firstName}',
+                              labelText: '${_destUser.names}',
                               labelStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              helperText: 'First Name',
+                              helperText: 'Names',
                               helperStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -262,12 +262,12 @@ class _SendPageState extends State<SendPage> {
                         child: TextField(
                           enabled: false,
                           decoration: InputDecoration(
-                              labelText: '${_destUser.lastName}',
+                              labelText: isoCode == 'MX' ? '${_destUser.paternal_surname} ${_destUser.maternal_surname}' : '${_destUser.paternal_surname}',
                               labelStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              helperText: 'Last Name',
+                              helperText: 'Surnames',
                               helperStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -375,7 +375,7 @@ class _SendPageState extends State<SendPage> {
                   borderRadius: BorderRadius.circular(40)),
             ),
             child: Text(
-              isPaying ? 'Paying ${_destUser.firstName}...' : 'Send',
+              isPaying ? 'Paying ${_destUser.names}...' : 'Send',
               style: TextStyle(fontSize: 18),
             ),
             onPressed: () {
