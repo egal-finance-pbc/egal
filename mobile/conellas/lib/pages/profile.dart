@@ -202,12 +202,12 @@ class _ProfileViewState extends State<ProfileView> {
                                 return TextFormField(
                                   enabled: false,
                                   decoration: InputDecoration(
-                                    labelText: '${snapshot.data.firstName}',
+                                    labelText: '${snapshot.data.names}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
-                                    helperText: 'First Name',
+                                    helperText: 'Names',
                                     helperStyle: TextStyle(
                                       color: Colors.white,
                                       fontSize: 15,
@@ -240,15 +240,16 @@ class _ProfileViewState extends State<ProfileView> {
                             future: futureMe,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                String isoCode = snapshot.data.country;
                                 return TextFormField(
                                   enabled: false,
                                   decoration: InputDecoration(
-                                    labelText: '${snapshot.data.lastName}',
+                                    labelText: isoCode == 'MX' ? '${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}' : '${snapshot.data.paternal_surname}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
-                                    helperText: 'Last Name',
+                                    helperText: 'Surnames',
                                     helperStyle: TextStyle(
                                       color: Colors.white,
                                       fontSize: 15,
