@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:conellas/common/dialog.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,10 +14,10 @@ class SendSaving extends StatefulWidget {
   final Dependencies deps;
 
   SendSaving(
-      this.deps, {
-        Account account,
-        Key key,
-      }) : super(key: key);
+    this.deps, {
+    Account account,
+    Key key,
+  }) : super(key: key);
 
   @override
   _SendSavingState createState() {
@@ -296,37 +297,19 @@ class _SendSavingState extends State<SendSaving> {
   void _done(_) {
     ProgressDialog progressDialog = ProgressDialog(context);
     progressDialog.dismissHome();
-    Size size = MediaQuery.of(context).size;
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return AlertDialog(
-          title: Text('That\'s it!', style: TextStyle(color: Colors.black)),
-          content: Text(
-              'The money has been successfully saved.',
-              style: TextStyle(color: Colors.black)),
-          actions: [
-            Center(
-              child: Container(
-                width: size.width * 0.50,
-                height: size.height * 0.06,
-                child: FlatButton(
-                  color: Color(0xff3B2F8F),
-                  child: Text('Got it'),
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-            ),
-          ],
-          backgroundColor: Colors.white,
-        );
-      },
-    );
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.success,
+        title: 'That\'s it!',
+        text: 'The money has been successfully saved',
+        confirmBtnText: 'Go it',
+        confirmBtnColor: Color(0xff3B2F8F),
+        onConfirmBtnTap: () async {
+          Navigator.popUntil(
+            context,
+            ModalRoute.withName('/saving'),
+          );
+        });
   }
 
   @override
