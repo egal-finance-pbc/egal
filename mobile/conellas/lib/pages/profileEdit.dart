@@ -5,6 +5,7 @@ import 'package:conellas/clients/api.dart';
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/profile.dart';
 import 'package:conellas/pages/profileEdit.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:country_list_pick/country_list_pick.dart';
 import 'package:country_list_pick/country_selection_theme.dart';
 import 'package:flutter/material.dart';
@@ -86,10 +87,9 @@ class _ProfileEditState extends State<ProfileEdit> {
         title: Text('Edit Profile'),
         actions: <Widget>[
           IconButton(
-            color: Colors.white,
-            icon: Icon(Icons.settings),
-            onPressed: () {}
-          ),
+              color: Colors.white,
+              icon: Icon(Icons.settings),
+              onPressed: () {}),
         ],
       ),
       body: Stack(
@@ -125,35 +125,51 @@ class _ProfileEditState extends State<ProfileEdit> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Container(
-                      margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
-                      height: size.height * 0.30,
-                      width: size.height * 0.30,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 3,
-                          color: Color(0xffF8991C),
-                        ),
-                        shape: BoxShape.circle,
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.05, 0, 0),
+                    height: size.height * 0.30,
+                    width: size.height * 0.30,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 3,
+                        color: Color(0xffF8991C),
                       ),
-                      child: FutureBuilder<Me>(
-                          future: futureMe,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.data.photo == null) {
-                                return CircleAvatar(
-                                    backgroundImage:
-                                    AssetImage('assets/proicon.png'));
-                              } else {
-                                return CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      'http://10.0.2.2:5000' + snapshot.data.photo,
-                                    ));
-                              }
-                            } else if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
+                      shape: BoxShape.circle,
+                    ),
+                    child: FutureBuilder<Me>(
+                        future: futureMe,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data.photo == null) {
+                              return CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/proicon.png'));
+                            } else {
+                              return CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                'http://10.0.2.2:5000' + snapshot.data.photo,
+                              ));
                             }
-                            return CircularProgressIndicator();
-                          })),
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          return CircularProgressIndicator();
+                        }),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(
+                      size.height * 0.19, size.height * 0.31, 0, 0),
+                  height: size.height * 0.07,
+                  width: size.height * 0.07,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF8991C),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.edit),
+                    onPressed: () => _optionsDialogBox(),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.topCenter,
@@ -167,34 +183,35 @@ class _ProfileEditState extends State<ProfileEdit> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.save),
-                    onPressed: () async {
-                      print(this.cityValue);
-                      print(this.stateValue);
-                      print(this.image);
+                      color: Colors.white,
+                      icon: Icon(Icons.save),
+                      onPressed: () async {
+                        print(this.cityValue);
+                        print(this.stateValue);
+                        print(this.image);
 
-                      try {
-                        if (!_formKey.currentState.validate()) return;
-                        _formKey.currentState.save();
+                        try {
+                          if (!_formKey.currentState.validate()) return;
+                          _formKey.currentState.save();
 
-                        await widget.deps.api.updateAccount(
-                          cityValue == '' ? this.cities : cityValue,
-                          stateValue == '' ? this.state : stateValue,
-                          //this.phone,
-                          //this.image,
-                        );
-                        showImageSuccess(context);
-                      } catch (e) {
-                        print(widget.deps.api.updateAccount(
-                          this.city,
-                          this.stateValue,
-                          //this.phone,
-                          /*this.image*/));
-                        showErrorDialog(context, e);
-                      }
-                    },
-                  ),
+                          await widget.deps.api.updateAccount(
+                            cityValue == '' ? this.cities : cityValue,
+                            stateValue == '' ? this.state : stateValue,
+                            //this.phone,
+                            //this.image,
+                          );
+                          showImageSuccess(context);
+                        } catch (e) {
+                          print(widget.deps.api.updateAccount(
+                            this.city,
+                            this.stateValue,
+                            //this.phone,
+                            /*this.image*/
+                          ));
+                          showErrorDialog(context, e);
+                        }
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -259,8 +276,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding:
-                                          const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
                                       disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Color(0xff3B2F8F),
@@ -311,7 +328,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       ),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
-                                      labelText: isoCode == 'MX' ? '${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}' : '${snapshot.data.paternal_surname}',
+                                      labelText: isoCode == 'MX'
+                                          ? '${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}'
+                                          : '${snapshot.data.paternal_surname}',
                                       labelStyle: TextStyle(
                                           color: Colors.black,
                                           fontSize: 15,
@@ -322,8 +341,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      contentPadding:
-                                          const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
                                       disabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Color(0xff3B2F8F),
@@ -390,12 +409,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         width: 2,
                                       ),
                                     ),
-                                    enabledBorder:UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                  color: Color(0xff3B2F8F),
-                                  width: 2,
-                                ),
-                              ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xff3B2F8F),
+                                        width: 2,
+                                      ),
+                                    ),
                                   ),
                                   onSaved: (value) => username = value,
                                 );
@@ -445,7 +464,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                     ),
                                     contentPadding:
                                         const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    enabledBorder:  UnderlineInputBorder(
+                                    enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.white,
                                         width: 2,
@@ -502,14 +521,16 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
                                   dropdownDecoration: BoxDecoration(
                                       border: Border(
-                                          bottom: BorderSide(color: Colors.white, width: 2),
-                                          )),
+                                    bottom: BorderSide(
+                                        color: Colors.white, width: 2),
+                                  )),
 
                                   ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                                   disabledDropdownDecoration: BoxDecoration(
                                       border: Border(
-                                        bottom: BorderSide(color: Color(0xff3B2F8F), width: 2),
-                                      )),
+                                    bottom: BorderSide(
+                                        color: Color(0xff3B2F8F), width: 2),
+                                  )),
 
                                   ///placeholders for dropdown search field
                                   countrySearchPlaceholder: "Country",
@@ -617,7 +638,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40)),
                     child: Text("OK"),
-                    onPressed: () async{
+                    onPressed: () async {
                       print(this.image);
 
                       try {
@@ -627,11 +648,18 @@ class _ProfileEditState extends State<ProfileEdit> {
                         await widget.deps.api.updatePhoto(
                           this.image,
                         );
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushReplacementNamed('/profileEdit');
+                        CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.success,
+                            title: 'the image was saved',
+                            text: 'The image was saved successfully, the page will reload.',
+                            confirmBtnColor: Color(0xff3B2F8F),
+                            onConfirmBtnTap: () async {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/profileEdit');
+                            });
                       } catch (e) {
-                        print(widget.deps.api.updatePhoto(
-                            this.image));
+                        print(widget.deps.api.updatePhoto(this.image));
                         showErrorDialog(context, e);
                       }
                     },
@@ -642,6 +670,7 @@ class _ProfileEditState extends State<ProfileEdit> {
           );
         });
   }
+
   void showImg(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var selectorImg = AlertDialog(
@@ -674,8 +703,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   );
                   Navigator.pop(context);
                 } catch (e) {
-                  print(widget.deps.api.updatePhoto(
-                      this.image));
+                  print(widget.deps.api.updatePhoto(this.image));
                   showErrorDialog(context, e);
                 }
               },
@@ -714,7 +742,9 @@ class _ProfileEditState extends State<ProfileEdit> {
               child: Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).popUntil(ModalRoute.withName('/navigatorBar'));},
+                Navigator.of(context)
+                    .popUntil(ModalRoute.withName('/navigatorBar'));
+              },
             ),
           ),
         ),
@@ -728,7 +758,9 @@ class _ProfileEditState extends State<ProfileEdit> {
       },
     );
   }
+
   void showImageSuccess(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     var successDialog = AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -748,12 +780,22 @@ class _ProfileEditState extends State<ProfileEdit> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            BottomNavBar(widget.deps)));
+              onPressed: () async {
+                print(this.image);
+
+                try {
+                  if (!_formKey.currentState.validate()) return;
+                  _formKey.currentState.save();
+
+                  await widget.deps.api.updatePhoto(
+                    this.image,
+                  );
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed('/profileEdit');
+                } catch (e) {
+                  print(widget.deps.api.updatePhoto(this.image));
+                  showErrorDialog(context, e);
+                }
               },
             ),
           ),
@@ -770,35 +812,12 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   void showErrorDialog(BuildContext context, err) {
-    Size size = MediaQuery.of(context).size;
-    var errorDialog = AlertDialog(
-      title: Text('Error'),
-      content: Text('Error'),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              child: Text("Try again"),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return errorDialog;
-      },
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: 'Error in the image',
+        text: 'failed to upload the image.',
+        confirmBtnColor: Color(0xff3B2F8F),
     );
   }
 }

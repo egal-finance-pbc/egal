@@ -1,10 +1,11 @@
 import 'package:conellas/common/deps.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:twilio_phone_verify/twilio_phone_verify.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class SignUpPage extends StatefulWidget {
   final Dependencies deps;
@@ -36,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    height: size.height * 0.55,
+                    height: size.height * 0.70,
                     //height: 320,
                     decoration: BoxDecoration(
                         color: Color(0xff3B2F8F),
@@ -45,7 +46,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           bottomRight: Radius.circular(40),
                         )),
                   ),
-                  /*
                   Center(
                     child: Container(
                       margin: EdgeInsets.only(bottom: size.height * 0.94),
@@ -54,11 +54,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           alignment: Alignment.center),
                     ),
                   ),
-
-                   */
                   SignUpForm(widget.deps),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.00),
+                    margin: EdgeInsets.only(top: size.height * 0.12),
                     child: Row(
                       children: <Widget>[
                         Text(
@@ -78,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.70),
+                    margin: EdgeInsets.only(top: size.height * 0.76),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -105,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: size.height * 0.75),
+                    margin: EdgeInsets.only(top: size.height * 0.80),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -116,17 +114,22 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ? await launch(_url)
                                 : throw 'Could not launch $_url';
                           },
-                          child: Icon(Icons.web, color: Colors.white,
-                            size: 25,),
+                          child: Icon(
+                            Icons.web,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {
-                          },
-                          child: Icon(Icons.facebook, color: Colors.white,
-                            size: 25,),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.facebook,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
@@ -135,17 +138,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           onPressed: () {
                             //SessionParams.deleteSession();
                           },
-                          child: Icon(Icons.chat_rounded, color: Colors.white,
-                            size: 25,),
+                          child: Icon(
+                            Icons.chat_rounded,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {
-                          },
-                          child: Icon(Icons.qr_code_scanner, color: Colors.white,
-                            size: 25,),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.qr_code_scanner,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
@@ -192,14 +200,15 @@ class _SignUpFormState extends State<SignUpForm> {
   final confirmPasswordController = TextEditingController();
   bool _isHidden = true;
   int CurrentStep = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _twilioPhoneVerify = TwilioPhoneVerify(
-        accountSid: 'AC376189fed235dd2e7707b95f86b34c5a',
-        serviceSid: 'VAb970c90d7a8937ee765360afebfe42f5',
-        authToken: 'e30fa3d0b55d10c84832cfae1a2edc0d');
+        accountSid: 'ACc621a266ebac6233618b310c1bcd30f6',
+        serviceSid: 'VAec5e5ba5a0af7d933fb723ea0f8d196e',
+        authToken: '744aa666d5b7d5eec2b344f048077c40');
     _focusNode.addListener(_focusNodeListener);
   }
 
@@ -228,11 +237,11 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     RegExp regMayus = RegExp(r'^(?=.*?[A-Z]).{1,}');
     RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
     RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
     RegExp regChar = RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
-    Size size = MediaQuery.of(context).size;
     return Form(
         key: _formKey,
         child: Theme(
@@ -240,42 +249,79 @@ class _SignUpFormState extends State<SignUpForm> {
             canvasColor: Color(0xff3B2F8F),
             colorScheme: ColorScheme.light(
               primary: Colors.orange,
-              surface: Colors.white,
-              onSurface: Colors.white,
             ),
           ),
           child: Container(
-            margin: EdgeInsets.only(top: size.height * 0.02),
+            margin: EdgeInsets.only(top: size.height * 0.15),
             child: Stepper(
               elevation: 0,
               type: StepperType.horizontal,
               currentStep: CurrentStep,
               steps: getSteps(),
               onStepContinue: () {
+
                 final isLastStep = CurrentStep == getSteps().length - 1;
+                final is2Step = CurrentStep == getSteps().length - 2;
                 if (isLastStep && !_formKey.currentState.validate()) {
+                  Navigator.pushNamed(context, '/');
+                } else if (is2Step && _formKey.currentState.validate()) {
                   try {
                     sendCode();
+                    setState(() => CurrentStep += 1);
                   } catch (err) {
                     showErrorDialog(context, err);
                   }
                 } else if (!_formKey.currentState.validate()) {
                   return;
-                }
-                else {
+                } else {
                   setState(() => CurrentStep += 1);
                 }
-
               },
               onStepCancel: CurrentStep == 0
                   ? null
                   : () => setState(() => CurrentStep -= 1),
+              controlsBuilder: (context, {onStepContinue, onStepCancel}) {
+                return Container(
+                  margin: EdgeInsets.only(top: size.height * 0.01),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xffF8991C), // background
+                            onPrimary: Colors.white, // foreground
+                          ),
+                          child: Text('Continuar'),
+                          onPressed: onStepContinue,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      if (CurrentStep != 0)
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                onPrimary: Colors.white, // foreground
+                                side: BorderSide(
+                                  width: 3.0,
+                                  color: Color(0xffF8991C),
+                                )),
+                            child: Text('Atras'),
+                            onPressed: onStepCancel,
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ));
   }
 
   List<Step> getSteps() => [
+        //Map data = ModalRoute.of(context).settings.arguments;
         Step(
           isActive: CurrentStep >= 0,
           title: Text(
@@ -332,6 +378,168 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                child: TextFormField(
+                  textCapitalization: TextCapitalization.words,
+                  controller: names,
+                  validator: (value) {
+                    RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                    RegExp regChar =
+                        RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
+                    if (value.isEmpty) {
+                      return 'Missing Names';
+                    } else if (regNum2.hasMatch(value)) {
+                      return 'The name does not have a number ';
+                    } else if (regChar.hasMatch(value)) {
+                      return 'no special characters';
+                    } else if (value.length > 50) {
+                      return 'Username length exceeded';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    errorStyle:
+                        TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          new BorderSide(color: Color(0xffF8991C), width: 2),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Names',
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    hintText: 'Names',
+                    hintTextDirection: TextDirection.rtl,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.all(20),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                child: TextFormField(
+                  textCapitalization: TextCapitalization.words,
+                  controller: patsurname,
+                  validator: (value) {
+                    RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                    RegExp regChar =
+                        RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
+                    RegExp regUser =
+                        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{6,12}');
+                    if (value.isEmpty) {
+                      return 'Missing Paternal surname';
+                    } else if (regNum2.hasMatch(value)) {
+                      return 'No numbers';
+                    } else if (regChar.hasMatch(value)) {
+                      return 'No special characters';
+                    } else if (value.length > 24) {
+                      return 'Paternal surname length exceeded';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    errorStyle:
+                        TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          new BorderSide(color: Color(0xffF8991C), width: 2),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Paternal surname',
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    hintText: 'Paternal surname',
+                    hintTextDirection: TextDirection.rtl,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.all(20),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Visibility(
+                visible: phoneIsoCode == 'MX' ? _isVisible : !_isVisible,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: matsurname,
+                    validator: (value) {
+                      RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
+                      RegExp regChar = RegExp(
+                          r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
+                      RegExp regUser = RegExp(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
+                      if (value.isEmpty) {
+                        return 'Missing Mothers surname';
+                      } else if (regNum2.hasMatch(value)) {
+                        return 'No number';
+                      } else if (regChar.hasMatch(value)) {
+                        return 'no special characters';
+                      } else if (value.length > 24) {
+                        return 'Mothers surname length exceeded';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      errorStyle:
+                          TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                      errorBorder: OutlineInputBorder(
+                        borderSide:
+                            new BorderSide(color: Color(0xffF8991C), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Mothers surname',
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                      hintText: 'Mothers surname',
+                      hintTextDirection: TextDirection.rtl,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.all(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Step(
+          isActive: CurrentStep >= 1,
+          title: Text(
+            'Data',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: TextFormField(
                   controller: usernameController,
@@ -384,181 +592,10 @@ class _SignUpFormState extends State<SignUpForm> {
               SizedBox(
                 height: 10,
               ),
-            ],
-          ),
-        ),
-        Step(
-          isActive: CurrentStep >= 1,
-          title: Text(
-            'Data',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: TextFormField(
-                  controller: names,
-                  validator: (value) {
-                    RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
-                    RegExp regChar =
-                        RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
-                    if (value.isEmpty) {
-                      return 'Missing Names';
-                    } else if (regNum2.hasMatch(value)) {
-                      return 'The name does not have a number ';
-                    } else if (regChar.hasMatch(value)) {
-                      return 'no special characters';
-                    } else if (value.length > 50) {
-                      return 'Username length exceeded';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    errorStyle:
-                        TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
-                    errorBorder: OutlineInputBorder(
-                      borderSide:
-                          new BorderSide(color: Color(0xffF8991C), width: 2),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Names',
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    hintText: 'Names',
-                    hintTextDirection: TextDirection.rtl,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.all(20),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: TextFormField(
-                  controller: patsurname,
-                  validator: (value) {
-                    RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
-                    RegExp regChar =
-                        RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
-                    RegExp regUser =
-                        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{6,12}');
-                    if (value.isEmpty) {
-                      return 'Missing Paternal surname';
-                    } else if (regNum2.hasMatch(value)) {
-                      return 'No numbers';
-                    } else if (regChar.hasMatch(value)) {
-                      return 'No special characters';
-                    } else if (value.length > 50) {
-                      return 'Paternal surname length exceeded';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    errorStyle:
-                        TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
-                    errorBorder: OutlineInputBorder(
-                      borderSide:
-                          new BorderSide(color: Color(0xffF8991C), width: 2),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Paternal surname',
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    hintText: 'Paternal surname',
-                    hintTextDirection: TextDirection.rtl,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.all(20),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Visibility(
-                visible: phoneIsoCode == 'MX' ? _isVisible : !_isVisible,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: TextFormField(
-                    controller: matsurname,
-                    validator: (value) {
-                      RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
-                      RegExp regChar = RegExp(
-                          r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
-                      RegExp regUser = RegExp(
-                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,12}');
-                      if (value.isEmpty) {
-                        return 'Missing Mothers surname';
-                      } else if (regNum2.hasMatch(value)) {
-                        return 'No number ';
-                      } else if (regChar.hasMatch(value)) {
-                        return 'no special characters';
-                      } else if (value.length > 50) {
-                        return 'Mothers surname length exceeded';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      errorStyle:
-                          TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
-                      errorBorder: OutlineInputBorder(
-                        borderSide:
-                            new BorderSide(color: Color(0xffF8991C), width: 2),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Mothers surname',
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                      hintText: 'Mothers surname',
-                      hintTextDirection: TextDirection.rtl,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.all(20),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Step(
-          isActive: CurrentStep >= 2,
-          title: Text(
-            'Password',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Column(
-            children: <Widget>[
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: TextFormField(
-                  focusNode: _focusNode,
                   controller: passwordController,
                   keyboardType: TextInputType.text,
                   validator: (value) {
@@ -566,9 +603,9 @@ class _SignUpFormState extends State<SignUpForm> {
                     RegExp regMinus = RegExp(r'^(?=.*?[a-z]).{1,}');
                     RegExp regNum2 = RegExp(r'^(?=.*?[0-9]).{1,}$');
                     RegExp regChar =
-                    RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
+                        RegExp(r'^(?=.*?[$&+,:;=?@#|])(?=.*?[<>.-^*()%!]).{1}');
                     RegExp regPass =
-                    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,12}');
+                        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,12}');
                     if (value.isEmpty) {
                       return 'Please a Enter Password';
                     } else if (!regMayus.hasMatch(value)) {
@@ -589,10 +626,10 @@ class _SignUpFormState extends State<SignUpForm> {
                   obscureText: _isHidden,
                   decoration: InputDecoration(
                     errorStyle:
-                    TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
                     errorBorder: OutlineInputBorder(
                       borderSide:
-                      new BorderSide(color: Color(0xffF8991C), width: 2),
+                          new BorderSide(color: Color(0xffF8991C), width: 2),
                     ),
                     filled: true,
                     fillColor: Colors.white,
@@ -641,10 +678,10 @@ class _SignUpFormState extends State<SignUpForm> {
                   obscureText: true,
                   decoration: InputDecoration(
                     errorStyle:
-                    TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
+                        TextStyle(fontSize: 14.0, color: Color(0xffF8991C)),
                     errorBorder: OutlineInputBorder(
                       borderSide:
-                      new BorderSide(color: Color(0xffF8991C), width: 2),
+                          new BorderSide(color: Color(0xffF8991C), width: 2),
                     ),
                     filled: true,
                     fillColor: Colors.white,
@@ -661,6 +698,118 @@ class _SignUpFormState extends State<SignUpForm> {
                       borderSide: BorderSide.none,
                     ),
                     contentPadding: const EdgeInsets.all(20),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Step(
+          isActive: CurrentStep >= 2,
+          title: Text(
+            'Password',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  child: Text(
+                    'Please enter the verification code',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Text(
+                    'in the same order',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                child: Align(
+                  alignment: Alignment.topCenter,
+
+                  child: OtpTextField(
+                    fieldWidth: 45,
+                    textStyle: TextStyle(fontSize: 25, color: Color(0xffF8991C)),
+                    numberOfFields: 6,
+                    borderColor: Color(0xffF8991C),
+                    focusedBorderColor: Color(0xffF8991C),
+                    //set to true to show as box or false to show as dash
+                    showFieldAsBox: true,
+                    borderWidth: 3,
+                    borderRadius: BorderRadius.circular(10),
+                    onCodeChanged: (String value) {},
+                    onSubmit: (smsCode) async {
+                      /*
+                    String cellphone = data['phone'];
+                    String user = data['username'];
+                    String names = data['names'];
+                    String patSurname = data['patSurname'];
+                    String matSurname = data['matSurname'];
+                    String passcode = data['password'];
+                    String isoCode = data['isoCode'];
+                    */
+
+                      if (phone.isEmpty && smsCode.isEmpty) return;
+                      TwilioResponse twilioResponse = await _twilioPhoneVerify
+                          .verifySmsCode(phone: phone, code: smsCode);
+                      if (twilioResponse.successful) {
+                        if (twilioResponse.verification.status ==
+                            VerificationStatus.approved) {
+                          print('Phone number is approved');
+                          print(names);
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.loading,
+                          );
+                          try {
+                            await widget.deps.api.signup(
+                              phone,
+                              usernameController.text,
+                              names.text,
+                              patsurname.text,
+                              matsurname.text,
+                              passwordController.text,
+                              phoneIsoCode,
+                            );
+                            CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.success,
+                                title: "successfully ",
+                                text: "account successfully registered",
+                            confirmBtnColor: Color(0xff3B2F8F),
+                            onConfirmBtnTap: () async {
+                              Navigator.pushNamed(context, '/');
+                            }
+                            );
+                          } catch (e) {
+                            print(e);
+                          }
+                        } else {
+                          print('Invalid code');
+                        }
+                      } else {
+                        print(twilioResponse.errorMessage);
+                      }
+                    },
                   ),
                 ),
               ),
@@ -697,15 +846,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40)),
               child: Text("OK"),
               onPressed: () {
-                Navigator.pushNamed(context, '/verificationCode', arguments: {
-                  'phone': phone,
-                  'isoCode': phoneIsoCode,
-                  'username': usernameController.text,
-                  'names': names.text,
-                  'patSurname': patsurname.text,
-                  'matSurname': matsurname.text,
-                  'password': passwordController.text
-                });
+                Navigator.pop(context);
               },
             ),
           ),
@@ -722,35 +863,12 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void showErrorDialog(BuildContext context, err) {
-    Size size = MediaQuery.of(context).size;
-    var errorDialog = AlertDialog(
-      title: err.title(),
-      content: err.content(),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              child: Text("Try again"),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-
-    showDialog(
+    CoolAlert.show(
       context: context,
-      builder: (BuildContext _) {
-        return errorDialog;
-      },
+      type: CoolAlertType.error,
+      title: err.title(),
+      text: err.content(),
+      confirmBtnColor: Color(0xff3B2F8F),
     );
   }
 
@@ -760,7 +878,13 @@ class _SignUpFormState extends State<SignUpForm> {
     if (twilioResponse.successful) {
       print('Code sent to ${phone}');
       await Future.delayed(Duration(seconds: 1));
-      showSuccessDialog(context);
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.success,
+          title: "Code sent ",
+          text: "check your messages, the validation code has been sent.",
+          confirmBtnColor: Color(0xff3B2F8F),
+      );
     }
   }
 

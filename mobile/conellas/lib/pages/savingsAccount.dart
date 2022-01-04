@@ -104,11 +104,11 @@ class _savingAccountState extends State<savingAccount> {
                             size.height * 0.01,
                             size.height * 0.72),
                         decoration: BoxDecoration(
-                          color: Colors.orange,
+                          color: Colors.black45,
                           image: DecorationImage(
                               image: AssetImage('assets/CardBlack.png'),
                               fit: BoxFit.fill),
-                          borderRadius: BorderRadius.circular(33),
+                          borderRadius: BorderRadius.circular(size.height*0.05),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.5),
@@ -190,7 +190,7 @@ class _savingAccountState extends State<savingAccount> {
                                       return Text('${snapshot.data.names} ${snapshot.data.paternal_surname}',
                                       style: TextStyle(
                                         fontSize: 18,
-                                        color: Color(0xff3B2F8F),
+                                        color: Colors.white,
                                       ),
                                     );
                                         break;
@@ -198,7 +198,7 @@ class _savingAccountState extends State<savingAccount> {
                                       return Text('${snapshot.data.names} ${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}',
                                       style: TextStyle(
                                         fontSize: 18,
-                                        color: Color(0xff3B2F8F),
+                                        color: Colors.white,
                                       ),
                                     );
                                   }

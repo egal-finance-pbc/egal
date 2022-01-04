@@ -139,11 +139,11 @@ class _HomePageState extends State<HomePage> {
                             size.height * 0.01,
                             size.height * 0.72),
                         decoration: BoxDecoration(
-                          color: Colors.orange,
+                          color: Colors.white,
                           image: DecorationImage(
                               image: AssetImage('assets/Card3.png'),
                               fit: BoxFit.fill),
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(size.height*0.04),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.5),
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: <Widget>[
                             Text(
-                              'Available Money',
+                              'Money in Wallet',
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Color(0xff3B2F8F),

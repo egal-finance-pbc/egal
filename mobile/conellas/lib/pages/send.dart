@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:conellas/common/dialog.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -441,35 +442,16 @@ class _SendPageState extends State<SendPage> {
   void _done(_) {
     ProgressDialog progressDialog = ProgressDialog(context);
     progressDialog.dismissHome();
-    Size size = MediaQuery.of(context).size;
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return AlertDialog(
-          title: Text('That\'s it!', style: TextStyle(color: Colors.black)),
-          content: Text('Your payment has completed successfully',
-              style: TextStyle(color: Colors.black)),
-          actions: [
-            Center(
-              child: Container(
-                width: size.width * 0.50,
-                height: size.height * 0.06,
-                child: FlatButton(
-                  color: Color(0xff3B2F8F),
-                  child: Text('Got it'),
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40)),
-                  onPressed: () {
-                    Navigator.popUntil(context, ModalRoute.withName('/navigatorBar'));
-                  },
-                ),
-              ),
-            ),
-          ],
-          backgroundColor: Colors.white,
-        );
-      },
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.success,
+        title: 'That\'s it!',
+        text: 'Your payment has completed successfully',
+        confirmBtnText: 'Go it',
+        confirmBtnColor: Color(0xff3B2F8F),
+        onConfirmBtnTap: () async {
+          Navigator.popUntil(context, ModalRoute.withName('/navigatorBar'));
+        }
     );
   }
 
