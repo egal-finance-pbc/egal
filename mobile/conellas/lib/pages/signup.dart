@@ -280,7 +280,7 @@ class _SignUpFormState extends State<SignUpForm> {
               onStepCancel: CurrentStep == 0
                   ? null
                   : () => setState(() => CurrentStep -= 1),
-              controlsBuilder: (context, {onStepContinue, onStepCancel}) {
+              controlsBuilder: (context, ControlsDetails details) {
                 return Container(
                   margin: EdgeInsets.only(top: size.height * 0.01),
                   child: Row(
@@ -292,7 +292,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             onPrimary: Colors.white, // foreground
                           ),
                           child: Text('Continuar'),
-                          onPressed: onStepContinue,
+                          onPressed: details.onStepContinue,
                         ),
                       ),
                       const SizedBox(
@@ -308,7 +308,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                   color: Color(0xffF8991C),
                                 )),
                             child: Text('Atras'),
-                            onPressed: onStepCancel,
+                            onPressed: details.onStepCancel,
                           ),
                         ),
                     ],

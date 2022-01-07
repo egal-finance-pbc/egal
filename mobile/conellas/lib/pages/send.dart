@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:conellas/common/dialog.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -84,7 +85,7 @@ class _SendPageState extends State<SendPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Available Money',
+                          'Available Money In Wallet',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white,
@@ -107,19 +108,19 @@ class _SendPageState extends State<SendPage> {
                               print(balanceDouble);
 
                               try {
-                                    return Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          currency.format(this.balanceDouble),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 45,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    );
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      currency.format(this.balanceDouble),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 45,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                );
                               } catch (e) {
                                 print(e);
                               }
@@ -263,7 +264,9 @@ class _SendPageState extends State<SendPage> {
                         child: TextField(
                           enabled: false,
                           decoration: InputDecoration(
-                              labelText: isoCode == 'MX' ? '${_destUser.paternal_surname} ${_destUser.maternal_surname}' : '${_destUser.paternal_surname}',
+                              labelText: isoCode == 'MX'
+                                  ? '${_destUser.paternal_surname} ${_destUser.maternal_surname}'
+                                  : '${_destUser.paternal_surname}',
                               labelStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
@@ -440,19 +443,22 @@ class _SendPageState extends State<SendPage> {
   }
 
   void _done(_) {
+    var howMuch = double.parse(_howMuchCtrl.text.trim());
     ProgressDialog progressDialog = ProgressDialog(context);
     progressDialog.dismissHome();
     CoolAlert.show(
         context: context,
         type: CoolAlertType.success,
         title: 'That\'s it!',
-        text: 'Your payment has completed successfully',
+        text: 'The amount ' +
+            '\$' +
+            '$howMuch ' +
+            'has been sent to '+'${_destUser.username} '+'with success',
         confirmBtnText: 'Go it',
         confirmBtnColor: Color(0xff3B2F8F),
         onConfirmBtnTap: () async {
           Navigator.popUntil(context, ModalRoute.withName('/navigatorBar'));
-        }
-    );
+        });
   }
 
   @override
