@@ -11,7 +11,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="conellas"
+        android:label="Egal"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

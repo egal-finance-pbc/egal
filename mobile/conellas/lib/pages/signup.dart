@@ -259,7 +259,6 @@ class _SignUpFormState extends State<SignUpForm> {
               currentStep: CurrentStep,
               steps: getSteps(),
               onStepContinue: () {
-
                 final isLastStep = CurrentStep == getSteps().length - 1;
                 final is2Step = CurrentStep == getSteps().length - 2;
                 if (isLastStep && !_formKey.currentState.validate()) {
@@ -280,7 +279,9 @@ class _SignUpFormState extends State<SignUpForm> {
               onStepCancel: CurrentStep == 0
                   ? null
                   : () => setState(() => CurrentStep -= 1),
-              controlsBuilder: (context, {onStepContinue, onStepCancel}) {
+              controlsBuilder: (BuildContext context,
+                  {onStepContinue, onStepCancel}) {
+                Size size = MediaQuery.of(context).size;
                 return Container(
                   margin: EdgeInsets.only(top: size.height * 0.01),
                   child: Row(
@@ -745,10 +746,10 @@ class _SignUpFormState extends State<SignUpForm> {
                 padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
                 child: Align(
                   alignment: Alignment.topCenter,
-
                   child: OtpTextField(
                     fieldWidth: 45,
-                    textStyle: TextStyle(fontSize: 25, color: Color(0xffF8991C)),
+                    textStyle:
+                        TextStyle(fontSize: 25, color: Color(0xffF8991C)),
                     numberOfFields: 6,
                     borderColor: Color(0xffF8991C),
                     focusedBorderColor: Color(0xffF8991C),
@@ -795,11 +796,10 @@ class _SignUpFormState extends State<SignUpForm> {
                                 type: CoolAlertType.success,
                                 title: "successfully ",
                                 text: "account successfully registered",
-                            confirmBtnColor: Color(0xff3B2F8F),
-                            onConfirmBtnTap: () async {
-                              Navigator.pushNamed(context, '/');
-                            }
-                            );
+                                confirmBtnColor: Color(0xff3B2F8F),
+                                onConfirmBtnTap: () async {
+                                  Navigator.pushNamed(context, '/');
+                                });
                           } catch (e) {
                             print(e);
                           }
@@ -879,11 +879,11 @@ class _SignUpFormState extends State<SignUpForm> {
       print('Code sent to ${phone}');
       await Future.delayed(Duration(seconds: 1));
       CoolAlert.show(
-          context: context,
-          type: CoolAlertType.success,
-          title: "Code sent ",
-          text: "check your messages, the validation code has been sent.",
-          confirmBtnColor: Color(0xff3B2F8F),
+        context: context,
+        type: CoolAlertType.success,
+        title: "Code sent ",
+        text: "check your messages, the validation code has been sent.",
+        confirmBtnColor: Color(0xff3B2F8F),
       );
     }
   }
