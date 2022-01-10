@@ -258,14 +258,14 @@ class _SignUpFormState extends State<SignUpForm> {
               type: StepperType.horizontal,
               currentStep: CurrentStep,
               steps: getSteps(),
-              onStepContinue: () {
+              onStepContinue: () async {
                 final isLastStep = CurrentStep == getSteps().length - 1;
                 final is2Step = CurrentStep == getSteps().length - 2;
-                if (isLastStep && !_formKey.currentState.validate()) {
+                if (isLastStep) {
                   Navigator.pushNamed(context, '/');
                 } else if (is2Step && _formKey.currentState.validate()) {
                   try {
-                    sendCode();
+                    await sendCode();
                     setState(() => CurrentStep += 1);
                   } catch (err) {
                     showErrorDialog(context, err);
@@ -379,7 +379,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: TextFormField(
                   textCapitalization: TextCapitalization.words,
                   controller: names,
@@ -428,7 +428,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: TextFormField(
                   textCapitalization: TextCapitalization.words,
                   controller: patsurname,
@@ -481,7 +481,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 visible: phoneIsoCode == 'MX' ? _isVisible : !_isVisible,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextFormField(
                     textCapitalization: TextCapitalization.words,
                     controller: matsurname,
