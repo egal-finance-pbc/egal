@@ -1,5 +1,6 @@
 import 'package:conellas/instructionsPage/LoadScreen.dart';
 import 'package:conellas/pages/QRscan.dart';
+import 'package:conellas/pages/SendCardPage.dart';
 import 'package:conellas/pages/navigatorBar.dart';
 import 'package:conellas/pages/profile.dart';
 import 'package:conellas/pages/profileEdit.dart';
@@ -37,6 +38,7 @@ class ConEllasApp extends StatelessWidget {
         '/': (context) => SignInPage(deps),
         '/signup': (context) => SignUpPage(deps),
         '/home': (context) => HomePage(deps),
+        '/cardSend': (context) => cardSendPage(deps),
         '/search': (context) => SearchPage(deps),
         '/send': (context) => SendPage(deps),
         '/navigatorBar': (context) => BottomNavBar(deps),
