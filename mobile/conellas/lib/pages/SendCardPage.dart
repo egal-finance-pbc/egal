@@ -36,7 +36,7 @@ class _cardSendPageState extends State<cardSendPage> {
       appBar: AppBar(
         backgroundColor: Color(0xff3B2F8F),
         elevation: 0,
-        title: Text('Saving account'),
+        title: Text('Wallet'),
         actions: <Widget>[
           IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],

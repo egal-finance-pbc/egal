@@ -49,14 +49,15 @@ dependencies:
   image_picker: ^0.8.4+4
   http_parser:
   progress_indicators: ^1.0.0
-  syncfusion_flutter_charts: ^19.2.62
-  bootstrap_icons: ^1.5.0
   country_list_pick: ^1.0.1+5
   curved_navigation_bar: ^1.0.1
   motion_tab_bar_v2: ^0.2.5
   csc_picker: ^0.2.6
   cool_alert: ^1.1.0
   card_selector: ^0.1.0
+  flutter_swiper: ^1.1.6
+  syncfusion_flutter_charts: ^19.4.42
+  graphic: ^0.5.1
 
 
 dev_dependencies:
