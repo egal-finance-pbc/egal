@@ -299,24 +299,20 @@ class _SendSavingState extends State<SendSaving> {
     ProgressDialog progressDialog = ProgressDialog(context);
     progressDialog.dismissHome();
     var howMuch = double.parse(_howMuchCtrl.text.trim());
+    Size size = MediaQuery.of(context).size;
     var op1 = 1 + .05 / 1;
-    var cadAno = pow(op1, 2);
-    var cadAno2 = pow(op1, 4);
-    var cadAno3 = pow(op1, 6);
-    var cadAno4 = pow(op1, 8);
-    var cadAno5 = pow(op1, 10);
+    var cadAno = pow(op1, 1);
+    var cadAno5 = pow(op1, 5);
+    var cadAno10 = pow(op1, 10);
 
-    var op3 = howMuch * cadAno;
-    var op4 = howMuch * cadAno2;
-    var op5 = howMuch * cadAno3;
-    var op6 = howMuch * cadAno4;
-    var op7 = howMuch * cadAno5;
 
-    var IntCompuesto = op3.toStringAsFixed(2);
-    var IntCompuesto2 = op4.toStringAsFixed(2);
-    var IntCompuesto3 = op5.toStringAsFixed(2);
-    var IntCompuesto4 = op6.toStringAsFixed(2);
-    var IntCompuesto5 = op7.toStringAsFixed(2);
+    var op = howMuch * cadAno;
+    var op5 = howMuch * cadAno5;
+    var op10 = howMuch * cadAno10;
+
+    var IntCompuesto = op.toStringAsFixed(2);
+    var IntCompuesto5 = op5.toStringAsFixed(2);
+    var IntCompuesto10 = op10.toStringAsFixed(2);
 
     CoolAlert.show(
         context: context,
@@ -352,39 +348,25 @@ class _SendSavingState extends State<SendSaving> {
           rows: <DataRow>[
             DataRow(
               cells: <DataCell>[
-                DataCell(Text('2')),
+                DataCell(Text('1')),
                 DataCell(Text('5%')),
                 DataCell(Container(
-                    width: 200, //SET width
+                    width: size.width*0.30, //SET width
                     child: Text('\$ ' + IntCompuesto)))
               ],
             ),
             DataRow(
               cells: <DataCell>[
-                DataCell(Text('4')),
+                DataCell(Text('5')),
                 DataCell(Text('5%')),
-                DataCell(Text('\$ ' + IntCompuesto2)),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('6')),
-                DataCell(Text('5%')),
-                DataCell(Text('\$ ' + IntCompuesto3)),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('8')),
-                DataCell(Text('5%')),
-                DataCell(Text('\$ ' + IntCompuesto4)),
+                DataCell(Text('\$ ' + IntCompuesto5)),
               ],
             ),
             DataRow(
               cells: <DataCell>[
                 DataCell(Text('10')),
                 DataCell(Text('5%')),
-                DataCell(Text('\$ ' + IntCompuesto5)),
+                DataCell(Text('\$ ' + IntCompuesto10)),
               ],
             ),
           ],

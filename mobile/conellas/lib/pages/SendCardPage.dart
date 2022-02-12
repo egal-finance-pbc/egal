@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/pages/sendSaving.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:conellas/clients/api.dart';
@@ -292,7 +295,6 @@ class _cardSendPageState extends State<cardSendPage> {
       ),
     );
   }
-
   Widget transactionsContainer(BuildContext context) {
     var paymentFuture = widget.deps.api.payments();
     var futureMe = widget.deps.api.me();
@@ -325,8 +327,6 @@ class _cardSendPageState extends State<cardSendPage> {
                     var backcolor = Color.fromRGBO(255, 153, 0, 0.20);
                     var descrip = item.description;
                     var dates = item.date;
-                    DateTime now = new DateTime.now();
-                    var dateNow = new DateTime(now.year, now.month, now.day);
 
                     if (me?.username == item.destination.username) {
                       color = Colors.green;

@@ -1,4 +1,5 @@
 import 'package:conellas/common/deps.dart';
+import 'package:conellas/common/dialog.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          'Already an user?',
+                          'Already a user?',
                           style: TextStyle(color: Colors.white),
                         ),
                         FlatButton(
@@ -292,7 +293,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             primary: Color(0xffF8991C), // background
                             onPrimary: Colors.white, // foreground
                           ),
-                          child: Text('Continuar'),
+                          child: Text('Continue'),
                           onPressed: onStepContinue,
                         ),
                       ),
@@ -308,7 +309,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                   width: 3.0,
                                   color: Color(0xffF8991C),
                                 )),
-                            child: Text('Atras'),
+                            child: Text('Back'),
                             onPressed: onStepCancel,
                           ),
                         ),
@@ -326,7 +327,7 @@ class _SignUpFormState extends State<SignUpForm> {
         Step(
           isActive: CurrentStep >= 0,
           title: Text(
-            'Account',
+            'Data',
             style: TextStyle(color: Colors.white),
           ),
           content: Column(
@@ -367,7 +368,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: const EdgeInsets.only(left: 40),
+                      contentPadding: const EdgeInsets.only(left: 50),
                     ),
                     onPhoneNumberChange: onPhoneNumberChange,
                     initialPhoneNumber: phone,
@@ -534,7 +535,7 @@ class _SignUpFormState extends State<SignUpForm> {
         Step(
           isActive: CurrentStep >= 1,
           title: Text(
-            'Data',
+            'Account',
             style: TextStyle(color: Colors.white),
           ),
           content: Column(
@@ -708,7 +709,7 @@ class _SignUpFormState extends State<SignUpForm> {
         Step(
           isActive: CurrentStep >= 2,
           title: Text(
-            'Password',
+            'Code',
             style: TextStyle(color: Colors.white),
           ),
           content: Column(
@@ -777,10 +778,8 @@ class _SignUpFormState extends State<SignUpForm> {
                             VerificationStatus.approved) {
                           print('Phone number is approved');
                           print(names);
-                          CoolAlert.show(
-                            context: context,
-                            type: CoolAlertType.loading,
-                          );
+                          ProgressDialog progressDialog = ProgressDialog(context);
+                          progressDialog.show();
                           try {
                             await widget.deps.api.signup(
                               phone,
@@ -791,10 +790,13 @@ class _SignUpFormState extends State<SignUpForm> {
                               passwordController.text,
                               phoneIsoCode,
                             );
+                            ProgressDialog progressDialog = ProgressDialog(context);
+                            progressDialog.dismissHome();
                             CoolAlert.show(
                                 context: context,
+                                backgroundColor: Color(0xffF8991C),
                                 type: CoolAlertType.success,
-                                title: "successfully ",
+                                title: "success",
                                 text: "account successfully registered",
                                 confirmBtnColor: Color(0xff3B2F8F),
                                 onConfirmBtnTap: () async {
@@ -884,6 +886,7 @@ class _SignUpFormState extends State<SignUpForm> {
         title: "Code sent ",
         text: "check your messages, the validation code has been sent.",
         confirmBtnColor: Color(0xff3B2F8F),
+        backgroundColor: Color(0xffF8991C),
       );
     }
   }
