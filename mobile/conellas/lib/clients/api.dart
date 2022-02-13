@@ -15,7 +15,7 @@ class API {
   API() {
     // TODO: Make base URL address:port dynamic.
     //URL GENERAL
-    this.url = 'http://10.0.2.2:5000/api/v1/';
+    //this.url = 'http://10.0.2.2:5000/api/v1/';
     //URL DE EMIR PARA SUS PRUEBAS
     //this.url = 'http://192.168.0.112:5000/api/v1/';
     // URL DE ALEXIS PARA PRUEBAS EN CELULAR

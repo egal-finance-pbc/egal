@@ -408,13 +408,13 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Names',
+                    labelText: 'Name',
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     labelStyle: TextStyle(
                         color: Colors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
-                    hintText: 'Names',
+                    hintText: 'Name',
                     hintTextDirection: TextDirection.rtl,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -512,13 +512,13 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      labelText: 'Mothers surname',
+                      labelText: 'Maternal surname',
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
-                      hintText: 'Mothers surname',
+                      hintText: 'Maternal surname',
                       hintTextDirection: TextDirection.rtl,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
