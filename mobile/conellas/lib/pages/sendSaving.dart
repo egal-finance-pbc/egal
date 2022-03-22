@@ -324,6 +324,7 @@ class _SendSavingState extends State<SendSaving> {
             'has been successfully saved. This table will show an anticipation of what the money saved will be in 10 years.',
         confirmBtnText: 'Go it',
         confirmBtnColor: Color(0xff3B2F8F),
+        backgroundColor: Color(0xffF8991C),
         widget: DataTable(
           columns: const <DataColumn>[
             DataColumn(
@@ -351,7 +352,6 @@ class _SendSavingState extends State<SendSaving> {
                 DataCell(Text('1')),
                 DataCell(Text('5%')),
                 DataCell(Container(
-                    width: size.width*0.30, //SET width
                     child: Text('\$ ' + IntCompuesto)))
               ],
             ),

@@ -8,9 +8,7 @@ import 'package:conellas/clients/api.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
-import 'package:graphic/graphic.dart';
 
-import 'data.dart';
 import 'savingsAccount.dart';
 
 final currency = new NumberFormat.simpleCurrency();
@@ -78,7 +76,6 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           headerContainer(context),
           balanceContainer(context),
-          GraficContainer(context),
           transactionsContainer(context),
         ],
       ),
@@ -714,166 +711,89 @@ class _HomePageState extends State<HomePage> {
     var futureMe = widget.deps.api.me();
     Size size = MediaQuery.of(context).size;
 
-    return Container();
-  }
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, size.height * 0.50, 0, 0),
+      padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+      height: double.infinity,
+      width: double.maxFinite,
+      child: FutureBuilder(
+        future: futureMe,
+        builder: (context, snapshot) {
+          var me = snapshot.data;
+          return FutureBuilder(
+            future: paymentFuture,
+            builder: (context, AsyncSnapshot<List<Payment>> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    final item = snapshot.data[index];
+                    final amount = currency.format(double.parse(item.amount));
 
-  Widget GraficContainer(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return SafeArea(child: Container(
-      margin: EdgeInsets.fromLTRB(0, size.height*0.40, 0, 0),
-      child: Column(
-        children: <Widget>[
-          /*
-        Container(
-          child: const Text(
-            'Rose Chart',
-            style: TextStyle(fontSize: 20),
-          ),
-          padding: const EdgeInsets.fromLTRB(20, 40, 20, 5),
-        ),
-        Container(
-          child: const Text(
-            '- With corner radius and shadow elevation.',
-          ),
-          padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-          alignment: Alignment.centerLeft,
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          width: 350,
-          height: 300,
-          child: Chart(
-            data: roseData,
-            variables: {
-              'name': Variable(
-                accessor: (Map map) => map['name'] as String,
-              ),
-              'value': Variable(
-                accessor: (Map map) => map['value'] as num,
-                scale: LinearScale(min: 0, marginMax: 0.1),
-              ),
-            },
-            elements: [
-              IntervalElement(
-                label: LabelAttr(
-                    encoder: (tuple) => Label(tuple['name'].toString())),
-                shape: ShapeAttr(
-                    value: RectShape(
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(10)),
-                    )),
-                color: ColorAttr(
-                    variable: 'name', values: Defaults.colors10),
-                elevation: ElevationAttr(value: 5),
-              )
-            ],
-            coord: PolarCoord(startRadius: 0.15),
-          ),
-        ),
+                    var color = Colors.red;
+                    var iconArrow = Icons.call_made_rounded;
+                    var action = '-';
+                    var sender = item.destination.username;
+                    var backcolor = Color.fromRGBO(255, 153, 0, 0.20);
+                    var descrip = item.description;
+                    var dates = item.date;
 
-         */
-          /*
-        Container(
-          child: const Text(
-            'Stacked Rose Chart',
-            style: TextStyle(fontSize: 20),
-          ),
-          padding: const EdgeInsets.fromLTRB(20, 40, 20, 5),
-        ),
-        Container(
-          child: const Text(
-            '- A multiple variabes tooltip anchord top-left.',
-          ),
-          padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-          alignment: Alignment.centerLeft,
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          width: 350,
-          height: 300,
-          child: Chart(
-            data: adjustData,
-            variables: {
-              'index': Variable(
-                accessor: (Map map) => map['index'].toString(),
-              ),
-              'type': Variable(
-                accessor: (Map map) => map['type'] as String,
-              ),
-              'value': Variable(
-                accessor: (Map map) => map['value'] as num,
-                scale: LinearScale(min: 0, max: 1800),
-              ),
-            },
-            elements: [
-              IntervalElement(
-                position:
-                Varset('index') * Varset('value') / Varset('type'),
-                color: ColorAttr(
-                    variable: 'type', values: Defaults.colors10),
-                modifiers: [StackModifier()],
-              )
-            ],
-            coord: PolarCoord(),
-            axes: [
-              Defaults.circularAxis,
-              Defaults.radialAxis..label = null,
-            ],
-            selections: {
-              'tap': PointSelection(
-                variable: 'index',
-              )
-            },
-            tooltip: TooltipGuide(
-              multiTuples: true,
-              anchor: (_) => Offset.zero,
-              align: Alignment.bottomRight,
-            ),
-          ),
-        )
-        ,
-         */
-          Container(
-            child: const Text(
-              'Race Chart',
-              style: TextStyle(fontSize: 20),
-            ),
-            padding: const EdgeInsets.fromLTRB(150,150, 20, 5),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(100,0,0,0),
-            width: 200,
-            height: 200,
-            child: Chart(
-              data: basicData,
-              variables: {
-                'genre': Variable(
-                  accessor: (Map map) => map['genre'] as String,
-                ),
-                'sold': Variable(
-                  accessor: (Map map) => map['sold'] as num,
-                  scale: LinearScale(min: 0),
-                ),
-              },
-              elements: [
-                IntervalElement(
-                  label: LabelAttr(
-                      encoder: (tuple) => Label(tuple['sold'].toString())),
-                  color: ColorAttr(
-                    variable: 'genre',
-                    values: Defaults.colors20,
-                  ),
-                )
-              ],
-              coord: PolarCoord(transposed: true),
+                    if (me?.username == item.destination.username) {
+                      color = Colors.green;
+                      iconArrow = Icons.call_received_rounded;
+                      action = '+';
+                      sender = item.source.username;
+                    }
 
-            ),
-          ),
-        ],
+                    if (item.description == null) {
+                      descrip = ' ';
+                    }
+
+                    return Column(
+                      children: <Widget>[
+                        Card(
+                          color: Color(0xffF8991C),
+                          elevation: 0,
+                          child: ListTile(
+                            leading: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
+                              child: Text(dates),
+                            ),
+                            title: Text(
+                              sender,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Text(descrip),
+                            trailing: Text(
+                              '$action $amount',
+                              style: TextStyle(
+                                  color: color, fontWeight: FontWeight.bold),
+                            ),
+                            tileColor: backcolor,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      color: Colors.white,
+                      thickness: 1,
+                    );
+                  },
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          );
+        },
       ),
-    ),
     );
   }
+
 }
 
 

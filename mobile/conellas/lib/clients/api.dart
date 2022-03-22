@@ -15,11 +15,11 @@ class API {
   API() {
     // TODO: Make base URL address:port dynamic.
     //URL GENERAL
-    //this.url = 'http://10.0.2.2:5000/api/v1/';
+    this.url = 'http://10.0.2.2:5000/api/v1/';
     //URL DE EMIR PARA SUS PRUEBAS
     //this.url = 'http://192.168.0.104:5000/api/v1/';
     // URL DE ALEXIS PARA PRUEBAS EN CELULAR
-    this.url = 'http://192.168.1.105:5000/api/v1/';
+    //this.url = 'http://192.168.1.105:5000/api/v1/';
 
     this.urlStellar = 'http://api.coinlayer.com/api/live?access_key=';
   }
@@ -42,8 +42,7 @@ class API {
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> signup(String phone, username, names, patSurname, matSurname,
-      password, country) async {
+  Future<bool> signup(String phone, username, names, patSurname, matSurname, password, country) async {
     final response = await http.post(
       Uri.parse(this.url + 'accounts/'),
       headers: <String, String>{
@@ -85,19 +84,20 @@ class API {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
 
-    final response = await http.put(
+    final response =  await http.put(
       Uri.parse(this.url + 'accounts/$me/update/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: 'Token $token',
         'Content-Type': 'application/json',
       },
+
       body: jsonEncode(<String, String>{
         'city': city,
         'state': state,
       }),
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200){
       throw APIError.fromResponse(response);
     }
     return true;
@@ -106,15 +106,10 @@ class API {
   Future<bool> updatePhoto(File photo) async {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
-    final response = await http.MultipartRequest(
-      'PUT',
-      Uri.parse(this.url + 'accounts/$me/photo/'),
-    );
+    final response = await http.MultipartRequest('PUT',
+      Uri.parse(this.url + 'accounts/$me/photo/'),);
 
-    Map<String, String> headers = {
-      HttpHeaders.authorizationHeader: 'Token $token',
-      'Content-Type': 'application/json'
-    };
+    Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
 
     response.headers.addAll(headers);
     response.files.add(await http.MultipartFile.fromBytes(
@@ -126,7 +121,7 @@ class API {
 
     if (request.statusCode == 200) {
       print('Uploaded!');
-    } else {
+    }else{
       print('Failed!');
       print(request.statusCode);
     }
@@ -213,8 +208,9 @@ class API {
 
   Future<CountryBalance> price() async {
     final response = await http.get(
-        Uri.parse(this.urlStellar + '2b38edff0cca9b23fc093f22857850c1'),
-        headers: {'Content-Type': 'application/json'});
+        Uri.parse(this.urlStellar+'2b38edff0cca9b23fc093f22857850c1'),
+        headers: {'Content-Type': 'application/json'}
+    );
 
     if (response.statusCode == 200) {
       return CountryBalance.fromJson(json.decode(response.body));
@@ -230,12 +226,7 @@ class Payment {
   final User source;
   final User destination;
 
-  Payment(
-      {this.amount,
-      this.description,
-      this.date,
-      this.source,
-      this.destination});
+  Payment({this.amount, this.description, this.date, this.source, this.destination});
 
   static List<Payment> fromList(List<dynamic> list) {
     var payments = List<Payment>();
@@ -261,14 +252,8 @@ class User {
   final String savingKey;
   final String phone;
 
-  User(
-      {this.names,
-      this.paternal_surname,
-      this.maternal_surname,
-      this.username,
-      this.publicKey,
-      this.savingKey,
-      this.phone});
+
+  User({this.names, this.paternal_surname, this.maternal_surname, this.username, this.publicKey, this.savingKey, this.phone});
 
   static List<User> fromList(List<dynamic> list) {
     var users = List<User>();
@@ -281,6 +266,7 @@ class User {
         publicKey: item['public_key'],
         savingKey: item['saving_key'],
         phone: item["phone"],
+
       ));
     }
     return users;
@@ -312,72 +298,54 @@ class APIError implements Exception {
     return APIError(message: response);
   }
 
-  Widget title() {
+  String title() {
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
-        return Container(
-          child: Text("Invalid Request"),
-        );
+        return "Invalid Request";
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
-        return Container(
-          child: Text("Unauthorized access"),
-        );
+        return "Unauthorized access";
       case HttpStatus.notFound:
-        return Container(
-          child: Text("Not found"),
-        );
+        return "Not found";
       case HttpStatus.internalServerError:
-        return Container(
-          child: Text("Something went wrong"),
-        );
+        return "Something went wrong";
       default:
-        return Container(
-            child: Text("Error During Communication : response.statusCode"));
+        return "Error During Communication : response.statusCode";
     }
   }
 
-  Widget content() {
+  String content() {
     final Map<String, dynamic> detail = jsonDecode(message.body);
-    final username =
-        detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
-    final password =
-        detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
-    final non_field_errors = detail['non_field_errors']
-        .toString()
-        .replaceAll("[", "")
-        .replaceAll("]", "");
+    final username = detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
+    final password = detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
+    final non_field_errors = detail['non_field_errors'].toString().replaceAll("[", "").replaceAll("]", "");
 
     getError() {
-      if (username != 'null' && password == 'null') {
-        return Text(username);
-      } else if (password != 'null' && username == 'null') {
-        return Text(password);
-      } else if (username != 'null' && password != 'null') {
-        return Text(username + ' ' + password);
-      } else
-        return Text(non_field_errors);
+      if(username != 'null' && password == 'null'){
+        return username;
+      }else
+      if(password != 'null' && username == 'null'){
+        return password;
+      }else
+      if(username != 'null' && password != 'null'){
+        return username+' '+password;
+      }else
+        return non_field_errors;
     }
 
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
-        return Container(child: getError());
+        return getError();
+
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
-        return Container(
-          child: Text(detail['detail']),
-        );
+        return detail['detail'];
       case HttpStatus.notFound:
-        return Container(
-          child: Text(detail['detail']),
-        );
+        return detail['detail'];
       case HttpStatus.internalServerError:
-        return Container(
-          child: Text(detail['detail']),
-        );
+        return detail['detail'];
       default:
-        return Container(
-            child: Text("Error During Communication : response.statusCode"));
+        return "Error During Communication : response.statusCode";
     }
   }
 }
@@ -415,18 +383,7 @@ class Me {
   final String state;
   final String photo;
 
-  Me(
-      {this.names,
-      this.paternal_surname,
-      this.maternal_surname,
-      this.username,
-      this.publicKey,
-      this.savingKey,
-      this.phone,
-      this.country,
-      this.city,
-      this.state,
-      this.photo});
+  Me({this.names, this.paternal_surname, this.maternal_surname, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.state, this.photo});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
@@ -456,6 +413,7 @@ class Token {
 }
 
 class FingerprintAPI {
+
   static Future<void> deleteSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -493,48 +451,50 @@ class FingerprintAPI {
     print(user);
     print(password);
 
-    try {
-      if (user != '') {
+    try{
+      if(user != ''){
         var authenticateWithBiometrics = await authenticate();
-        if (authenticateWithBiometrics) {
+        if(authenticateWithBiometrics) {
           Navigator.pushNamed(context, '/navigatorBar');
         }
-      } else {
+      }else{
         print('You need to sign in at least once before using fingerprint');
         _fingerprintAlert(context);
       }
-    } catch (e) {
+    }catch (e) {
       print('something went wrong');
     }
   }
 
-  static _fingerprintAlert(BuildContext context) {
+  static _fingerprintAlert(BuildContext context){
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (context)
+      {
         return AlertDialog(
           title: Text('Fingerprint Authentication'),
-          content: Text(
-              'You need to sign in at least once before using fingerprint'),
+          content: Text('You need to sign in at least once before using fingerprint'),
           actions: [
             FlatButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Ok')),
+                child: Text('Ok')
+            ),
           ],
           elevation: 24.0,
           backgroundColor: Color(0xFFFFFFFF),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(7.0)
+          ),
         );
       },
     );
   }
+
 }
 
-CountryBalance countryBalanceFromJson(String str) =>
-    CountryBalance.fromJson(json.decode(str));
+CountryBalance countryBalanceFromJson(String str) => CountryBalance.fromJson(json.decode(str));
 
 String countryBalanceToJson(CountryBalance data) => json.encode(data.toJson());
 
@@ -550,16 +510,16 @@ class CountryBalance {
   //Rates rates;
 
   factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
-        success: json["success"],
-        target: json["target"],
-        //rates: Rates.fromJson(json["rates"]),
-      );
+    success: json["success"],
+    target: json["target"],
+    //rates: Rates.fromJson(json["rates"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "target": target,
-        //"rates": rates.toJson(),
-      };
+    "success": success,
+    "target": target,
+    //"rates": rates.toJson(),
+  };
 }
 
 /*class Rates {
