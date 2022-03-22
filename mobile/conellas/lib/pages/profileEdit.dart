@@ -188,7 +188,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                       onPressed: () async {
                         print(this.cityValue);
                         print(this.stateValue);
-                        print(this.image);
 
                         try {
                           if (!_formKey.currentState.validate()) return;
@@ -200,7 +199,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             //this.phone,
                             //this.image,
                           );
-                          showImageSuccess(context);
+                          showSuccessDialog(context);
                         } catch (e) {
                           print(widget.deps.api.updateAccount(
                             this.city,
@@ -652,7 +651,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                             context: context,
                             type: CoolAlertType.success,
                             title: 'the image was saved',
-                            text: 'The image was saved successfully, the page will reload.',
+                            text:
+                                'The image was saved successfully, the page will reload.',
                             confirmBtnColor: Color(0xff3B2F8F),
                             onConfirmBtnTap: () async {
                               Navigator.of(context)
@@ -760,7 +760,6 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   void showImageSuccess(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     var successDialog = AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -813,11 +812,11 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   void showErrorDialog(BuildContext context, err) {
     CoolAlert.show(
-        context: context,
-        type: CoolAlertType.error,
-        title: 'Error in the image',
-        text: 'failed to upload the image.',
-        confirmBtnColor: Color(0xff3B2F8F),
+      context: context,
+      type: CoolAlertType.error,
+      title: 'Error in the image',
+      text: 'failed to upload the image.',
+      confirmBtnColor: Color(0xff3B2F8F),
     );
   }
 }
