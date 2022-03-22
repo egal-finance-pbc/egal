@@ -17,7 +17,7 @@ class API {
     //URL GENERAL
     this.url = 'http://10.0.2.2:5000/api/v1/';
     //URL DE EMIR PARA SUS PRUEBAS
-    //this.url = 'http://192.168.0.112:5000/api/v1/';
+    //this.url = 'http://192.168.0.104:5000/api/v1/';
     // URL DE ALEXIS PARA PRUEBAS EN CELULAR
     //this.url = 'http://192.168.1.105:5000/api/v1/';
 
@@ -109,23 +109,23 @@ class API {
     final response = await http.MultipartRequest('PUT',
       Uri.parse(this.url + 'accounts/$me/photo/'),);
 
-      Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
+    Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
 
-      response.headers.addAll(headers);
-      response.files.add(await http.MultipartFile.fromBytes(
+    response.headers.addAll(headers);
+    response.files.add(await http.MultipartFile.fromBytes(
         'photo', await photo.readAsBytesSync(),
         filename: photo.path.split('/').last,
         contentType: MediaType('png', 'jpeg')));
 
-      var request = await response.send();
+    var request = await response.send();
 
-      if (request.statusCode == 200) {
-        print('Uploaded!');
-      }else{
-        print('Failed!');
-        print(request.statusCode);
-      }
-      return true;
+    if (request.statusCode == 200) {
+      print('Uploaded!');
+    }else{
+      print('Failed!');
+      print(request.statusCode);
+    }
+    return true;
   }
 
   Future<Account> account() async {
@@ -205,11 +205,11 @@ class API {
     }
     throw APIError.fromResponse(response);
   }
-  
+
   Future<CountryBalance> price() async {
     final response = await http.get(
-      Uri.parse(this.urlStellar+'2b38edff0cca9b23fc093f22857850c1'),
-      headers: {'Content-Type': 'application/json'}
+        Uri.parse(this.urlStellar+'2b38edff0cca9b23fc093f22857850c1'),
+        headers: {'Content-Type': 'application/json'}
     );
 
     if (response.statusCode == 200) {
@@ -324,13 +324,13 @@ class APIError implements Exception {
       if(username != 'null' && password == 'null'){
         return username;
       }else
-          if(password != 'null' && username == 'null'){
-            return password;
-          }else
-            if(username != 'null' && password != 'null'){
-              return username+' '+password;
-            }else
-              return non_field_errors;
+      if(password != 'null' && username == 'null'){
+        return password;
+      }else
+      if(username != 'null' && password != 'null'){
+        return username+' '+password;
+      }else
+        return non_field_errors;
     }
 
     switch (this.message.statusCode) {
@@ -468,27 +468,27 @@ class FingerprintAPI {
 
   static _fingerprintAlert(BuildContext context){
     showDialog(
-        context: context,
-        builder: (context)
-        {
-          return AlertDialog(
-            title: Text('Fingerprint Authentication'),
-            content: Text('You need to sign in at least once before using fingerprint'),
-            actions: [
-              FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    },
-                  child: Text('Ok')
-              ),
-            ],
-            elevation: 24.0,
-            backgroundColor: Color(0xFFFFFFFF),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7.0)
+      context: context,
+      builder: (context)
+      {
+        return AlertDialog(
+          title: Text('Fingerprint Authentication'),
+          content: Text('You need to sign in at least once before using fingerprint'),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok')
             ),
-          );
-        },
+          ],
+          elevation: 24.0,
+          backgroundColor: Color(0xFFFFFFFF),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(7.0)
+          ),
+        );
+      },
     );
   }
 
@@ -499,27 +499,27 @@ CountryBalance countryBalanceFromJson(String str) => CountryBalance.fromJson(jso
 String countryBalanceToJson(CountryBalance data) => json.encode(data.toJson());
 
 class CountryBalance {
-    CountryBalance({
-        this.success,
-        this.target,
-        //this.rates,
-    });
+  CountryBalance({
+    this.success,
+    this.target,
+    //this.rates,
+  });
 
-    bool success;
-    String target;
-    //Rates rates;
+  bool success;
+  String target;
+  //Rates rates;
 
-    factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
-        success: json["success"],
-        target: json["target"],
-        //rates: Rates.fromJson(json["rates"]),
-    );
+  factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
+    success: json["success"],
+    target: json["target"],
+    //rates: Rates.fromJson(json["rates"]),
+  );
 
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "target": target,
-        //"rates": rates.toJson(),
-    };
+  Map<String, dynamic> toJson() => {
+    "success": success,
+    "target": target,
+    //"rates": rates.toJson(),
+  };
 }
 
 /*class Rates {

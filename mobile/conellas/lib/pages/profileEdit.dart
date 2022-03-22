@@ -648,13 +648,13 @@ class _ProfileEditState extends State<ProfileEdit> {
                           this.image,
                         );
                         CoolAlert.show(
-                          backgroundColor: Color(0xffF8991C),
                             context: context,
                             type: CoolAlertType.success,
                             title: 'the image was saved',
                             text:
                             'The image was saved successfully, the page will reload.',
                             confirmBtnColor: Color(0xff3B2F8F),
+                            backgroundColor: Color(0xffF8991C),
                             onConfirmBtnTap: () async {
                               Navigator.of(context)
                                   .pushReplacementNamed('/profileEdit');
@@ -682,7 +682,6 @@ class _ProfileEditState extends State<ProfileEdit> {
       backgroundColor: Color(0xffF8991C),
     );
   }
-
   void showErrorDialog(BuildContext context, err) {
     CoolAlert.show(
       context: context,
