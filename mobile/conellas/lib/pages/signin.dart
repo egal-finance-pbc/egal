@@ -1,5 +1,6 @@
 import 'package:conellas/common/deps.dart';
 import 'package:conellas/common/dialog.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -358,38 +359,7 @@ class _LoginFormState extends State<LoginForm> {
                           await FlutterSession().set('token', '');
                           ProgressDialog progressDialog = ProgressDialog(context);
                           progressDialog.dismiss();
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                contentPadding: const EdgeInsets.all(20),
-                                actionsPadding: const EdgeInsets.only(top: 60),
-                                titlePadding: const EdgeInsets.all(20),
-                                title: err.title(),
-                                content: err.content(),
-                                actions: [
-                                  Center(
-                                    child: Container(
-                                      width: size.width*0.50,
-                                      height: size.height * 0.06,
-                                      child: FlatButton(
-                                        color: Color(0xff3B2F8F),
-                                        child: Text("Try again"),
-                                        textColor: Colors.white,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ),
-                                  ),
-
-                                ],
-                              );
-                            },
-                            barrierDismissible: false,
-                          );
+                         showErrorDialog(context, err);
                         }
                       },
                       child: Text(
@@ -405,6 +375,16 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
       ),
+    );
+  }
+  void showErrorDialog(BuildContext context, err) {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.error,
+      title: err.title(),
+      text: err.content(),
+      confirmBtnColor: Color(0xff3B2F8F),
+      backgroundColor: Color(0xffF8991C),
     );
   }
 

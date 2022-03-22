@@ -15,11 +15,11 @@ class API {
   API() {
     // TODO: Make base URL address:port dynamic.
     //URL GENERAL
-    //this.url = 'http://10.0.2.2:5000/api/v1/';
+    this.url = 'http://10.0.2.2:5000/api/v1/';
     //URL DE EMIR PARA SUS PRUEBAS
     //this.url = 'http://192.168.0.112:5000/api/v1/';
     // URL DE ALEXIS PARA PRUEBAS EN CELULAR
-    this.url = 'http://192.168.1.105:5000/api/v1/';
+    //this.url = 'http://192.168.1.105:5000/api/v1/';
 
     this.urlStellar = 'http://api.coinlayer.com/api/live?access_key=';
   }
@@ -298,71 +298,54 @@ class APIError implements Exception {
     return APIError(message: response);
   }
 
-  Widget title() {
+  String title() {
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
-        return Container(
-          child: Text("Invalid Request"),
-        );
+        return "Invalid Request";
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
-        return Container(
-          child: Text("Unauthorized access"),
-        );
+        return "Unauthorized access";
       case HttpStatus.notFound:
-        return Container(
-          child: Text("Not found"),
-        );
+        return "Not found";
       case HttpStatus.internalServerError:
-        return Container(
-          child: Text("Something went wrong"),
-        );
+        return "Something went wrong";
       default:
-        return Container(
-            child: Text("Error During Communication : response.statusCode"));
+        return "Error During Communication : response.statusCode";
     }
   }
 
-  Widget content() {
+  String content() {
     final Map<String, dynamic> detail = jsonDecode(message.body);
     final username = detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
     final password = detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
     final non_field_errors = detail['non_field_errors'].toString().replaceAll("[", "").replaceAll("]", "");
 
-    getError(){
+    getError() {
       if(username != 'null' && password == 'null'){
-        return Text(username);
+        return username;
       }else
           if(password != 'null' && username == 'null'){
-            return Text(password);
+            return password;
           }else
             if(username != 'null' && password != 'null'){
-              return Text(username+' '+password);
+              return username+' '+password;
             }else
-              return Text(non_field_errors);
+              return non_field_errors;
     }
 
     switch (this.message.statusCode) {
       case HttpStatus.badRequest:
-        return Container(
-          child: getError()
-        );
+        return getError();
+
       case HttpStatus.unauthorized:
       case HttpStatus.forbidden:
-        return Container(
-          child: Text(detail['detail']),
-        );
+        return detail['detail'];
       case HttpStatus.notFound:
-        return Container(
-          child: Text(detail['detail']),
-        );
+        return detail['detail'];
       case HttpStatus.internalServerError:
-        return Container(
-          child: Text(detail['detail']),
-        );
+        return detail['detail'];
       default:
-        return Container(
-            child: Text("Error During Communication : response.statusCode"));
+        return "Error During Communication : response.statusCode";
     }
   }
 }

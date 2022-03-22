@@ -456,6 +456,7 @@ class _SendPageState extends State<SendPage> {
             'has been sent to '+'${_destUser.username} '+'with success',
         confirmBtnText: 'Go it',
         confirmBtnColor: Color(0xff3B2F8F),
+        backgroundColor: Color(0xffF8991C),
         onConfirmBtnTap: () async {
           Navigator.popUntil(context, ModalRoute.withName('/navigatorBar'));
         });

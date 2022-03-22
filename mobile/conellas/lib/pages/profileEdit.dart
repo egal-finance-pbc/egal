@@ -142,12 +142,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                             if (snapshot.data.photo == null) {
                               return CircleAvatar(
                                   backgroundImage:
-                                      AssetImage('assets/proicon.png'));
+                                  AssetImage('assets/proicon.png'));
                             } else {
                               return CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                'http://10.0.2.2:5000' + snapshot.data.photo,
-                              ));
+                                    'http://10.0.2.2:5000' + snapshot.data.photo,
+                                  ));
                             }
                           } else if (snapshot.hasError) {
                             return Text("${snapshot.error}");
@@ -188,7 +188,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                       onPressed: () async {
                         print(this.cityValue);
                         print(this.stateValue);
-                        print(this.image);
 
                         try {
                           if (!_formKey.currentState.validate()) return;
@@ -200,7 +199,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             //this.phone,
                             //this.image,
                           );
-                          showImageSuccess(context);
+                          showSuccessDialog(context);
                         } catch (e) {
                           print(widget.deps.api.updateAccount(
                             this.city,
@@ -265,7 +264,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       ),
                                       labelText: '${snapshot.data.names}',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
+                                      FloatingLabelBehavior.never,
                                       labelStyle: TextStyle(
                                           color: Colors.black,
                                           fontSize: 15,
@@ -327,7 +326,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         color: Color(0xff3B2F8F),
                                       ),
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
+                                      FloatingLabelBehavior.never,
                                       labelText: isoCode == 'MX'
                                           ? '${snapshot.data.paternal_surname} ${snapshot.data.maternal_surname}'
                                           : '${snapshot.data.paternal_surname}',
@@ -389,7 +388,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       snapshot.data.username,
                                   decoration: InputDecoration(
                                     floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
+                                    FloatingLabelBehavior.never,
                                     labelText: '${snapshot.data.username}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
@@ -402,7 +401,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                     contentPadding:
-                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                     disabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color(0xff3B2F8F),
@@ -450,7 +449,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       color: Color(0xff3B2F8F),
                                     ),
                                     floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
+                                    FloatingLabelBehavior.never,
                                     labelText: '${snapshot.data.phone}',
                                     labelStyle: TextStyle(
                                         color: Colors.black,
@@ -463,7 +462,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                     contentPadding:
-                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.white,
@@ -498,104 +497,104 @@ class _ProfileEditState extends State<ProfileEdit> {
                           country == null
                               ? CircularProgressIndicator()
                               : CSCPicker(
-                                  layout: Layout.horizontal,
-                                  defaultCountry: country == 'MX'
-                                      ? DefaultCountry.Mexico
-                                      : country == 'US'
-                                          ? DefaultCountry.United_States
-                                          : country == 'CA'
-                                              ? DefaultCountry.Canada
-                                              : country == 'IN'
-                                                  ? DefaultCountry.India
-                                                  : vacio,
+                            layout: Layout.horizontal,
+                            defaultCountry: country == 'MX'
+                                ? DefaultCountry.Mexico
+                                : country == 'US'
+                                ? DefaultCountry.United_States
+                                : country == 'CA'
+                                ? DefaultCountry.Canada
+                                : country == 'IN'
+                                ? DefaultCountry.India
+                                : vacio,
 
-                                  ///Enable disable state dropdown [OPTIONAL PARAMETER]
-                                  showStates: true,
+                            ///Enable disable state dropdown [OPTIONAL PARAMETER]
+                            showStates: true,
 
-                                  /// Enable disable city drop down [OPTIONAL PARAMETER]
-                                  showCities: true,
+                            /// Enable disable city drop down [OPTIONAL PARAMETER]
+                            showCities: true,
 
-                                  ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
-                                  flagState: CountryFlag.ENABLE,
+                            ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
+                            flagState: CountryFlag.ENABLE,
 
-                                  ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
-                                  dropdownDecoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.white, width: 2),
-                                  )),
+                            ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
+                            dropdownDecoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                      color: Colors.white, width: 2),
+                                )),
 
-                                  ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
-                                  disabledDropdownDecoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(
-                                        color: Color(0xff3B2F8F), width: 2),
-                                  )),
+                            ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+                            disabledDropdownDecoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                      color: Color(0xff3B2F8F), width: 2),
+                                )),
 
-                                  ///placeholders for dropdown search field
-                                  countrySearchPlaceholder: "Country",
-                                  stateSearchPlaceholder: "State",
-                                  citySearchPlaceholder: "City",
+                            ///placeholders for dropdown search field
+                            countrySearchPlaceholder: "Country",
+                            stateSearchPlaceholder: "State",
+                            citySearchPlaceholder: "City",
 
-                                  ///labels for dropdown
-                                  countryDropdownLabel: "*Country",
-                                  stateDropdownLabel: state,
-                                  cityDropdownLabel: cities,
+                            ///labels for dropdown
+                            countryDropdownLabel: "*Country",
+                            stateDropdownLabel: state,
+                            cityDropdownLabel: cities,
 
-                                  ///Default Country
-                                  //defaultCountry: DefaultCountry.India,
+                            ///Default Country
+                            //defaultCountry: DefaultCountry.India,
 
-                                  ///Disable country dropdown (Note: use it with default country)
-                                  disableCountry: true,
+                            ///Disable country dropdown (Note: use it with default country)
+                            disableCountry: true,
 
-                                  ///selected item style [OPTIONAL PARAMETER]
-                                  selectedItemStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
+                            ///selected item style [OPTIONAL PARAMETER]
+                            selectedItemStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
 
-                                  ///DropdownDialog Heading style [OPTIONAL PARAMETER]
-                                  dropdownHeadingStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
+                            ///DropdownDialog Heading style [OPTIONAL PARAMETER]
+                            dropdownHeadingStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
 
-                                  ///DropdownDialog Item style [OPTIONAL PARAMETER]
-                                  dropdownItemStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
+                            ///DropdownDialog Item style [OPTIONAL PARAMETER]
+                            dropdownItemStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
 
-                                  ///Dialog box radius [OPTIONAL PARAMETER]
-                                  dropdownDialogRadius: 10.0,
+                            ///Dialog box radius [OPTIONAL PARAMETER]
+                            dropdownDialogRadius: 10.0,
 
-                                  ///Search bar radius [OPTIONAL PARAMETER]
-                                  searchBarRadius: 50.0,
+                            ///Search bar radius [OPTIONAL PARAMETER]
+                            searchBarRadius: 50.0,
 
-                                  ///triggers once country selected in dropdown
-                                  onCountryChanged: (value) {
-                                    /*setState(() {
+                            ///triggers once country selected in dropdown
+                            onCountryChanged: (value) {
+                              /*setState(() {
                       ///store value in country variable
                       countryValue = value;
                     });*/
-                                  },
+                            },
 
-                                  ///triggers once state selected in dropdown
-                                  onStateChanged: (value) {
-                                    setState(() {
-                                      ///store value in state variable
-                                      stateValue = value;
-                                    });
-                                  },
+                            ///triggers once state selected in dropdown
+                            onStateChanged: (value) {
+                              setState(() {
+                                ///store value in state variable
+                                stateValue = value;
+                              });
+                            },
 
-                                  ///triggers once city selected in dropdown
-                                  onCityChanged: (value) {
-                                    setState(() {
-                                      ///store value in city variable
-                                      cityValue = value;
-                                    });
-                                  },
-                                ),
+                            ///triggers once city selected in dropdown
+                            onCityChanged: (value) {
+                              setState(() {
+                                ///store value in city variable
+                                cityValue = value;
+                              });
+                            },
+                          ),
                         ],
                       )),
                 ],
@@ -649,10 +648,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                           this.image,
                         );
                         CoolAlert.show(
+                          backgroundColor: Color(0xffF8991C),
                             context: context,
                             type: CoolAlertType.success,
                             title: 'the image was saved',
-                            text: 'The image was saved successfully, the page will reload.',
+                            text:
+                            'The image was saved successfully, the page will reload.',
                             confirmBtnColor: Color(0xff3B2F8F),
                             onConfirmBtnTap: () async {
                               Navigator.of(context)
@@ -671,153 +672,25 @@ class _ProfileEditState extends State<ProfileEdit> {
         });
   }
 
-  void showImg(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var selectorImg = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      contentPadding: const EdgeInsets.all(20),
-      actionsPadding: const EdgeInsets.only(top: 60),
-      titlePadding: const EdgeInsets.all(20),
-      title: Text("The image has been uploaded"),
-      content: Text("The image has been saved click okey to continue"),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Text("OK"),
-              onPressed: () async {
-                print(this.image);
-
-                try {
-                  if (!_formKey.currentState.validate()) return;
-                  _formKey.currentState.save();
-
-                  await widget.deps.api.updatePhoto(
-                    this.image,
-                  );
-                  Navigator.pop(context);
-                } catch (e) {
-                  print(widget.deps.api.updatePhoto(this.image));
-                  showErrorDialog(context, e);
-                }
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return selectorImg;
-      },
-    );
-  }
-
   void showSuccessDialog(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var successDialog = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      contentPadding: const EdgeInsets.all(20),
-      actionsPadding: const EdgeInsets.only(top: 60),
-      titlePadding: const EdgeInsets.all(20),
-      title: Text("The data has been updated"),
-      content: Text("Changes have been successfully saved"),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context)
-                    .popUntil(ModalRoute.withName('/navigatorBar'));
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-
-    showDialog(
+    CoolAlert.show(
       context: context,
-      builder: (BuildContext _) {
-        return successDialog;
-      },
-    );
-  }
-
-  void showImageSuccess(BuildContext context) {
-
-    Size size = MediaQuery.of(context).size;
-    var successDialog = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      contentPadding: const EdgeInsets.all(20),
-      actionsPadding: const EdgeInsets.only(top: 60),
-      titlePadding: const EdgeInsets.all(20),
-      title: Text("The image has been updated"),
-      content: Text("To save the data, you must click the top save button"),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Text("OK"),
-              onPressed: () async {
-                print(this.image);
-
-                try {
-                  if (!_formKey.currentState.validate()) return;
-                  _formKey.currentState.save();
-
-                  await widget.deps.api.updatePhoto(
-                    this.image,
-                  );
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacementNamed('/profileEdit');
-                } catch (e) {
-                  print(widget.deps.api.updatePhoto(this.image));
-                  showErrorDialog(context, e);
-                }
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return successDialog;
-      },
+      type: CoolAlertType.success,
+      title: 'Saved information',
+      text: 'New information has been saved',
+      confirmBtnColor: Color(0xff3B2F8F),
+      backgroundColor: Color(0xffF8991C),
     );
   }
 
   void showErrorDialog(BuildContext context, err) {
     CoolAlert.show(
-        context: context,
-        type: CoolAlertType.error,
-        title: 'Error in the image',
-        text: 'failed to upload the image.',
-        confirmBtnColor: Color(0xff3B2F8F),
+      context: context,
+      type: CoolAlertType.error,
+      title: 'No information',
+      text: 'No new information to update',
+      confirmBtnColor: Color(0xff3B2F8F),
+      backgroundColor: Color(0xffF8991C),
     );
   }
 }

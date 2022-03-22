@@ -283,7 +283,7 @@ class _SignUpFormState extends State<SignUpForm> {
               controlsBuilder: (BuildContext context,
                   {onStepContinue, onStepCancel}) {
                 Size size = MediaQuery.of(context).size;
-                return Container(
+                return Container( padding: EdgeInsets.fromLTRB(10,10, 10, 0),
                   margin: EdgeInsets.only(top: size.height * 0.01),
                   child: Row(
                     children: <Widget>[
@@ -334,7 +334,7 @@ class _SignUpFormState extends State<SignUpForm> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                padding: EdgeInsets.fromLTRB(18, 0, 30, 0),
+                padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -368,7 +368,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: const EdgeInsets.only(left: 50),
+                      contentPadding: const EdgeInsets.only(left: 0),
                     ),
                     onPhoneNumberChange: onPhoneNumberChange,
                     initialPhoneNumber: phone,
@@ -807,6 +807,16 @@ class _SignUpFormState extends State<SignUpForm> {
                           }
                         } else {
                           print('Invalid code');
+                          CoolAlert.show(
+                              context: context,
+                              backgroundColor: Color(0xffF8991C),
+                              type: CoolAlertType.error,
+                              title: "Error",
+                              text: "Invalid code",
+                              confirmBtnColor: Color(0xff3B2F8F),
+                              onCancelBtnTap: () async {
+                                Navigator.pushNamed(context, '/');
+                              });
                         }
                       } else {
                         print(twilioResponse.errorMessage);
@@ -826,44 +836,6 @@ class _SignUpFormState extends State<SignUpForm> {
     });
   }
 
-  void showSuccessDialog(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var successDialog = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      contentPadding: const EdgeInsets.all(20),
-      actionsPadding: const EdgeInsets.only(top: 60),
-      titlePadding: const EdgeInsets.all(20),
-      title: Text("Code sent, please check your messages"),
-      content:
-          Text("We have sent you a text message with the verification code"),
-      actions: [
-        Center(
-          child: Container(
-            width: size.width * 0.50,
-            height: size.height * 0.06,
-            child: FlatButton(
-              color: Color(0xff3B2F8F),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return successDialog;
-      },
-    );
-  }
-
   void showErrorDialog(BuildContext context, err) {
     CoolAlert.show(
       context: context,
@@ -871,6 +843,8 @@ class _SignUpFormState extends State<SignUpForm> {
       title: err.title(),
       text: err.content(),
       confirmBtnColor: Color(0xff3B2F8F),
+      backgroundColor: Color(0xffF8991C),
+
     );
   }
 
@@ -883,7 +857,7 @@ class _SignUpFormState extends State<SignUpForm> {
       CoolAlert.show(
         context: context,
         type: CoolAlertType.success,
-        title: "Code sent ",
+        title: "Code sent",
         text: "check your messages, the validation code has been sent.",
         confirmBtnColor: Color(0xff3B2F8F),
         backgroundColor: Color(0xffF8991C),
