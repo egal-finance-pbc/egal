@@ -185,9 +185,11 @@ class _SearchPageState extends State<SearchPage> {
         elevation: 0,
         title: Name(widget.deps),
         actions: <Widget>[
+          /*
           IconButton(
               onPressed: () {},
               icon: Icon(Icons.settings)),
+           */
         ],
       ),
       body: Stack(

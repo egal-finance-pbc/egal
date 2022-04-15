@@ -37,7 +37,11 @@ class _savingAccountState extends State<savingAccount> {
         elevation: 0,
         title: Text('Saving account'),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+          /*
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings)),
+           */
         ],
       ),
       body: Stack(
