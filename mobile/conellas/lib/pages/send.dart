@@ -473,7 +473,11 @@ class _SendPageState extends State<SendPage> {
         elevation: 0,
         title: Name(widget.deps),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+          /*
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings)),
+           */
         ],
       ),
       body: Stack(

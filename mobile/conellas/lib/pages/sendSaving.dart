@@ -229,7 +229,7 @@ class _SendSavingState extends State<SendSaving> {
                   borderRadius: BorderRadius.circular(40)),
             ),
             child: Text(
-              isPaying ? 'Paying ${firstName}...' : 'Send',
+              isPaying ? 'Deposit your account...' : 'Deposit',
               style: TextStyle(fontSize: 18),
             ),
             onPressed: () {
@@ -315,6 +315,7 @@ class _SendSavingState extends State<SendSaving> {
     var IntCompuesto10 = op10.toStringAsFixed(2);
 
     CoolAlert.show(
+      width: size.width*10,
         context: context,
         type: CoolAlertType.success,
         title: 'That\'s it!',
@@ -387,8 +388,11 @@ class _SendSavingState extends State<SendSaving> {
         elevation: 0,
         title: Text('Saving account'),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-        ],
+          /*
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings)),
+           */        ],
       ),
       body: Stack(
         children: [

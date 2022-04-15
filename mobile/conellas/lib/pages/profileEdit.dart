@@ -86,10 +86,12 @@ class _ProfileEditState extends State<ProfileEdit> {
         elevation: 0,
         title: Text('Edit Profile'),
         actions: <Widget>[
+          /*
           IconButton(
               color: Colors.white,
               icon: Icon(Icons.settings),
               onPressed: () {}),
+           */
         ],
       ),
       body: Stack(
@@ -145,8 +147,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   AssetImage('assets/proicon.png'));
                             } else {
                               return CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    'http://10.0.2.2:5000' + snapshot.data.photo,
+                                  backgroundImage: NetworkImage('http://192.168.1.106:5000'+snapshot.data.photo,
                                   ));
                             }
                           } else if (snapshot.hasError) {
@@ -611,6 +612,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            title: Text('Select one options'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -656,12 +658,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                             confirmBtnColor: Color(0xff3B2F8F),
                             backgroundColor: Color(0xffF8991C),
                             onConfirmBtnTap: () async {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/profileEdit');
+                              Navigator.of(context).pop();
+                              Navigator.pushNamed(context, '/profileEdit');
                             });
                       } catch (e) {
                         print(widget.deps.api.updatePhoto(this.image));
-                        showErrorDialog(context, e);
+                        showErrorUIMG(context, e);
                       }
                     },
                   ),
@@ -688,6 +690,16 @@ class _ProfileEditState extends State<ProfileEdit> {
       type: CoolAlertType.error,
       title: 'No information',
       text: 'No new information to update',
+      confirmBtnColor: Color(0xff3B2F8F),
+      backgroundColor: Color(0xffF8991C),
+    );
+  }
+  void showErrorUIMG(BuildContext context, e) {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.error,
+      title: 'No new image',
+      text: 'No new image was selected',
       confirmBtnColor: Color(0xff3B2F8F),
       backgroundColor: Color(0xffF8991C),
     );

@@ -41,7 +41,11 @@ class _cardSendPageState extends State<cardSendPage> {
         elevation: 0,
         title: Text('Wallet'),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+          /*
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings)),
+           */
         ],
       ),
       body: Stack(

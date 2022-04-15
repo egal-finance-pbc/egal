@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     } else {
                       return CircleAvatar(
                           backgroundImage: NetworkImage(
-                        'http://10.0.2.2:5000' + snapshot.data.photo,
+                            'http://192.168.1.106:5000' + snapshot.data.photo,
                       ));
                     }
                   } else if (snapshot.hasError) {
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   return CircularProgressIndicator();
                 })),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+          //IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
       ),
       body: Stack(
