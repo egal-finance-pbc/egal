@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'ledger.apps.LedgerConfig',
     'rest_framework',
     'rest_framework.authtoken'
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -115,12 +116,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # File storage directory
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Cache
@@ -148,3 +149,22 @@ REST_FRAMEWORK = {
 
 STELLAR_HORIZON_URL = 'https://horizon-testnet.stellar.org'
 STELLAR_FRIENDBOT_URL = 'https://friendbot.stellar.org'
+
+# aws settings
+AWS_STORAGE_BUCKET_NAME = 'egalbucket'
+AWS_S3_REGION_NAME = 'EE. UU. Este (Norte de Virginia) us-east-1'  # e.g. us-east-2
+AWS_ACCESS_KEY_ID = 'AKIA3ZUKOTZPJ7RHNA7X'
+AWS_SECRET_ACCESS_KEY = 'csZbLodsH6o2O0gJ0zRMiIBWC9WaMsGTBIRuZvlg'
+
+# Tell django-storages the domain to use to refer to static files.
+AWS_S3_CUSTOM_DOMAIN = f'egalbucket.s3.amazonaws.com'
+
+# S3 static settings
+STATIC_LOCATION = 'static'
+STATIC_URL = f'https://egalbucket.s3.amazonaws.com/static/'
+STATICFILES_STORAGE = 'conellas.backends.storage.StaticStorage'
+
+# S3 public media settings
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://egalbucket.s3.amazonaws.com/media/'
+DEFAULT_FILE_STORAGE = 'conellas.backends.storage.PublicMediaStorage'
