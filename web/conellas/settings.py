@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'ledger.apps.LedgerConfig',
     'rest_framework',
     'rest_framework.authtoken'
-    'storages',
+    #'storage',
 ]
 
 MIDDLEWARE = [
@@ -74,13 +74,36 @@ WSGI_APPLICATION = 'conellas.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+
+# Sirve los archivos estatico desde la raíz del proyecto
+    STATIC_URL = '/static/'
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+# Directorio de almacen de archivos
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+else:
+
+ # Database
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'Egal',
+            'USER': 'admin',
+            'PASSWORD': 'egal2022',
+            'HOST': 'egal.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
+            'PORT': '3306',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -116,13 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-# STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# File storage directory
-# MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Cache
 # https://docs.djangoproject.com/en/3.1/topics/cache/
@@ -151,10 +168,12 @@ STELLAR_HORIZON_URL = 'https://horizon-testnet.stellar.org'
 STELLAR_FRIENDBOT_URL = 'https://friendbot.stellar.org'
 
 # aws settings
-AWS_STORAGE_BUCKET_NAME = 'egalbucket'
-AWS_S3_REGION_NAME = 'EE. UU. Este (Norte de Virginia) us-east-1'  # e.g. us-east-2
 AWS_ACCESS_KEY_ID = 'AKIA3ZUKOTZPJ7RHNA7X'
 AWS_SECRET_ACCESS_KEY = 'csZbLodsH6o2O0gJ0zRMiIBWC9WaMsGTBIRuZvlg'
+AWS_STORAGE_BUCKET_NAME = 'egalbucket'
+AWS_S3_REGION_NAME = 'EE. UU. Este (Norte de Virginia) us-east-1'  # e.g. us-east-2
+AWS_DEFAULT_ACL = None
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
 # Tell django-storages the domain to use to refer to static files.
 AWS_S3_CUSTOM_DOMAIN = f'egalbucket.s3.amazonaws.com'
