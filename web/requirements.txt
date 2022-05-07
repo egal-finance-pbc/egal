@@ -1,8 +1,8 @@
-Django==3.1.3
-gunicorn==20.0.4
-stellar-sdk==2.8.0
-requests==2.24.0
-structlog==20.2.0
-djangorestframework==3.12.2
-markdown==3.3.3
-django-filter==2.4.0
+Django
+gunicorn
+stellar-sdk
+requests
+structlog
+djangorestframework
+markdown
+django-filter
