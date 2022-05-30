@@ -74,36 +74,17 @@ WSGI_APPLICATION = 'conellas.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Egal',
+        'USER': 'egalmaster',
+        'PASSWORD': 'YDCbyLRrt0xJneD5',
+        'HOST': 'awsegal.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
-
-    # Sirve los archivos estatico desde la raíz del proyecto
-    STATIC_URL = '/static/'
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
-    # Directorio de almacen de archivos
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-else:
-
-    # Database
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'Egal',
-            'USER': 'egalmaster',
-            'PASSWORD': 'YDCbyLRrt0xJneD5',
-            'HOST': 'awsegal.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
-            'PORT': '3306',
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
