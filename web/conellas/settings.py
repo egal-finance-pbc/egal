@@ -98,9 +98,9 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'Egal',
-            'USER': 'admin',
-            'PASSWORD': 'egal2022',
-            'HOST': 'egal.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
+            'USER': 'egalmaster',
+            'PASSWORD': 'YDCbyLRrt0xJneD5',
+            'HOST': 'awsegal.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
             'PORT': '3306',
         }
     }
