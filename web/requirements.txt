@@ -6,3 +6,4 @@ structlog
 djangorestframework
 markdown
 django-filter
+mysqlclient
