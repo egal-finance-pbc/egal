@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ledger.apps.LedgerConfig',
     'rest_framework',
-    #'rest_framework.authtoken'
-    'storage',
+    'rest_framework.authtoken'
+    #'storage',
 ]
 
 MIDDLEWARE = [
