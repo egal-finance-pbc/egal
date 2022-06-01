@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'ledger.apps.LedgerConfig',
     'rest_framework',
     'rest_framework.authtoken'
-    # 'storage',
+    'storage',
 ]
 
 MIDDLEWARE = [
