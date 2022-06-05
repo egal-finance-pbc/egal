@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'conellas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'egal',
+        'NAME': 'egal-finance',
         'USER': 'egalmaster',
         'PASSWORD': 'YDCbyLRrt0xJneD5',
-        'HOST': 'awsegal.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
+        'HOST': 'egal-finance.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
