@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'conellas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'egal-finance',
+        'NAME': 'egalbd',
         'USER': 'egalmaster',
         'PASSWORD': 'YDCbyLRrt0xJneD5',
         'HOST': 'egal-finance.clu8p2ijbbzz.us-east-1.rds.amazonaws.com',
