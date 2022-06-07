@@ -151,7 +151,7 @@ STELLAR_FRIENDBOT_URL = 'https://friendbot.stellar.org'
 AWS_ACCESS_KEY_ID = 'AKIA3ZUKOTZPJ7RHNA7X'
 AWS_SECRET_ACCESS_KEY = 'csZbLodsH6o2O0gJ0zRMiIBWC9WaMsGTBIRuZvlg'
 AWS_STORAGE_BUCKET_NAME = 'egalbucket'
-AWS_S3_REGION_NAME = 'EE. UU. Este (Norte de Virginia) us-east-1'  # e.g. us-east-2
+AWS_S3_REGION_NAME = 'us-east-1'  # e.g. us-east-2
 AWS_DEFAULT_ACL = None
 AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
