@@ -167,5 +167,3 @@ STATICFILES_STORAGE = 'conellas.backends.storage.StaticStorage'
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://egalbucket.s3.amazonaws.com/media/'
 DEFAULT_FILE_STORAGE = 'conellas.backends.storage.PublicMediaStorage'
-
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
