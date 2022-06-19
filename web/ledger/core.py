@@ -17,7 +17,7 @@ logger = logging.get_logger(__name__)
 
 class Gateway:
     def __init__(self):
-        self.server = stellar.Server("http://ec2-54-198-108-195.compute-1.amazonaws.com")
+        self.server = stellar.Server("http://ec2-54-198-108-195.compute-1.amazonaws.com:8000")
 
     @transaction.atomic
     def create_account(self, username, phone, password, country, names, paternal_surname,
