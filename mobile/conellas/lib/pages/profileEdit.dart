@@ -147,7 +147,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                   AssetImage('assets/proicon.png'));
                             } else {
                               return CircleAvatar(
-                                  backgroundImage: NetworkImage('http://192.168.1.106:5000'+snapshot.data.photo,
+                                  backgroundImage: NetworkImage(snapshot.data.photo,
                                   ));
                             }
                           } else if (snapshot.hasError) {
