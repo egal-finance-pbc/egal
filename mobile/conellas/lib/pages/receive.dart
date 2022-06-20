@@ -43,7 +43,7 @@ class _ReceivePageState extends State<ReceivePage> {
                     if(snapshot.data.photo == null){
                       return CircleAvatar(backgroundImage: AssetImage('assets/proicon.png'));
                     }else{
-                      return CircleAvatar(backgroundImage: NetworkImage('http://192.168.1.106:5000'+snapshot.data.photo,));
+                      return CircleAvatar(backgroundImage: NetworkImage(snapshot.data.photo,));
                     }
                   }else if(snapshot.hasError){
                     return Text("${snapshot.error}");
