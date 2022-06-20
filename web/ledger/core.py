@@ -100,7 +100,7 @@ class Gateway:
                 network_passphrase=stellar.Network.TESTNET_NETWORK_PASSPHRASE,
                 source_account=stellar_src_account,
                 base_fee=fee,
-            ).append_operation(stellar.operation(
+            ).append_operation(stellar.operation.Payment(
                 asset=stellar.Asset.native(),
                 amount=str(amount),
                 destination=dst,
