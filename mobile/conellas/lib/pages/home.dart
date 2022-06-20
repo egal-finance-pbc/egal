@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     } else {
                       return CircleAvatar(
                           backgroundImage: NetworkImage(
-                            'http://192.168.1.106:5000' + snapshot.data.photo,
+                            snapshot.data.photo,
                       ));
                     }
                   } else if (snapshot.hasError) {
