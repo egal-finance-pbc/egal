@@ -19,7 +19,8 @@ class API {
     this.urlStellar = 'http://api.coinlayer.com/api/live?access_key=';
   }
 
-  Future<Token> login(String username, password) async {
+  Future<Token> login(String username, password, BuildContext context) async {
+    //BuildContext context;
     final response = await http.post(
       Uri.parse(this.url + 'tokens/'),
       headers: <String, String>{
@@ -32,12 +33,14 @@ class API {
     );
 
     if (response.statusCode == 200) {
+      Navigator.pushNamed(context, '/navigatorBar');
       return Token.fromJson(jsonDecode(response.body));
     }
     throw APIError.fromResponse(response);
   }
 
-  Future<bool> signup(String phone, username, names, patSurname, matSurname, password, country) async {
+  Future<bool> signup(String phone, username, names, patSurname, matSurname,
+      password, country) async {
     final response = await http.post(
       Uri.parse(this.url + 'accounts/'),
       headers: <String, String>{
@@ -79,20 +82,19 @@ class API {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
 
-    final response =  await http.put(
+    final response = await http.put(
       Uri.parse(this.url + 'accounts/$me/update/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: 'Token $token',
         'Content-Type': 'application/json',
       },
-
       body: jsonEncode(<String, String>{
         'city': city,
         'state': state,
       }),
     );
 
-    if (response.statusCode != 200){
+    if (response.statusCode != 200) {
       throw APIError.fromResponse(response);
     }
     return true;
@@ -101,10 +103,15 @@ class API {
   Future<bool> updatePhoto(File photo) async {
     var token = await FlutterSession().get('token');
     var me = await FlutterSession().get('publicKey');
-    final response = await http.MultipartRequest('PUT',
-      Uri.parse(this.url + 'accounts/$me/photo/'),);
+    final response = await http.MultipartRequest(
+      'PUT',
+      Uri.parse(this.url + 'accounts/$me/photo/'),
+    );
 
-    Map<String, String> headers = {HttpHeaders.authorizationHeader: 'Token $token', 'Content-Type': 'application/json'};
+    Map<String, String> headers = {
+      HttpHeaders.authorizationHeader: 'Token $token',
+      'Content-Type': 'application/json'
+    };
 
     response.headers.addAll(headers);
     response.files.add(await http.MultipartFile.fromBytes(
@@ -116,7 +123,7 @@ class API {
 
     if (request.statusCode == 200) {
       print('Uploaded!');
-    }else{
+    } else {
       print('Failed!');
       print(request.statusCode);
     }
@@ -203,9 +210,8 @@ class API {
 
   Future<CountryBalance> price() async {
     final response = await http.get(
-        Uri.parse(this.urlStellar+'2b38edff0cca9b23fc093f22857850c1'),
-        headers: {'Content-Type': 'application/json'}
-    );
+        Uri.parse(this.urlStellar + '2b38edff0cca9b23fc093f22857850c1'),
+        headers: {'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
       return CountryBalance.fromJson(json.decode(response.body));
@@ -221,7 +227,12 @@ class Payment {
   final User source;
   final User destination;
 
-  Payment({this.amount, this.description, this.date, this.source, this.destination});
+  Payment(
+      {this.amount,
+      this.description,
+      this.date,
+      this.source,
+      this.destination});
 
   static List<Payment> fromList(List<dynamic> list) {
     var payments = List<Payment>();
@@ -247,8 +258,14 @@ class User {
   final String savingKey;
   final String phone;
 
-
-  User({this.names, this.paternal_surname, this.maternal_surname, this.username, this.publicKey, this.savingKey, this.phone});
+  User(
+      {this.names,
+      this.paternal_surname,
+      this.maternal_surname,
+      this.username,
+      this.publicKey,
+      this.savingKey,
+      this.phone});
 
   static List<User> fromList(List<dynamic> list) {
     var users = List<User>();
@@ -261,7 +278,6 @@ class User {
         publicKey: item['public_key'],
         savingKey: item['saving_key'],
         phone: item["phone"],
-
       ));
     }
     return users;
@@ -312,20 +328,23 @@ class APIError implements Exception {
 
   String content() {
     final Map<String, dynamic> detail = jsonDecode(message.body);
-    final username = detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
-    final password = detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
-    final non_field_errors = detail['non_field_errors'].toString().replaceAll("[", "").replaceAll("]", "");
+    final username =
+        detail['username'].toString().replaceAll("[", "").replaceAll("]", "");
+    final password =
+        detail['password'].toString().replaceAll("[", "").replaceAll("]", "");
+    final non_field_errors = detail['non_field_errors']
+        .toString()
+        .replaceAll("[", "")
+        .replaceAll("]", "");
 
     getError() {
-      if(username != 'null' && password == 'null'){
+      if (username != 'null' && password == 'null') {
         return username;
-      }else
-      if(password != 'null' && username == 'null'){
+      } else if (password != 'null' && username == 'null') {
         return password;
-      }else
-      if(username != 'null' && password != 'null'){
-        return username+' '+password;
-      }else
+      } else if (username != 'null' && password != 'null') {
+        return username + ' ' + password;
+      } else
         return non_field_errors;
     }
 
@@ -379,7 +398,18 @@ class Me {
   final String state;
   final String photo;
 
-  Me({this.names, this.paternal_surname, this.maternal_surname, this.username, this.publicKey, this.savingKey, this.phone, this.country, this.city, this.state, this.photo});
+  Me(
+      {this.names,
+      this.paternal_surname,
+      this.maternal_surname,
+      this.username,
+      this.publicKey,
+      this.savingKey,
+      this.phone,
+      this.country,
+      this.city,
+      this.state,
+      this.photo});
 
   factory Me.fromJson(Map<String, dynamic> json) {
     return Me(
@@ -409,7 +439,6 @@ class Token {
 }
 
 class FingerprintAPI {
-
   static Future<void> deleteSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -441,56 +470,55 @@ class FingerprintAPI {
   }
 
   static Future<void> loginWithBiometrics(BuildContext context) async {
+    API api = API();
     var prefs = await SharedPreferences.getInstance();
     var user = prefs.getString('user') ?? '';
     var password = prefs.getString('passcode') ?? '';
     print(user);
     print(password);
 
-    try{
-      if(user != ''){
+    try {
+      if (user != '') {
         var authenticateWithBiometrics = await authenticate();
-        if(authenticateWithBiometrics) {
-          Navigator.pushNamed(context, '/navigatorBar');
+        if (authenticateWithBiometrics) {
+          api.login(user, password, context);
         }
-      }else{
+      } else {
         print('You need to sign in at least once before using fingerprint');
         _fingerprintAlert(context);
       }
-    }catch (e) {
+    } catch (e) {
       print('something went wrong');
     }
   }
 
-  static _fingerprintAlert(BuildContext context){
+  static _fingerprintAlert(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context)
-      {
+      builder: (context) {
         return AlertDialog(
           title: Text('Fingerprint Authentication'),
-          content: Text('You need to sign in at least once before using fingerprint'),
+          content: Text(
+              'You need to sign in at least once before using fingerprint'),
           actions: [
-            FlatButton(
+            TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Ok')
-            ),
+                child: Text('Ok')),
           ],
           elevation: 24.0,
           backgroundColor: Color(0xFFFFFFFF),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7.0)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
         );
       },
     );
   }
-
 }
 
-CountryBalance countryBalanceFromJson(String str) => CountryBalance.fromJson(json.decode(str));
+CountryBalance countryBalanceFromJson(String str) =>
+    CountryBalance.fromJson(json.decode(str));
 
 String countryBalanceToJson(CountryBalance data) => json.encode(data.toJson());
 
@@ -506,16 +534,16 @@ class CountryBalance {
   //Rates rates;
 
   factory CountryBalance.fromJson(Map<String, dynamic> json) => CountryBalance(
-    success: json["success"],
-    target: json["target"],
-    //rates: Rates.fromJson(json["rates"]),
-  );
+        success: json["success"],
+        target: json["target"],
+        //rates: Rates.fromJson(json["rates"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "target": target,
-    //"rates": rates.toJson(),
-  };
+        "success": success,
+        "target": target,
+        //"rates": rates.toJson(),
+      };
 }
 
 /*class Rates {
