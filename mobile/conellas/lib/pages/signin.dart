@@ -116,36 +116,46 @@ class _SignInPageState extends State<SignInPage> {
                                 ? await launch(_url)
                                 : throw 'Could not launch $_url';
                           },
-                          child: Icon(Icons.web, color: Colors.white,
-                            size: 25,),
+                          child: Icon(
+                            Icons.web,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {
-                          },
-                          child: Icon(Icons.facebook, color: Colors.white,
-                            size: 25,),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.facebook,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
-                          ),
+                        ),
                         FlatButton(
                           onPressed: () {
                             //SessionParams.deleteSession();
                           },
-                          child: Icon(Icons.chat_rounded, color: Colors.white,
-                            size: 25,),
+                          child: Icon(
+                            Icons.chat_rounded,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
                         ),
                         FlatButton(
-                          onPressed: () {
-                          },
-                          child: Icon(Icons.qr_code_scanner, color: Colors.white,
-                            size: 25,),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.qr_code_scanner,
+                            color: Colors.white,
+                            size: 25,
+                          ),
                           color: Color(0xff3B2F8F),
                           shape: CircleBorder(),
                           height: 50,
@@ -238,7 +248,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.22, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.22, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                     child: TextFormField(
                       controller: this.usernameController,
@@ -270,7 +280,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.33, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.33, 0, 0),
                     padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                     child: TextFormField(
                       controller: this.passwordController,
@@ -303,7 +313,8 @@ class _LoginFormState extends State<LoginForm> {
                   Row(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, size.height*0.43, 0, size.height*0.43),
+                        margin: EdgeInsets.fromLTRB(
+                            0, size.height * 0.43, 0, size.height * 0.43),
                         padding: EdgeInsets.fromLTRB(30, 0, 5, 0),
                         child: Transform.scale(
                           scale: 1.3,
@@ -325,7 +336,7 @@ class _LoginFormState extends State<LoginForm> {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, size.height*0.59, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, size.height * 0.59, 0, 0),
                     padding: EdgeInsets.fromLTRB(60, 0, 60, 0),
                     width: double.infinity,
                     height: size.height * 0.06,
@@ -340,12 +351,13 @@ class _LoginFormState extends State<LoginForm> {
                           return;
                         }
                         try {
-                          ProgressDialog progressDialog = ProgressDialog(context);
+                          ProgressDialog progressDialog =
+                              ProgressDialog(context);
                           progressDialog.show();
                           var token = await widget.deps.api.login(
-                            this.usernameController.text,
-                            this.passwordController.text,
-                          );
+                              this.usernameController.text,
+                              this.passwordController.text,
+                              context);
                           var sessionStorage = widget.deps.session;
                           await sessionStorage.set('token', token.token);
 
@@ -353,13 +365,12 @@ class _LoginFormState extends State<LoginForm> {
                           await sessionStorage.set('publicKey', me.publicKey);
                           await sessionStorage.set('savingKey', me.savingKey);
                           rememberme(isChecked);
-                          progressDialog.dismiss();
-                          Navigator.pushNamed(context, '/navigatorBar');
                         } catch (err) {
                           await FlutterSession().set('token', '');
-                          ProgressDialog progressDialog = ProgressDialog(context);
+                          ProgressDialog progressDialog =
+                              ProgressDialog(context);
                           progressDialog.dismiss();
-                         showErrorDialog(context, err);
+                          showErrorDialog(context, err);
                         }
                       },
                       child: Text(
@@ -377,6 +388,7 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
+
   void showErrorDialog(BuildContext context, err) {
     CoolAlert.show(
       context: context,
@@ -393,14 +405,14 @@ class _LoginFormState extends State<LoginForm> {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool('remember_me', value);
       prefs.setString('user', usernameController.text);
-      //prefs.setString('passcode', passwordController.text);
+      prefs.setString('passcode', passwordController.text);
     });
     setState(() {
       isChecked = value;
     });
   }
 
-  void loadData() async{
+  void loadData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var user = prefs.getString('user') ?? '';
@@ -409,13 +421,14 @@ class _LoginFormState extends State<LoginForm> {
       print(remember_me);
       print(user);
       print(passcode);
-      if(remember_me) {
+      if (remember_me) {
         setState(() {
           isChecked = true;
         });
         usernameController.text = user ?? '';
+        //passwordController.text = passcode ?? '';
       }
-    }catch (e){
+    } catch (e) {
       print(e);
     }
   }
